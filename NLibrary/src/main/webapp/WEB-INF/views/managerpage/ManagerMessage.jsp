@@ -137,33 +137,31 @@
 				<table class="table" id="msg-table">
 
 					<tbody>
-
-						<tr>
-							<td>번호</td>
-							<td>1</td>
-						</tr>
-						<tr>
-							<td>보낸날짜</td>
-							<td>2016-02-05</td>
-						</tr>
-
-						<tr>
-							<td>받는사람</td>
-							<td>홍길동</td>
-						</tr>
-
-						<tr>
-							<td>제목</td>
-							<td>안녕하세요. 홍길동님 반납해야할 도서입니다.</td>
-						</tr>
-
-						<tr>
-							<td>내용</td>
-							<td>내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다.
-								내용입니다.내용입니다.내용입니다.내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다.
-								내용입니다.내용입니다.내용입니다.내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다.
-								내용입니다.내용입니다.내용입니다.</td>
-						</tr>
+						<c:forEach var="msg"  items="${msg}">
+							<tr>
+								<td>번호</td>
+								<td>${msg.message_id}</td>
+							</tr>
+							<tr>
+								<td>보낸날짜</td>
+								<td>${msg.sended_date}</td>
+							</tr>
+	
+							<tr>
+								<td>받는사람___(일단id만)</td>
+								<td>${msg.user_id}</td>
+							</tr>
+	
+							<tr>
+								<td>제목</td>
+								<td>${msg.title}</td>
+							</tr>
+	
+							<tr>
+								<td>내용</td>
+								<td>${msg.content}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 

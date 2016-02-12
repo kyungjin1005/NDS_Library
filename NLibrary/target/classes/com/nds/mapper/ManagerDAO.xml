@@ -4,7 +4,24 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.manager.IManagerDAO">
 
-   <select id="MessageList" resultType="com.nds.library.manager.Message">
-      SELECT * FROM messages
-   </select>
+	<select id="MessageList" resultType="com.nds.library.manager.Message">
+		SELECT message_id, user_id, is_checked, title, content, sended_date, checked_date 
+		FROM messages
+		<if test="filter == 0">  <!-- 전체 -->
+			where sended_date is not null
+		</if>
+		<if test="filter == 1">  <!-- 읽은 메시지 -->
+			where is_checked = 1
+		</if>
+		<if test="filter == 2">  <!-- 안읽은 메시지 -->
+			where is_checked = 0
+		</if>
+		order by sended_date desc
+	</select>
+	
+	<select id="messageDetail" resultType="com.nds.library.manager.Message">
+		SELECT message_id, user_id, is_checked, title, content, sended_date, checked_date 
+		FROM messages
+		WHERE message_id = #{msg_id}
+	</select>
 </mapper>   
