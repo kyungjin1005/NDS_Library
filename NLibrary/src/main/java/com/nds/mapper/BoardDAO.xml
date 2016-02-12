@@ -4,8 +4,66 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.board.IBoardDAO">
 
-   <select id="BoardList" resultType="com.nds.library.board.Board">
-      SELECT * FROM Boards
+   <select id="boardList" parameterType="java.util.HashMap" resultType="com.nds.library.board.Board">
+     SELECT * 
+	 FROM boards join users using(user_id)
+	 
+      <if test="type == 'notice'">
+			WHERE category = '공지'
+			order by board_id desc
+	  </if>
+	   <if test="type == 'study'">
+			WHERE category = '스터디'
+			BoardNoticeList.nds
+	  </if>
    </select>
+   
+   <select id="reqaAndDonList" parameterType="java.util.HashMap" resultType="com.nds.library.board.ReqandDon">
+     SELECT * 
+	 FROM ReqandDon join users using(user_id)
+      <if test="type == 'request'">
+			WHERE current_state = '승인대기' or current_state = '신청완료' 
+			or current_state = '구매완료' or current_state = '신청반려'
+			order by req_don_id desc
+	  </if>
+	   <if test="type == 'donation'">
+		WHERE current_state LIKE '기증%'
+		order by req_don_id desc
+	  </if>
+   </select>
+   
+   <select id="detailBoard" parameterType="java.util.HashMap" resultType="com.nds.library.board.Board">
+     SELECT * 
+	 FROM boards join users using(user_id)
+     WHERE board_id = #{board_id}	
+   </select>
+   
+   <update id="readCount" parameterType="java.util.HashMap">
+   	update boards 
+	set read_count = (select read_count from boards where board_id=#{board_id})+1
+	where board_id=#{board_id}
+   </update>
+
+	<select id="replyCount" parameterType="java.util.HashMap" resultType="Integer">
+     SELECT count(*)
+	 FROM replys
+	 where board_id=#{board_id}
+   </select>
+   
+   <select id="replyList" parameterType="java.util.HashMap" resultType="com.nds.library.board.Reply">
+     SELECT * 
+	 FROM replys join users using(user_id)
+     WHERE board_id = #{board_id}
+     ORDER BY reply_id desc
+   </select>
+   
+   <insert id="addReply">
+     Insert into REPLYS (REPLY_ID,USER_ID,BOARD_ID,CONTENT,REPLYED_DATE,BLIND) 
+     values ((SELECT NVL(MAX(REPLY_ID), 0)+1 FROM REPLYS), #{user_id}, #{board_id}, #{content}, sysdate, 0)
+   </insert>
+ 
+   <delete id="deleteReply" parameterType="java.util.HashMap">
+    Delete from replys where reply_id=#{reply_id} 
+   </delete>
 
 </mapper>   

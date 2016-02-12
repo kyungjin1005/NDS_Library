@@ -81,10 +81,10 @@
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
 				<ul class="list-group">
-					<li class="list-group-item"><a href="">공지사항</a></li>
-					<li class="list-group-item"><a href="">도서신청</a></li>
-					<li class="list-group-item"><a href="">기증도서</a></li>
-					<li class="list-group-item"><a href="">스터디모집</a></li>
+					<li class="list-group-item"><a href="BoardNoticeList.nds">공지사항</a></li>
+					<li class="list-group-item"><a href="BoardRequireList.nds">도서신청</a></li>
+					<li class="list-group-item"><a href="BoardDonationList.nds">기증도서</a></li>
+					<li class="list-group-item"><a href="BoardStudyList.nds">스터디모집</a></li>
 				</ul>
 
 			</div>

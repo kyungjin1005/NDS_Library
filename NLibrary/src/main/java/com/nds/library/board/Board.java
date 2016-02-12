@@ -1,8 +1,12 @@
 package com.nds.library.board;
 
 public class Board {
+	
+	
 	private int board_id, user_id, read_count, blind;
-	private String category, title, content, board_date, modified_date;
+	private String category, title, content, boarded_date, modified_date, name;
+	
+	
 	public int getBoard_id() {
 		return board_id;
 	}
@@ -45,11 +49,12 @@ public class Board {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getBoard_date() {
-		return board_date;
+	
+	public String getBoarded_date() {
+		return boarded_date;
 	}
-	public void setBoard_date(String board_date) {
-		this.board_date = board_date;
+	public void setBoarded_date(String boarded_date) {
+		this.boarded_date = boarded_date;
 	}
 	public String getModified_date() {
 		return modified_date;
@@ -57,5 +62,12 @@ public class Board {
 	public void setModified_date(String modified_date) {
 		this.modified_date = modified_date;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	
 }

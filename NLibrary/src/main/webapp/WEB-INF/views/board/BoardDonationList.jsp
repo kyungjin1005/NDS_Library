@@ -75,10 +75,10 @@
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
 				<ul class="list-group">
-					<li class="list-group-item"><a href="">공지사항</a></li>
-					<li class="list-group-item"><a href="">도서신청</a></li>
-					<li class="list-group-item"><a href="">기증도서</a></li>
-					<li class="list-group-item"><a href="">스터디모집</a></li>
+					<li class="list-group-item"><a href="BoardNoticeList.nds">공지사항</a></li>
+					<li class="list-group-item"><a href="BoardRequireList.nds">도서신청</a></li>
+					<li class="list-group-item"><a href="BoardDonationList.nds">기증도서</a></li>
+					<li class="list-group-item"><a href="BoardStudyList.nds">스터디모집</a></li>
 				</ul>
 
 			</div>
@@ -90,61 +90,21 @@
 						<tr>
 							<th>번호</th>
 							<th>제목</th>
-							<th>기증인</th>
+							<th>승인상태</th>
+							<th>신청인</th>
 							<th>작성일</th>
-							<th>조회수</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>105</td>
-							<td><a href="#">이것이 자바다</a></td>
-							<td>남정식</td>
-							<td>2016-01-22</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td>104</td>
-							<td><a href="#">알고리즘의 이해</a></td>
-							<td>김혜원</td>
-							<td>2016-01-21</td>
-							<td>200</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
+						<c:forEach var="req" items="${list}">
+								<tr>
+									<td>${req.req_don_id}</td>
+									<td>${req.title}</td>
+									<td>${req.current_state}</td>
+									<td>${req.name}</td>
+									<td>${req.registered_date}</td>
+								</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 

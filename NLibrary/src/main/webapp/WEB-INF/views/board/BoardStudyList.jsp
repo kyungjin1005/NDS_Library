@@ -75,10 +75,10 @@
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
 				<ul class="list-group">
-					<li class="list-group-item"><a href="">공지사항</a></li>
-					<li class="list-group-item"><a href="">도서신청</a></li>
-					<li class="list-group-item"><a href="">기증도서</a></li>
-					<li class="list-group-item"><a href="">스터디모집</a></li>
+					<li class="list-group-item"><a href="BoardNoticeList.nds">공지사항</a></li>
+					<li class="list-group-item"><a href="BoardRequireList.nds">도서신청</a></li>
+					<li class="list-group-item"><a href="BoardDonationList.nds">기증도서</a></li>
+					<li class="list-group-item"><a href="BoardStudyList.nds">스터디모집</a></li>
 				</ul>
 
 			</div>
@@ -88,63 +88,25 @@
 				<table class="table table-condensed">
 					<thead>
 						<tr>
-							<th>NO</th>
+							<th>번호</th>
 							<th>제목</th>
 							<th>작성자</th>
 							<th>작성일</th>
 							<th>조회수</th>
 						</tr>
 					</thead>
+					<c:set var="board" value="${list}" />
 					<tbody>
-						<tr>
-							<td>105</td>
-							<td><a href="#">JAVA 스터디 모집합니다.</a></td>
-							<td>남정식</td>
-							<td>2016-01-22</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td>104</td>
-							<td><a href="#">HTML 스터디 모집합니다.</a></td>
-							<td>김혜원</td>
-							<td>2016-01-21</td>
-							<td>200</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
+						<c:forEach var="board" items="${list}">
+								<tr>
+									<td>${board.board_id}</td>
+									<td>${board.title}</td>
+									<td>${board.name}</td>
+									<td>${board.boarded_date}</td>
+									<td>${board.read_count}</td>
+								 	
+								</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				<div style="text-align: right">

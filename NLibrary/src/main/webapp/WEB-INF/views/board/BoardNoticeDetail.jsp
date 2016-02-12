@@ -53,15 +53,16 @@
 	margin-top: 5px;
 	margin-bottom: 40px;
 }
+
+.content-line {
+	border: 1px solid silver;
+	margin-top: 5px;
+	margin-bottom: 40px;
+}
 </style>
 <script>
 	$(document).ready(function() {
-		$(document).ready(function(){
-		    $('table tr').click(function(){
-		        window.location = $(this).attr('href');
-		        return false;
-		    });
-		});
+
 	});
 </script>
 </head>
@@ -89,40 +90,86 @@
 			</div>
 			<div class="col-md-10">
 				<h1 id="mTitle">공지사항</h1>
-
 				<hr class="title-line" />
-				<table class="table table-condensed">
+
+				<!-- 타이틀 -->
+				<div class="title">
+					<div style="width: 50%; float: left">
+						<p>${board.title}</p>
+					</div>
+					<div style="width: 50%; float: left">
+						<p style="font-size: 11px; text-align: right">${board.boarded_date}</p>
+					</div>
+				</div>
+
+				<!-- 내용	 -->
+				<div class="content" style="height: 400px">
+					<p>${board.content}</p>
+
+				</div>
+				<hr class="content-line" />
+
+				<!-- 댓글 -->
+				<div class="sub-title">
+					<span class="glyphicon glyphicon-list-alt icon"></span> <span>댓글</span>
+					<span class="badge" style="margin-left: 3px">${replyCount}</span>
+					<hr class="sub-title-line" />
+				</div>
+				<table class="table table-hover text-center" id="reply-table">
 					<thead>
 						<tr>
 							<th>번호</th>
-							<th>제목</th>
+							<th>댓글</th>
 							<th>작성자</th>
 							<th>작성일</th>
-							<th>조회수</th>
 						</tr>
 					</thead>
-					
+					<c:set var="replyCount" value="${replyCount}" />
+					<%int replyCount=(Integer)pageContext.getAttribute("replyCount");%>		
 					<tbody>
-						<c:forEach var="board" items="${list}">
-								<tr href="BoardNoticeDetail.nds?board_id=${board.board_id}" style="cursor:pointer;">
-									<td>${board.board_id}</td>
-									<td>${board.title}</td>
-									<td>${board.name}</td>
-									<td>${board.boarded_date}</td>
-									<td>${board.read_count}</td>
+						<c:forEach var="reply" items="${replylist}">
+								<tr>
+									<td><%=replyCount-- %></td>
+									<td>${reply.content}</td>
+									<td>${reply.name}</td>
+									<td>${reply.replyed_date}  
+										<a href="UpdateReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice">
+								          <span class="glyphicon glyphicon-pencil"></span>
+								        </a>
+								        <a href="DeleteReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice"> 
+        								  <span class="glyphicon glyphicon-minus"></span>
+      									</a>
+							        </td>
 								</tr>
 						</c:forEach>
 					</tbody>
-					
 				</table>
-				
-			</div>
+				<form role="form" action="InsertReply.nds" method="post">
+					
+					<input type="hidden" value="notice" name="type" />
+					<input type="hidden" value="3" name="user_id" />
+					<input type="hidden" value="${board.board_id}" name="board_id" />
+					
+					<div class="row">
+						<div class="col-md-11">
+							<div class="form-group">
+								<input type="text" placeholder="댓글을 입력해주세요(50)"
+									required="required" maxlength="100" class="form-control"
+									id="comment" name="content">
+							</div>
+						</div>
+						<div class="col-md-1" style="padding: 0px; margin: 0px;">
+							<button class="btn btn-md btn-warning" id="btn-write">등록</button>
+						</div>
+					</div>
+				</form>
 
+			</div>
 		</div>
+
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
-
 	</div>
 </body>
 </html>
