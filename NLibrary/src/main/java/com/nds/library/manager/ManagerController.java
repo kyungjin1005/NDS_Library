@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.nds.library.main.Book;
 import com.nds.library.main.IMainDAO;
+import com.nds.library.mypage.Borrowing;
+import com.nds.library.mypage.IMypageDAO;
 
 @Controller
 public class ManagerController {
@@ -18,18 +20,18 @@ public class ManagerController {
 	private SqlSession sqlSession;
 
 	@RequestMapping(value = "/ManagerBoard.nds", method = RequestMethod.GET)
-	public String managerBoard(Model model) {
-
-		// model.addAttribute("message", "Hello Spring MVC Framework!");
+	public String managerBoard(Model model) {				
+		return "WEB-INF/views/managerpage/ManagerBoard.jsp";
+	}
+	
+	@RequestMapping(value = "/MessageList.nds", method = RequestMethod.GET)
+	public String messageList(Model model) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 		ArrayList<Message> list = dao.MessageList();
-		
-		for (Message message : list) {
-			System.out.println(message.getTitle());
-		}
-		
-		return "WEB-INF/views/managerpage/ManagerBoard.jsp";
+		model.addAttribute("messageList", list);
+
+		return "WEB-INF/views/managerpage/ManagerMessageBox.jsp";
 	}
 
 }

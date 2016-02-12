@@ -128,7 +128,7 @@
 						</div>
 					</li>
 					<li class="list-group-item"><a href="">게시판관리</a></li>
-					<li class="list-group-item"><a href="">메세지관리</a></li>
+					<li class="list-group-item"><a href="MessageList.nds">메세지관리</a></li>
 				</ul>
 
 
