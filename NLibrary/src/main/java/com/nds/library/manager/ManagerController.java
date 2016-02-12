@@ -31,6 +31,17 @@ public class ManagerController {
 		
 		return "WEB-INF/views/managerpage/ManagerBoard.jsp";
 	}
+	
+	@RequestMapping(value = "/MessageList.nds", method = RequestMethod.GET)
+	public String messageList(Model model) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		ArrayList<Message> list = dao.MessageList();
+		
+		model.addAttribute("messageList", list);
+		
+		return "WEB-INF/views/managerpage/ManagerMessageBox.jsp";
+	}
 
 	@RequestMapping(value = "/ManagerBookRequire.nds", method = RequestMethod.GET)
 	public String managerBookRequire(Model model) {
