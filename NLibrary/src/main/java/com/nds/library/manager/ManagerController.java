@@ -18,17 +18,7 @@ public class ManagerController {
 	private SqlSession sqlSession;
 
 	@RequestMapping(value = "/ManagerBoard.nds", method = RequestMethod.GET)
-	public String managerBoard(Model model) {
-
-		// model.addAttribute("message", "Hello Spring MVC Framework!");
-
-		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		ArrayList<Message> list = dao.MessageList();
-		
-		for (Message message : list) {
-			System.out.println(message.getTitle());
-		}
-		
+	public String managerBoard(Model model) {		
 		return "WEB-INF/views/managerpage/ManagerBoard.jsp";
 	}
 	
