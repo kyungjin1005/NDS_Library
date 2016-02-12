@@ -10,7 +10,7 @@
 
 	<select id="requireBookList" parameterType="java.util.Map"
 		resultType="com.nds.library.mypage.ReqAndDon">
-		select image, title, author, publisher, TO_CHAR(registered_date,
+		select REQ_DON_ID, image, title, author, publisher, TO_CHAR(registered_date,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
 		'yyyy-mm-dd') AS finished_date, manager_comment

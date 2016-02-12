@@ -54,7 +54,7 @@
 	margin-bottom: 40px;
 }
 
-#book-table tbody tr:HOVER{
+#book-table tbody tr:HOVER {
 	cursor: pointer;
 }
 
@@ -135,12 +135,33 @@
 }
 </style>
 <script>
-	$(document).ready(function() {
+	$(document).ready(
+			function() {
 
-		$(".btn-register").on("click", function() {
-			$("#modal-dam-los").modal();
-		});
-	});
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$(".btn-register").on("click", function() {
+					$("#modal-dam-los").modal();
+				});
+
+				$("#borrow-filter").change(
+						function() {
+							$(location).attr(
+									"href",
+									"ManagerBookRequire.nds?filter="
+											+ $("#borrow-filter").val());
+						});
+				
+			});
+	
+
+	function goConfirm(req_don_id) {
+		$(location).attr(
+				"href",
+				"ManagerBookRequireConfirm.nds?req_don_id="+req_don_id);
+	
+	}
 </script>
 </head>
 <body>
@@ -207,6 +228,7 @@
 							<th>제목</th>
 							<th>저자</th>
 							<th>출판사</th>
+							<th>신청자</th>
 							<th>신청일</th>
 							<th>승인상태</th>
 							<th>완료일/구매일</th>
@@ -215,7 +237,7 @@
 					</thead>
 					<tbody>
 
-						<tr>
+						<!-- <tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
 							<td>홍길동</td>
@@ -227,59 +249,25 @@
 								<button class="btn btn-md btn-danger btn-register">
 									도서등록</button>
 							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>2016-02-02</td>
-							<td>승인완료</td>
-							<td>2016-02-03</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">
-									도서등록</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>2016-02-02</td>
-							<td>승인완료</td>
-							<td>2016-02-03</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">
-									도서등록</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>2016-02-02</td>
-							<td>승인완료</td>
-							<td>2016-02-03</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">
-									도서등록</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>2016-02-02</td>
-							<td>승인완료</td>
-							<td>2016-02-03</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">
-									도서등록</button>
-							</td>
-						</tr>
+						</tr> -->
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${requireList}">
+							<tr class="item" onclick="goConfirm(${book.req_don_id})">
+								<td>${count}</td>
+								<td><img src="${book.image}" alt="" /><span>${book.title }</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${book.name}</td>
+								<td>${book.registered_date}</td>
+								<td>${empty book.current_state?"-":book.current_state}</td>
+								<td>${empty book.finished_date?"-":book.finished_date}</td>
+								<td>
+									<button class="btn btn-md btn-danger btn-register"
+										${book.current_state=='신청완료'?"disabled=\"disalbed\"":""}>도서등록</button>
+								</td>
+							</tr>
+							<c:set var="count" value="${count+1}"></c:set>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
@@ -330,7 +318,7 @@
 										<tr>
 											<td>제목</td>
 											<td colspan="3">이것이 자바다</td>
-											
+
 										</tr>
 
 										<tr>
@@ -370,11 +358,11 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
-		
+
 	</div>
 
 </body>

@@ -172,8 +172,6 @@
 					loadDoc(query);
 
 				});
-				
-				
 
 				$("#borrow-filter").change(
 						function() {
@@ -186,7 +184,8 @@
 			});
 
 	function loadDoc(query) {
-		$.get(
+		$
+				.get(
 						"NaverAjax.nds?query=" + query,
 						function(data) {
 							var rootElement = $(data).find(":root");
@@ -196,9 +195,11 @@
 							for (var i = 0; i < $(books).length; ++i) {
 								var book = $(books).eq(i);
 								result += "<tr>";
-								result += "<td>" + (i + 1) +  "</td>";
+								result += "<td>" + (i + 1) + "</td>";
 								result += "<td>" + "<div class=\"clearfix\">";
-								result += "<img src="+ $(book).find("image").text()+ " class=\"modal-img\" />";
+								result += "<img src="
+										+ $(book).find("image").text()
+										+ " class=\"modal-img\" />";
 								result += "<ul class=\"modal-list\">";
 								result += "<li>" + $(book).find("title").text()
 										+ "</li>";
@@ -217,7 +218,9 @@
 								result += "</div>";
 								result += "</td>";
 								result += "<td>"
-										+ "<button type=\"button\" value=\"" + $(book).find("isbn").text() + "\"class=\"btn btn-md btn-default btn-register\" >신청하기</button>"
+										+ "<button type=\"button\" value=\""
+										+ $(book).find("isbn").text()
+										+ "\"class=\"btn btn-md btn-default btn-register\" >신청하기</button>"
 										+ "</td>";
 
 								result += "</tr>";
@@ -225,23 +228,22 @@
 
 							/* 	$("#boardTable").find("tbody").append(result);		 */
 							$("#modal-table").find("tbody").html(result);
-							
-							
-							$(".btn-register").on("click", function() {
-								/* $("#isbn").val($(this).parents("tr").find("td:eq(1)").text()); */
-								//alert("zz");
-								alert($(this).val());
-								
-								$(location).attr(
-										"href",
-										"MypageRequireForm.nds?isbn="
-												+ $(this).val());
-							});
+
+							$(".btn-register").on(
+									"click",
+									function() {
+										/* $("#isbn").val($(this).parents("tr").find("td:eq(1)").text()); */
+										//alert("zz");
+										alert($(this).val());
+
+										$(location).attr(
+												"href",
+												"MypageRequireForm.nds?isbn="
+														+ $(this).val());
+									});
 						}, "xml");
 
 	}
-	
-	
 </script>
 </head>
 <body>
@@ -357,17 +359,17 @@
 							</div>
 						</form>
 						<div id="scroll-box">
-								<table class="table table-hover text-center" id="modal-table">
-									<thead>
-										<tr>
-											<th>번호</th>
-											<th>책정보</th>
-											<th>신청하기</th>
-										</tr>
-									</thead>
-									<tbody>
-									
-										<!-- <tr>
+							<table class="table table-hover text-center" id="modal-table">
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>책정보</th>
+										<th>신청하기</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<!-- <tr>
 									<td>1</td>
 									<td>
 										<div class="clearfix">
@@ -388,8 +390,8 @@
 									</td>
 								</tr>
 								 -->
-									</tbody>
-								</table>
+								</tbody>
+							</table>
 						</div>
 					</div>
 					<div class="modal-footer">

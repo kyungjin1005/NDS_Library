@@ -141,36 +141,36 @@
 							<tbody>
 								<tr>
 									<td>제목</td>
-									<td>이것이 자바다</td>
+									<td>${book.title }</td>
 								</tr>
 
 								<tr>
 									<td>지은이</td>
-									<td>홍길동</td>
+									<td>${book.author }</td>
 								</tr>
 								<tr>
 									<td>출판사</td>
-									<td>oo출판</td>
+									<td>${book.publisher }</td>
 								</tr>
 								<tr>
 									<td>발행년도</td>
-									<td>2016-01-03</td>
+									<td>${book.pubdate }</td>
 								</tr>
 								<tr>
 									<td>ISBN</td>
-									<td>32432432</td>
+									<td>${book.isbn }</td>
 								</tr>
 								<tr>
 									<td>신청인</td>
-									<td>홍길동</td>
+									<td>${book.name }</td>
 								</tr>
 								<tr>
 									<td>신청일</td>
-									<td>2016-02-02</td>
+									<td>${book.registered_date }</td>
 								</tr>
 								<tr>
 									<td>신청한마디</td>
-									<td>NDS임직원들이 있으면 도움이 될 수 있다고 생각하여 신청합니다!</td>
+									<td>${book.user_comment }</td>
 								</tr>
 							</tbody>
 						</table>

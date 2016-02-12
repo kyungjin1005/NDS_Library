@@ -13,6 +13,25 @@ public class ReqAndDon {
 	private String current_state;
 	private String manager_comment;
 	private String user_comment;
+	private String name;
+	private String req_don_id;
+	
+
+	public String getReq_don_id() {
+		return req_don_id;
+	}
+
+	public void setReq_don_id(String req_don_id) {
+		this.req_don_id = req_don_id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getUser_comment() {
 		return user_comment;

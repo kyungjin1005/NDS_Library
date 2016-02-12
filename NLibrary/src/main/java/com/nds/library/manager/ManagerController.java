@@ -1,6 +1,8 @@
 package com.nds.library.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.nds.library.main.Book;
-import com.nds.library.main.IMainDAO;
+import com.nds.library.mypage.ReqAndDon;
 
 @Controller
 public class ManagerController {
@@ -44,18 +45,37 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/ManagerBookRequire.nds", method = RequestMethod.GET)
-	public String managerBookRequire(Model model) {
-
-		// model.addAttribute("message", "Hello Spring MVC Framework!");
+	public String managerBookRequire(Model model, String filter) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-//		ArrayList<Message> list = dao.MessageList();
-//		
-//		for (Message message : list) {
-//			System.out.println(message.getTitle());
-//		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (filter == null) {
+			filter = "0";
+		}
+		map.put("filter", filter);
+
+		ArrayList<ReqAndDon> list = dao.requireBookList(map);
+		model.addAttribute("requireList", list);
+		model.addAttribute("filter", filter);
 		
 		return "WEB-INF/views/managerpage/ManagerBookRequire.jsp";
 	}
 	
+	@RequestMapping(value = "/ManagerBookRequireConfirm.nds", method = RequestMethod.GET)
+	public String managerBookRequireConfirm(Model model,ReqAndDon book) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		System.out.println("req_don_id" + book.getReq_don_id());
+		dao.getRequireBook(book);
+		
+		model.addAttribute("book", book);
+		
+		
+		
+		return "WEB-INF/views/managerpage/ManagerBookRequireConfirm.jsp";
+	}
+
 }

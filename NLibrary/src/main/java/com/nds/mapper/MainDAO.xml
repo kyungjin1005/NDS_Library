@@ -4,7 +4,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.main.IMainDAO">
 
-   <select id="BookList" resultType="com.nds.library.main.Book">
+   <select id="BookList" resultType="com.nds.library.mypage.ReqAndDon">
       SELECT * FROM books
    </select>
 
