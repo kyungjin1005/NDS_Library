@@ -38,7 +38,14 @@
 	</select>
 
 	<select id="getRequireBook" resultType="com.nds.library.mypage.ReqAndDon">
-		SELECT * FROM ReqAndDon WHERE req_don_id = #{req_don_id}
+		SELECT name,
+		TO_CHAR(reqanddon.REGISTERED_DATE,
+		'yyyy-mm-dd') as registered_date,
+		TO_CHAR(pubdate,
+		'yyyy-mm-dd') AS pubdate, isbn, title, author,
+		publisher, image, user_comment FROM users join reqanddon
+		using(user_id) WHERE
+		req_don_id = #{req_don_id}
 	</select>
 
 

@@ -64,16 +64,14 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value = "/ManagerBookRequireConfirm.nds", method = RequestMethod.GET)
-	public String managerBookRequireConfirm(Model model,ReqAndDon book) {
+	public String managerBookRequireConfirm(Model model,ReqAndDon requireBook) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		System.out.println("req_don_id" + book.getReq_don_id());
-		dao.getRequireBook(book);
+		System.out.println("req_don_id : " + requireBook.getReq_don_id());
+		ReqAndDon book = dao.getRequireBook(requireBook);
 		
 		model.addAttribute("book", book);
-		
-		
 		
 		return "WEB-INF/views/managerpage/ManagerBookRequireConfirm.jsp";
 	}

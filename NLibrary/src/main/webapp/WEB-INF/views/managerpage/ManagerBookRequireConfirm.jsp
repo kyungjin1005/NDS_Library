@@ -176,7 +176,7 @@
 						</table>
 					</div>
 					<div class="col-md-5 text-center">
-						<img src="pictures/booksample01.jpg" alt="" id="img-book" />
+						<img src="${book.user_comment }" alt="" id="img-book" />
 						<button class="btn btn-primary btn-require">승인</button>
 						<button class="btn btn-danger btn-require">반려</button>
 					</div>
