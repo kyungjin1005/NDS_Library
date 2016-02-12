@@ -32,4 +32,19 @@ public class ManagerController {
 		return "WEB-INF/views/managerpage/ManagerBoard.jsp";
 	}
 
+	@RequestMapping(value = "/ManagerBookRequire.nds", method = RequestMethod.GET)
+	public String managerBookRequire(Model model) {
+
+		// model.addAttribute("message", "Hello Spring MVC Framework!");
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+//		ArrayList<Message> list = dao.MessageList();
+//		
+//		for (Message message : list) {
+//			System.out.println(message.getTitle());
+//		}
+		
+		return "WEB-INF/views/managerpage/ManagerBookRequire.jsp";
+	}
+	
 }

@@ -84,7 +84,7 @@
 	
 }
 
-#aa {
+#scroll-box {
 	max-height: 500px;
 	overflow-y: scroll;
 }
@@ -157,18 +157,33 @@
 }
 </style>
 <script>
-	$(document).ready(function() {
-		$("#btn-require").on("click", function() {
-			$("#req-modal").modal();
-		});
+	$(document).ready(
+			function() {
 
-		$("#btn-search").on("click", function() {
-			var query = $("#query").val();
-			loadDoc(query);
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
 
-		});
+				$("#btn-require").on("click", function() {
+					$("#req-modal").modal();
+				});
 
-	});
+				$("#btn-search").on("click", function() {
+					var query = $("#query").val();
+					loadDoc(query);
+
+				});
+				
+				
+
+				$("#borrow-filter").change(
+						function() {
+							/* alert($("#borrow-filter").val()); */
+							$(location).attr(
+									"href",
+									"MypageRequire.nds?filter="
+											+ $("#borrow-filter").val());
+						});
+			});
 
 	function loadDoc(query) {
 		$.get(
@@ -181,11 +196,9 @@
 							for (var i = 0; i < $(books).length; ++i) {
 								var book = $(books).eq(i);
 								result += "<tr>";
-								result += "<td>" + (i+1) + "</td>";
+								result += "<td>" + (i + 1) +  "</td>";
 								result += "<td>" + "<div class=\"clearfix\">";
-								result += "<img src=\""
-										+ $(book).find("image").text()
-										+ "\" class=\"modal-img\" />";
+								result += "<img src="+ $(book).find("image").text()+ " class=\"modal-img\" />";
 								result += "<ul class=\"modal-list\">";
 								result += "<li>" + $(book).find("title").text()
 										+ "</li>";
@@ -204,17 +217,31 @@
 								result += "</div>";
 								result += "</td>";
 								result += "<td>"
-										+ "<button class=\"btn btn-md btn-default\">신청하기</button>"
+										+ "<button type=\"button\" value=\"" + $(book).find("isbn").text() + "\"class=\"btn btn-md btn-default btn-register\" >신청하기</button>"
 										+ "</td>";
 
 								result += "</tr>";
 							}
 
 							/* 	$("#boardTable").find("tbody").append(result);		 */
-							$("#modal-table").find("tbody").html(result)
+							$("#modal-table").find("tbody").html(result);
+							
+							
+							$(".btn-register").on("click", function() {
+								/* $("#isbn").val($(this).parents("tr").find("td:eq(1)").text()); */
+								//alert("zz");
+								alert($(this).val());
+								
+								$(location).attr(
+										"href",
+										"MypageRequireForm.nds?isbn="
+												+ $(this).val());
+							});
 						}, "xml");
 
 	}
+	
+	
 </script>
 </head>
 <body>
@@ -245,7 +272,7 @@
 
 
 
-				<form class="form-inline" role="form" method="post"
+				<form class="form-inline" role="form" method="get"
 					style="display: inline-block; float: right; margin-bottom: 20px;">
 					<select class="form-control" id="borrow-filter"
 						name="borrow-filter">
@@ -273,7 +300,7 @@
 					</thead>
 					<tbody>
 
-						<tr>
+						<!-- 	<tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" /><span>이것이자바다</span></td>
 							<td>홍길동</td>
@@ -282,53 +309,23 @@
 							<td>구매완료</td>
 							<td>2016-02-05</td>
 							<td>-</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>구매완료</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-						</tr>
+						</tr> -->
 
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${requireList}">
+							<tr>
+								<td>${count}</td>
+								<td><img src="${book.image}" alt="" /><span>${book.title }</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${book.registered_date}</td>
+								<td>${empty book.current_state?"-":book.current_state}</td>
+								<td>${empty book.finished_date?"-":book.finished_date}</td>
+								<td>${empty book.manager_comment?"-":book.manager_comment}</td>
+							</tr>
+							<c:set var="count" value="${count+1}"></c:set>
+						</c:forEach>
 
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>신청완료</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-						</tr>
-
-
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>신청대기</td>
-							<td>-</td>
-							<td>-</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>신청반려</td>
-							<td>2016-02-05</td>
-							<td>중복도서</td>
-						</tr>
 					</tbody>
 				</table>
 
@@ -336,7 +333,6 @@
 					<button class="btn btn-md btn-warning" id="btn-require">신청하기</button>
 				</div>
 			</div>
-
 		</div>
 
 
@@ -360,17 +356,18 @@
 								<button type="button" class="btn btn-danger" id="btn-search">검색</button>
 							</div>
 						</form>
-						<div id="aa">
-							<table class="table table-hover text-center" id="modal-table">
-								<thead>
-									<tr>
-										<th>번호</th>
-										<th>책정보</th>
-										<th>신청하기</th>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- <tr>
+						<div id="scroll-box">
+								<table class="table table-hover text-center" id="modal-table">
+									<thead>
+										<tr>
+											<th>번호</th>
+											<th>책정보</th>
+											<th>신청하기</th>
+										</tr>
+									</thead>
+									<tbody>
+									
+										<!-- <tr>
 									<td>1</td>
 									<td>
 										<div class="clearfix">
@@ -391,8 +388,8 @@
 									</td>
 								</tr>
 								 -->
-								</tbody>
-							</table>
+									</tbody>
+								</table>
 						</div>
 					</div>
 					<div class="modal-footer">
