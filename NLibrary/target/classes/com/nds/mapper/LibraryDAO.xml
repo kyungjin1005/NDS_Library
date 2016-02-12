@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nds.test.IBoardDAO">
+
+	<select id="requireBookList" parameterType="java.util.Map"
+		resultType="com.nds.library.Book">
+
+		<!-- <if test="key == 0">
+		</if>
+		<if test="key == 1">
+			WHERE employeeId=#{value}
+		</if>
+		<if test="key == 2">
+			WHERE name=#{value}
+		</if>
+		<if test="key == 3">
+			WHERE ssn=encrypt(#{value},e.name)
+		</if>
+		<if test="key == 4">
+			WHERE regionName=#{value}
+		</if>
+		<if test="key == 5">
+			WHERE departmentName=#{value}
+		</if>
+		<if test="key == 6">
+			WHERE positionName=#{value}
+		</if>
+
+		ORDER BY employeeId -->
+	</select>
+
+</mapper>
