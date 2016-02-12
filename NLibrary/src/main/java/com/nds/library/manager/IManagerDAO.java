@@ -9,4 +9,6 @@ public interface IManagerDAO {
 	public ArrayList<Message> MessageList();
 	public ArrayList<ReqAndDon> requireBookList(Map<String, Object> map);
 	public ReqAndDon getRequireBook(ReqAndDon book);
+	public ArrayList<Message> MessageList(Map<String, Object> map);
+	public ArrayList<Message> messageDetail(int msg_id);
 }

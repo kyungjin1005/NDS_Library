@@ -102,9 +102,15 @@
 </style>
 <script>
 	$(document).ready(function() {
+		
+		$("#msg-filter option:eq(${filter})").attr("selected", "selected");
 
 		$(".btn-register").on("click", function() {
 			$("#modal-dam-los").modal();
+		});
+		
+		$("#msg-filter").change(function() {
+			$(location).attr("href", "MessageList.nds?filter="+$("#msg-filter").val());
 		});
 	});
 </script>
@@ -150,7 +156,7 @@
 				<h1 id="mTitle">메세지관리</h1>
 				<hr class="title-line" />
 
-				<form class="form-inline" role="form" method="post"
+				<form class="form-inline" role="form" method="get"
 					style="display: inline-block; float: right; margin-bottom: 20px;">
 					<select class="form-control" id="msg-filter" name="msg-filter">
 						<option value="0">전체</option>
@@ -158,7 +164,6 @@
 						<option value="2">안읽은 메세지</option>
 					</select>
 				</form>
-
 
 				<table class="table table-hover text-center" id="msg-table">
 					<thead>
@@ -169,6 +174,7 @@
 							<th>받는사람</th>
 							<th>보낸날짜</th>
 							<th>읽은날짜</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -180,7 +186,8 @@
 								<td>관리자?</td>
 								<td>${msg.sended_date}</td>
 								<td>${msg.checked_date}</td>
-								</tr>
+								<td><a href ="ManagerMemberMsg.nds?msg_id=${msg.message_id}">자세히</a></td>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>

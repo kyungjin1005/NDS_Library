@@ -19,29 +19,39 @@ public class ManagerController {
 	private SqlSession sqlSession;
 
 	@RequestMapping(value = "/ManagerBoard.nds", method = RequestMethod.GET)
-	public String managerBoard(Model model) {
-
-		// model.addAttribute("message", "Hello Spring MVC Framework!");
-
-		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		ArrayList<Message> list = dao.MessageList();
-		
-		for (Message message : list) {
-			System.out.println(message.getTitle());
-		}
-		
+	public String managerBoard(Model model) {		
 		return "WEB-INF/views/managerpage/ManagerBoard.jsp";
 	}
 	
 	@RequestMapping(value = "/MessageList.nds", method = RequestMethod.GET)
-	public String messageList(Model model) {
+	public String messageList(Model model, String filter) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		ArrayList<Message> list = dao.MessageList();
+		Map<String, Object> map = new HashMap<String, Object>();
 		
+		if (filter == null) {
+			filter = "0";
+		}
+		map.put("filter", filter);
+		
+		ArrayList<Message> list = dao.MessageList(map);
 		model.addAttribute("messageList", list);
+		model.addAttribute("filter", filter);
 		
 		return "WEB-INF/views/managerpage/ManagerMessageBox.jsp";
+	}
+	
+	@RequestMapping(value = "/ManagerMemberMsg.nds", method = RequestMethod.GET)
+	public String messageDetail(Model model, int msg_id) {
+
+		System.out.println("msg_id : " + msg_id);
+		
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		
+		ArrayList<Message> msg = dao.messageDetail(msg_id);
+		model.addAttribute("msg", msg);
+		
+		return "WEB-INF/views/managerpage/ManagerMessage.jsp";
 	}
 
 	@RequestMapping(value = "/ManagerBookRequire.nds", method = RequestMethod.GET)
