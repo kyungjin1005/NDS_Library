@@ -90,9 +90,6 @@
 </style>
 <script>
 	$(document).ready(function() {
-		$("#btn-require").on("click", function() {
-			$("#req-modal").modal();
-		});
 
 	});
 </script>
@@ -124,48 +121,57 @@
 				<hr class="title-line" />
 
 				<div class="row" style="margin: 20px 0px;">
-					<form role="form" action="" method="post">
+					<form role="form" action="MypageRequireAdd.nds" method="post">
+					<input type="hidden" name="registered_date" value="${book.registered_date}" />
+					<input type="hidden" name="title" value="${book.title}" />
+					<input type="hidden" name="author" value="${book.author}" />
+					<input type="hidden" name="publisher" value="${book.publisher}" />
+					<input type="hidden" name="pubdate" value="${book.pubdate}" />
+					<input type="hidden" name="isbn" value="${book.isbn}" />
+					<input type="hidden" name="image" value="${book.image}" />
+					<input type="hidden" name="explanation" value="${book.explanation}" />
+					
 						<div class="col-md-7">
 							<table class="table text-center" id="require-table">
 
 								<tbody>
 									<tr>
 										<td>제목</td>
-										<td>이것이 자바다</td>
+										<td>${book.title }</td>
 									</tr>
 
 									<tr>
 										<td>지은이</td>
-										<td>홍길동</td>
+										<td>${book.author }</td>
 									</tr>
 									<tr>
 										<td>출판사</td>
-										<td>oo출판</td>
+										<td>${book.publisher }</td>
 									</tr>
 									<tr>
 										<td>발행년도</td>
-										<td>2016-01-03</td>
+										<td>${book.pubdate }</td>
 									</tr>
 									<tr>
 										<td>ISBN</td>
-										<td>32432432</td>
+										<td>${book.isbn }</td>
 									</tr>
 									<tr>
 										<td>신청일</td>
-										<td>2016-02-02</td>
+										<td>${book.registered_date}</td>
 									</tr>
 									<tr>
 										<td>신청한마디</td>
 										<td><input type="text" class="form-control"
-											id="reqComment" name="reqComment" placeholder="(30자 이내)"
+											id="user_comment" name="user_comment" placeholder="(30자 이내)"
 											maxlength="30" required="required"></td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 						<div class="col-md-5" id="right-box">
-							<img src="pictures/booksample01.jpg" alt="" id="img-book" />
-							<button class="btn btn-warning" id="btn-require">신청하기</button>
+							<img src=${book.image } alt="" id="img-book" />
+							<button type="submit" class="btn btn-warning" id="btn-require">신청하기</button>
 						</div>
 					</form>
 				</div>
