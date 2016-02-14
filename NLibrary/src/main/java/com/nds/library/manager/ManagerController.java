@@ -58,7 +58,7 @@ public class ManagerController {
 	public String managerBookRequire(Model model, String filter) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (filter == null) {
@@ -69,21 +69,175 @@ public class ManagerController {
 		ArrayList<ReqAndDon> list = dao.requireBookList(map);
 		model.addAttribute("requireList", list);
 		model.addAttribute("filter", filter);
-		
+
 		return "WEB-INF/views/managerpage/ManagerBookRequire.jsp";
 	}
-	
+
 	@RequestMapping(value = "/ManagerBookRequireConfirm.nds", method = RequestMethod.GET)
-	public String managerBookRequireConfirm(Model model,ReqAndDon requireBook) {
+	public String managerBookRequireConfirm(Model model, ReqAndDon requireBook) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		System.out.println("req_don_id : " + requireBook.getReq_don_id());
-		ReqAndDon book = dao.getRequireBook(requireBook);
-		
+		ReqAndDon book = dao.getReqAndDonBook(requireBook);
+
+		// System.out.println("req_don_id : " + book.getReq_don_id());
+
 		model.addAttribute("book", book);
-		
+
 		return "WEB-INF/views/managerpage/ManagerBookRequireConfirm.jsp";
 	}
+
+	@RequestMapping(value = "/RequireConfirm.nds", method = RequestMethod.GET)
+	public String requireConfirm(ReqAndDon book) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		// System.out.println("req_don_id : " + book.getReq_don_id());
+		dao.requireConfirm(book);
+
+		return "redirect:ManagerBookRequire.nds";
+	}
+
+	@RequestMapping(value = "/AjaxBookRegister.nds", method = RequestMethod.GET)
+	public String ajaxBookRegister(Model model, ReqAndDon rBook) {
+
+		// System.out.println("id : " + rBook.getReq_don_id());
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		ReqAndDon book = dao.getReqAndDonBook(rBook);
+		//System.out.println("book : " + book.getTitle());
+
+		model.addAttribute("book", book);
+		return "WEB-INF/views/managerpage/AjaxBookRegister.jsp";
+	}
+
+	@RequestMapping(value = "/ManagerRequireRegisterBook.nds", method = RequestMethod.POST)
+	public String ManagerRequireRegisterBook(ReqAndDon book) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		// System.out.println("req_don_id : " + book.getReq_don_id());
+		// System.out.println("category_id : " +book.getCategory_id());
+
+		dao.requireRegisterBook(book);
+		// dao.insertBook(book);
+		return "redirect:ManagerBookRequire.nds";
+	}
+
+	@RequestMapping(value = "/ManagerRequireRejectBook.nds", method = RequestMethod.POST)
+	public String managerRequireRejectBook(ReqAndDon book) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		// System.out.println("req_don_id : " + book.getReq_don_id());
+		// System.out.println("manager_comment : " +book.getManager_comment());
+		dao.requireRejectBook(book);
+
+		return "redirect:ManagerBookRequire.nds";
+	}
+	
+	@RequestMapping(value = "/ManagerBookDonation.nds", method = RequestMethod.GET)
+	public String managerBookDonation(Model model, String filter) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (filter == null) {
+			filter = "0";
+		}
+		map.put("filter", filter);
+
+		ArrayList<ReqAndDon> list = dao.donationBookList(map);
+		model.addAttribute("donationList", list);
+		model.addAttribute("filter", filter);
+
+		return "WEB-INF/views/managerpage/ManagerBookDonation.jsp";
+	}
+	
+	@RequestMapping(value = "/ManagerBookDonationConfirm.nds", method = RequestMethod.GET)
+	public String managerBookDonationConfirm(Model model, ReqAndDon dBook) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		System.out.println("req_don_id : " + dBook.getReq_don_id());
+		ReqAndDon book = dao.getReqAndDonBook(dBook);
+
+		model.addAttribute("book", book);
+		return "WEB-INF/views/managerpage/ManagerBookDonationConfirm.jsp";
+	}
+	
+	@RequestMapping(value = "/ManagerDonationRegisterBook.nds", method = RequestMethod.POST)
+	public String managerDonationRegisterBook(ReqAndDon book) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		 System.out.println("req_don_id : " + book.getReq_don_id());
+		 System.out.println("category_id : " +book.getCategory_id());
+
+		dao.donationRegisterBook(book);
+		// dao.insertBook(book);
+		return "redirect:ManagerBookDonation.nds";
+	}
+
+	@RequestMapping(value = "/ManagerDonationRejectBook.nds", method = RequestMethod.POST)
+	public String managerDonationRejectBook(ReqAndDon book) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		// System.out.println("req_don_id : " + book.getReq_don_id());
+		// System.out.println("manager_comment : " +book.getManager_comment());
+		dao.donationRejectBook(book);
+
+		return "redirect:ManagerBookDonation.nds";
+	}
+	
+	
+	@RequestMapping(value = "/ManagerMember.nds", method = RequestMethod.GET)
+	public String managerMember(Model model) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		ArrayList<User> user = dao.memberList();
+		
+		model.addAttribute("userList", user);
+		model.addAttribute("size", user.size());
+		
+		return "WEB-INF/views/managerpage/ManagerMember.jsp";
+	}
+	
+	@RequestMapping(value = "/ManagerMemberInfo.nds", method = RequestMethod.GET)
+	public String managerMemberInfo(Model model, User user) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		User u = dao.getUser(user);
+		ArrayList<User> bList = dao.userBorrowList(user);
+		ArrayList<User> rList = dao.userRequireList(user);
+		ArrayList<User> dList = dao.userDonationList(user);
+		
+		model.addAttribute("user", u);
+		model.addAttribute("bList", bList);
+		model.addAttribute("bSize", bList.size());
+	//	model.addAttribute("rList", rList);
+	//	model.addAttribute("dList", dList);
+		return "WEB-INF/views/managerpage/ManagerMemberInfo.jsp";
+	}
+	
+	/*--화면 23 : 대여내역
+	select title, publisher, pubdate, borrowing_date, returned_date
+	from borrowings natural join books natural join informations
+	where user_id=1
+	order by borrowing_date desc;
+
+	--화면 23 : 신청내역. 
+	select name, publisher, pubdate, reqanddon.registered_date, current_state
+	from reqanddon join users using(user_id)
+	where user_id=1 and not (current_state='기증완료' or current_state='기증대기' or current_state='기증반려')
+	order by reqanddon.registered_date desc;
+
+	--화면 23 : 도서 기증 내역. 
+	select name, publisher, pubdate, reqanddon.registered_date, current_state
+	from reqanddon join users using(user_id)
+	where user_id=1 and (current_state='기증완료' or current_state='기증대기')
+	order by reqanddon.registered_date desc;*/
+	
 
 }

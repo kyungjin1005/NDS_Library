@@ -111,7 +111,6 @@ section {
 	margin-bottom: 40px;
 }
 
-
 .sub-table th {
 	font-weight: bold;
 	font-size: 16px;
@@ -133,10 +132,9 @@ section {
 	text-align: left;
 }
 
-#borrow-table td, #require-table td, #donation-table td{
+#borrow-table td, #require-table td, #donation-table td {
 	vertical-align: middle;
 }
-
 </style>
 <script>
 	$(document).ready(function() {
@@ -187,7 +185,7 @@ section {
 				<div class="row">
 					<div class="col-md-3">
 
-						<img src="pictures/profile.JPG" alt="" id="member-picture" />
+						<img src=${user.picture } alt="" id="member-picture" />
 					</div>
 					<div class="col-md-9">
 						<div class="panel panel-info">
@@ -199,23 +197,23 @@ section {
 									<tbody>
 										<tr>
 											<th>이름</th>
-											<td>홍길동</td>
+											<td>${user.name }</td>
 										</tr>
 										<tr>
 											<th>사번</th>
-											<td>1510010</td>
+											<td>${user.nds_number }</td>
 										</tr>
 										<tr>
 											<th>부서</th>
-											<td>홍길동</td>
+											<td>${user.department }</td>
 										</tr>
 										<tr>
 											<th>직위</th>
-											<td>사원</td>
+											<td>${user.position }</td>
 										</tr>
 										<tr>
 											<th>입사날짜</th>
-											<td>2016-02-03</td>
+											<td>${user.registered_date }</td>
 										</tr>
 									</tbody>
 								</table>
@@ -229,10 +227,11 @@ section {
 					<div class="sub-title">
 
 						<span class="glyphicon glyphicon-list-alt icon"></span> <span>대여내역</span><span
-							class="badge" style="margin-left: 3px">7</span>
+							class="badge" style="margin-left: 3px">${bSize}</span>
 					</div>
 					<hr class="sub-title-line" />
-					<table class="table table-bordered text-center sub-table" id="borrow-table">
+					<table class="table table-bordered text-center sub-table"
+						id="borrow-table">
 						<thead>
 							<tr>
 								<th>번호</th>
@@ -246,67 +245,32 @@ section {
 							</tr>
 						</thead>
 						<tbody>
+							<!-- <tr>
+								<td>1</td>
+								<td><img src="" alt="" /><span>이것이자바다</span></td>
+								<td>홍길동</td>
+								<td>ㅇㅇ출판사</td>
+								<td>2016-01-22</td>
+								<td>2016-02-05</td>
+								<td>2016-02-05</td>
+								<td>반납완료</td>
+							</tr> -->
 
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>2016-02-05</td>
-								<td>2016-02-05</td>
-								<td>반납완료</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>2016-02-05</td>
-								<td>2016-02-05</td>
-								<td>반납완료</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>2016-02-05</td>
-								<td>2016-02-05</td>
-								<td>반납완료</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>2016-02-05</td>
-								<td>2016-02-05</td>
-								<td>반납완료</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>2016-02-05</td>
-								<td>2016-02-05</td>
-								<td>반납완료</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>2016-02-05</td>
-								<td>2016-02-05</td>
-								<td>반납완료</td>
-							</tr>
+							<c:set var="count" value="1"></c:set>
+							<c:forEach var="book" items="${bList}">
+								<tr>
+									<td>${count }</td>
+									<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
+									<td>${book.author}</td>
+									<td>${book.publisher}</td>
+									<td>${empty book.borrowing_date?"-":book.borrowing_date}</td>
+									<td>${empty book.scheduled_date?"-":book.scheduled_date}</td>
+									<td>${empty book.returned_date?"-":book.returned_date}</td>
+									<td>반납완료</td>
+								</tr>
+
+							<c:set var="count" value="${count+1}"></c:set>
+							</c:forEach>
 						</tbody>
 					</table>
 

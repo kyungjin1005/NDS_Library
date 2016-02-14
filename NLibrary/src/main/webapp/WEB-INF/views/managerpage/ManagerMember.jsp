@@ -65,6 +65,7 @@
 
 #member-table {
 	margin: 20px auto;
+	padding: 0px 20px;
 }
 
 #member-table tbody tr:HOVER {
@@ -75,7 +76,7 @@
 	height: 30px;
 	background-color: #ddd;
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 13px;
 }
 
 #member-table th, #member-table td {
@@ -85,7 +86,7 @@
 }
 
 #member-table td {
-	font-size: 15px;
+	font-size: 13px;
 	height: 50px;
 }
 
@@ -93,11 +94,39 @@
 	text-align: right;
 	margin: 15px 0px;
 }
+
+
+#member-table td:nth-child(1) { // 번호
+	width: 20px;
+}
+#member-table td:nth-child(2) { // 제목
+	width: 20px;
+}
+#member-table th:nth-child(3) { // 저자
+
+}
+#member-table th:nth-child(5) { // 출판사
+}
+#member-table th:nth-child(6) { // 기증인
+}
+#member-table th:nth-child(7) { // 기증일
+}
+#member-table th:nth-child(8) { // 기증사애
+}
 </style>
 <script>
 	$(document).ready(function() {
-
+		$(".btn-detail").on("click", function() {
+			$(location).attr(
+					"href",
+					"ManagerMemberInfo.nds?user_id="
+							+ $(this).val());
+		});
 	});
+	
+	function goMemberInfo(member_id){
+		alert(member_id);
+	}
 </script>
 </head>
 <body>
@@ -141,7 +170,7 @@
 				<hr class="title-line" />
 				<form class="form-inline" role="form" method="post" action="">
 					<div id="member-header">
-						Count <span class="badge">10</span>
+						Count <span class="badge">${size}</span>
 						<button class="btn btn-sm btn-default">일괄선택</button>
 					</div>
 					<table class="table table-hover" id="member-table">
@@ -149,66 +178,47 @@
 							<tr>
 								<th>선택</th>
 								<th>번호</th>
-								<th>ID</th>
+								<th>사원번호</th>
 								<th>성명</th>
+								<th>소속회사</th>
 								<th>부서</th>
 								<th>직위</th>
 								<th>등록날짜</th>
-
+								<th>상세보기</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><input type="checkbox"></td>
+							<!-- <tr>
+								<td><input type="checkbox" class="form-control"></td>
 								<td>1</td>
 								<td>1510010</td>
 								<td>김혜원</td>
 								<td>개발본부</td>
 								<td>사원</td>
 								<td>2016-02-02</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>1</td>
-								<td>1510010</td>
-								<td>김혜원</td>
-								<td>개발본부</td>
-								<td>사원</td>
-								<td>2016-02-02</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>1</td>
-								<td>1510010</td>
-								<td>김혜원</td>
-								<td>개발본부</td>
-								<td>사원</td>
-								<td>2016-02-02</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>1</td>
-								<td>1510010</td>
-								<td>김혜원</td>
-								<td>개발본부</td>
-								<td>사원</td>
-								<td>2016-02-02</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>1</td>
-								<td>1510010</td>
-								<td>김혜원</td>
-								<td>개발본부</td>
-								<td>사원</td>
-								<td>2016-02-02</td>
-							</tr>
+							</tr> -->
+							<c:set var="count" value="1"></c:set>
+							<c:forEach var="user" items="${userList}">
+								<tr>
+									<td><input type="checkbox" class="form-control"></td>
+									<td>${count}</td>
+									<td>${user.nds_number}</td>
+									<td>${user.name}</td>
+									<td>NDS</td>
+									<td>${user.department}</td>
+									<td>${user.position}</td>
+									<td>${user.registered_date}</td>
+									<td><button type="button" value="${user.user_id}" class="btn btn-sm btn-default btn-detail">상세보기</button></td>
+								</tr>
+								<c:set var="count" value="${count+1}"></c:set>
+							</c:forEach>
+
 						</tbody>
 					</table>
 
 					<div id="member-footer">
 						<hr />
-						<button class="btn btn-md btn-warning btn-msg">메세지 보내기</button>
+						<button type="submit" class="btn btn-md btn-warning btn-msg">메세지 보내기</button>
 					</div>
 				</form>
 			</div>

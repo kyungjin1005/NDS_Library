@@ -53,4 +53,47 @@
 		#{pubdate},
 		#{explanation})
 	</insert>
+	
+	
+	<select id="donationBookList" parameterType="java.util.Map"
+		resultType="com.nds.library.mypage.ReqAndDon">
+		select REQ_DON_ID, image, title, author, publisher, TO_CHAR(registered_date,
+		'yyyy-mm-dd') AS registered_date,
+		current_state, TO_CHAR(finished_date,
+		'yyyy-mm-dd') AS finished_date, manager_comment
+		from reqanddon
+
+		<if test="filter == 0">  <!-- 전체 -->
+			where (current_state='기증대기'
+			or current_state='기증완료' or  current_state='기증반려')
+		</if>
+		<if test="filter == 1"> <!-- 기증대기 -->
+			where current_state='기증대기'
+		</if>
+		<if test="filter == 2">  <!-- 기증완료 -->
+			where current_state='기증완료'
+		</if>
+		<if test="filter == 3">  <!-- 기증반려 -->
+			where current_state='기증반려'
+		</if>
+		and user_id=4 order by registered_date desc
+	</select>
+	
+	<insert id="donationBookAdd">
+
+		INSERT INTO ReqAndDon(req_don_id,
+		manager_id,
+		user_id, current_state, registered_date, user_comment,
+		manager_comment, finished_date
+		, isbn, title, author, publisher, image,
+		pubdate, explanation)
+		VALUES((SELECT NVL(MAX(req_don_id)+1, 1) FROM
+		ReqAndDon), 1, 4,
+		'기증대기', sysdate, #{user_comment}, null, null,
+		#{isbn},
+		#{title}, #{author},
+		#{publisher},#{image},
+		#{pubdate},
+		#{explanation})
+	</insert>
 </mapper>   

@@ -60,11 +60,11 @@
 
 #donation-table th {
 	font-weight: bold;
-	font-size: 16px;
+	font-size: 15px;
 }
 
 #donation-table td {
-	font-size: 15px;
+	font-size: 13px;
 	vertical-align: middle;
 }
 
@@ -82,12 +82,51 @@
 #donation-table td:nth-child(2) {
 	text-align: left;
 }
+
+#donation-table td:nth-child(1) { // 번호
+	width: 5%;
+}
+#donation-table td:nth-child(2) { // 제목
+	width: 30%;
+}
+#donation-table td:nth-child(3) { // 저자
+	width: 10%;
+}
+#donation-table td:nth-child(5) { // 출판사
+	width: 20%;
+}
+#donation-table td:nth-child(6) { // 기증인
+	width: 5%;
+}
+#donation-table td:nth-child(7) { // 기증일
+	width: 10%;
+}
+#donation-table td:nth-child(8) { // 기증사애
+	width: 10%;
+}
+#donation-table td:nth-child(9) { // 도서등록
+	width: 10%;
+}
 </style>
 <script>
 	$(document).ready(function() {
+		
+		$("#donation-filter option:eq(${filter})").attr("selected",
+		"selected");
 
-		$(".btn-register").on("click", function() {
-			$("#modal-dam-los").modal();
+		$("#donation-filter").change(
+			function() {
+				$(location).attr(
+						"href",
+						"ManagerBookDonation.nds?filter="
+								+ $("#donation-filter").val());
+		});
+
+		$(".btn-register").on("click",
+				function() {
+					$(location).attr("href",
+							"ManagerBookDonationConfirm.nds?req_don_id=" + $(this).val());
+
 		});
 	});
 </script>
@@ -118,8 +157,8 @@
 							<ul class="list-group"
 								style="margin: 0px; padding: 0px; text-align: center;">
 								<li class="list-group-item"><a href="">- 모든도서</a></li>
-								<li class="list-group-item"><a href="">- 신청도서</a></li>
-								<li class="list-group-item"><a href="">- 기증도서</a></li>
+								<li class="list-group-item"><a href="ManagerBookRequire.nds">- 신청도서</a></li>
+								<li class="list-group-item"><a href="ManagerBookDonation.nds">- 기증도서</a></li>
 							</ul>
 						</div>
 					</li>
@@ -157,11 +196,12 @@
 							<th>기증인</th>
 							<th>기증일</th>
 							<th>기증상태</th>
+							<th>도서등록</th>
 						</tr>
 					</thead>
 					<tbody>
 
-						<tr>
+						<!-- <tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
 							<td>홍길동</td>
@@ -169,43 +209,30 @@
 							<td>김아무개</td>
 							<td>2016-02-02</td>
 							<td>기증완료</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>김아무개</td>
-							<td>2016-02-02</td>
-							<td>기증완료</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>김아무개</td>
-							<td>2016-02-02</td>
-							<td>기증완료</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>김아무개</td>
-							<td>2016-02-02</td>
-							<td>기증완료</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>김아무개</td>
-							<td>2016-02-02</td>
-							<td>기증완료</td>
-						</tr>
+						</tr> -->
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${donationList}">
+							<tr class="item">
+								<td>${count}</td>
+								<td><img src="${book.image}" alt="${book.req_don_id}" /><span>${book.title }</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${book.name}</td>
+								<td>${book.registered_date}</td>
+								<td>${empty book.current_state?"-":book.current_state}</td>
+								<td>
+								<c:choose>
+										<c:when test="${book.current_state=='기증대기'}">
+										<button class="btn btn-md btn-danger btn-register" value="${book.req_don_id}">승인 및 등록</button>
+										</c:when>
+										<c:otherwise>
+										<button class="btn btn-md btn-default" value="${book.req_don_id}" disabled="disabled">처리완료</button>
+										</c:otherwise>
+								</c:choose>
+								</td>
+							</tr>
+							<c:set var="count" value="${count+1}"></c:set>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
