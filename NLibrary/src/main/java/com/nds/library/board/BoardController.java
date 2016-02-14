@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
+
 @Controller
 public class BoardController {
 
@@ -20,15 +22,34 @@ public class BoardController {
 	   private SqlSession sqlSession;
 	
     @RequestMapping(value = "/BoardNoticeList.nds", method = RequestMethod.GET)
-    public String boardList(Model model) {
+    public String boardList(Model model, HttpServletRequest request) {
 
-        IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
+    	
+    	int pageNumTemp = 1;
+ 		// 한 페이지에 10개의 글이 보임
+ 		int listCount = 10;
+ 		// 뷰에서 글번호를 받아옴
+ 		String pageNum = request.getParameter("pageNum");
+ 		System.out.println("pegeNum : " + pageNum);
+ 		if (pageNum != null) {
+ 			pageNumTemp = Integer.parseInt(pageNum);
+ 		}
+ 		// 시작하는 글번호를 계산함
+ 		int startNumber = listCount * (pageNumTemp-1)+1;
+   	
+    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
         Map<String, Object> map = new HashMap<String, Object>();
-		map.put("type", "notice");
+       
+        map.put("type", "notice");
+        map.put("startNumber", startNumber);
         
         ArrayList<Board> list = dao.boardList(map);
         model.addAttribute("list", list);
+        model.addAttribute("totalCount", dao.Boardcount(map));
+        model.addAttribute("indexCount", dao.Boardcount(map)-(pageNumTemp-1)*10);
+        model.addAttribute("pageNum", pageNum);
         
+ 
        return "WEB-INF/views/board/BoardNoticeList.jsp";
     }   
     
@@ -59,21 +80,38 @@ public class BoardController {
     }   
     
     @RequestMapping(value = "/BoardStudyList.nds", method = RequestMethod.GET)
-    public String boardStudyList(Model model) {
+    public String boardStudyList(Model model, HttpServletRequest request) {
 
-        IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
-        Map<String, Object> map = new HashMap<String, Object>();
-		map.put("type", "notice");
-        
-        ArrayList<Board> list = dao.boardList(map);
-        model.addAttribute("list", list);
+       	int pageNumTemp = 1;
+     		// 한 페이지에 10개의 글이 보임
+     		int listCount = 10;
+     		// 뷰에서 글번호를 받아옴
+     		String pageNum = request.getParameter("pageNum");
+     		System.out.println("pegeNum : " + pageNum);
+     		if (pageNum != null) {
+     			pageNumTemp = Integer.parseInt(pageNum);
+     		}
+     		// 시작하는 글번호를 계산함
+     		int startNumber = listCount * (pageNumTemp-1)+1;
+       	
+        	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
+            Map<String, Object> map = new HashMap<String, Object>();
+           
+            map.put("type", "study");
+            map.put("startNumber", startNumber);
+            
+            ArrayList<Board> list = dao.boardList(map);
+            model.addAttribute("list", list);
+            model.addAttribute("totalCount", dao.Boardcount(map));
+            model.addAttribute("indexCount", dao.Boardcount(map)-(pageNumTemp-1)*10);
+            model.addAttribute("pageNum", pageNum);
         
        return "WEB-INF/views/board/BoardStudyList.jsp";
     }   
     
-    /* 공지사항 상세보기 */
-    @RequestMapping(value = "/BoardNoticeDetail.nds", method = RequestMethod.GET)
-    public String boardNoticeDetail(Model model, int board_id) {
+    /* 게시글 상세보기 */
+    @RequestMapping(value = "/BoardDetail.nds", method = RequestMethod.GET)
+    public String boardDetail(Model model, int board_id, String type) {
     	
     	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -88,26 +126,23 @@ public class BoardController {
         // 댓글 리스트 받아오기 
         model.addAttribute("replylist", dao.replyList(map));
         
-       return "WEB-INF/views/board/BoardNoticeDetail.jsp";
+       if(type.equals("notice"))
+    	   return "WEB-INF/views/board/BoardNoticeDetail.jsp";
+       else
+    	   return "WEB-INF/views/board/BoardStudyDetail.jsp";
     }   
     
     /* 댓글 작성 */
     @RequestMapping(value = "/InsertReply.nds", method = RequestMethod.POST)
-    public String insertReply(Model model, Reply reply, HttpServletRequest request, String type, String board_id) {
+    public String insertReply(Model model, Reply reply, String type, String board_id) {
     
     	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
         dao.addReply(reply);
+        
        if(type.equals("notice"))
-       {
-    	   System.out.println("공지사항 댓글등록!");
-    	   return "redirect:BoardNoticeDetail.nds?board_id="+board_id;
-       }
-       else if(type.equals("study"))
-       {
-    	   return "redirect:BoardStudyDetail.nds?board_id="+board_id;
-       }
-       System.out.println("타입 받기 실패!");
-       return "redirect:BoardNoticeDetail.nds?board_id="+board_id;
+    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=notice";
+       else       
+    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=study";
     }
     
     /* 댓글 삭제 */
@@ -120,16 +155,48 @@ public class BoardController {
         dao.deleteReply(map);
         
        if(type.equals("notice"))
-       {
-    	   System.out.println("공지사항 댓글등록!");
-    	   return "redirect:BoardNoticeDetail.nds?board_id="+board_id;
-       }
-       else if(type.equals("study"))
-       {
-    	   return "redirect:BoardStudyDetail.nds?board_id="+board_id;
-       }
-       System.out.println("타입 받기 실패!");
-       return "redirect:BoardNoticeDetail.nds?board_id="+board_id;
+    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=notice";
+       
+       else 
+    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=study";
+    }
+    
+    /* 댓글 수정 */
+    @RequestMapping(value = "/UpdateReply.nds", method = RequestMethod.GET)
+    public String updateReply(Model model, String board_id, int reply_id, String type) {
+    	
+    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("reply_id", reply_id);
+        dao.deleteReply(map);
+        
+       if(type.equals("notice"))
+    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=notice";
+       
+       else 
+    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=study";
+    }
+    
+    /* 게시판 글쓰기 jsp로 이동*/
+    @RequestMapping(value = "/AddBoard.nds", method = RequestMethod.GET)
+    public String addBoard(String type) {	
+       if(type.equals("notice"))
+    	   return "WEB-INF/views/board/BoardNoticeWrite.jsp";
+       else
+    	   return "WEB-INF/views/board/BoardStudyWrite.jsp";
+    }
+    
+    /* 게시판 글쓰기*/
+    @RequestMapping(value = "/WriteBoard.nds", method = RequestMethod.GET)
+    public String writeBoard(Board board) {	
+      
+    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
+    	dao.addBoard(board);  
+    	
+    	if(board.getCategory().equals("스터디"))
+    		return "redirect:BoardStudyList.nds";
+    	else
+    		return "redirect:BoardNoticeList.nds";
     }
 
 }
