@@ -21,5 +21,9 @@ public interface IBoardDAO {
 	public void addReply(Reply reply);
 	// 댓글 삭제
 	public void deleteReply(Map<String, Object> map);
+	// 게시판 글쓰기
+	public void addBoard(Board board);
+	// 게시글 리스트 갯수 받아오기
+	public int Boardcount(Map<String, Object> map);
 	
 }

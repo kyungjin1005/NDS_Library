@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>스터디모집</title>
+<title>공지사항</title>
 
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -89,10 +89,15 @@
 
 			</div>
 			<div class="col-md-10">
-				<h1 id="mTitle">스터디모집</h1>
+				<h1 id="mTitle">공지사항</h1>
 				<hr class="title-line" />
 			</div>
 
+
+			<form action="WriteBoard.nds" method="get">			
+					<input type="hidden" name="category" value="공지" />
+					<input type="hidden" name="user_id" value="5" />
+								
 			<table>
 				<tr>
 					<td>
@@ -100,11 +105,6 @@
 						<table>
 							<tr>
 								<td>&nbsp;</td>
-					
-				<form action="WriteBoard.nds" method="get">			
-					
-								<input type="hidden" name="category" value="스터디" />
-								<input type="hidden" name="user_id" value="5" />
 								
 								<td align="center">제 목&nbsp;&nbsp;</td>
 								<td><input class="form-control" id="focusedInput"
@@ -126,10 +126,20 @@
 							</tr> -->
 							<tr height="5">
 							</tr>
-	
+							<!-- 
 							<tr>
 								<td>&nbsp;</td>
-								<td align="center" name="content">내 용</td>
+								<td></td>
+								<td></td>
+								<td>&nbsp;</td>
+
+							</tr>
+							<tr height="1">
+							</tr> -->
+
+							<tr>
+								<td>&nbsp;</td>
+								<td align="center">내 용</td>
 								<td><textarea class="form-control" id="focusedInput"
 										cols="80" rows="13" name="content"></textarea></td>
 								<td>&nbsp;</td>
@@ -140,9 +150,9 @@
 
 							<tr align="center">
 								<td>&nbsp;</td>
-								<td colspan="2"><input type="submit" value="등록"> 
-					</form>
-								<from><input type=button value="취소"></from>
+								<td colspan="2"><input type="submit" value="등록"> </form>
+							
+								<input type=button value="취소"></td>
 								<td>&nbsp;</td>
 							</tr>
 						</table>

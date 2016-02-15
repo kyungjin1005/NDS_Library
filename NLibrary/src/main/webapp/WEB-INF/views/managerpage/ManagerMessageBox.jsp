@@ -112,6 +112,10 @@
 		$("#msg-filter").change(function() {
 			$(location).attr("href", "MessageList.nds?filter="+$("#msg-filter").val());
 		});
+		
+		$("table tr").click(function() {
+	        window.document.location = $(this).data("url");
+	    });
 	});
 </script>
 </head>
@@ -174,19 +178,17 @@
 							<th>받는사람</th>
 							<th>보낸날짜</th>
 							<th>읽은날짜</th>
-							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="msg"  items="${messageList}">
-							<tr>
+							<tr data-url="ManagerMemberMsg.nds?msg_id=${msg.message_id}">
 								<td>${msg.message_id}</td>
 								<td>${msg.title}</td>
 								<td>${msg.content}</td>
 								<td>관리자?</td>
 								<td>${msg.sended_date}</td>
 								<td>${msg.checked_date}</td>
-								<td><a href ="ManagerMemberMsg.nds?msg_id=${msg.message_id}">자세히</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>

@@ -133,7 +133,7 @@
 									<td>${reply.content}</td>
 									<td>${reply.name}</td>
 									<td>${reply.replyed_date}  
-										<a href="UpdateReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice">
+										<a id="modify" href="UpdateReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice">
 								          <span class="glyphicon glyphicon-pencil"></span>
 								        </a>
 								        <a href="DeleteReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice"> 
