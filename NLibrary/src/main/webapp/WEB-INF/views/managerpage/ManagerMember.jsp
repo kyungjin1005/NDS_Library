@@ -112,6 +112,7 @@
 					<div id="member-header">
 						Count <span class="badge">${size}</span>
 						<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-clear">일괄선택</button>
 					</div>
 					<table class="table table-hover" id="member-table">
 						<thead>
@@ -185,8 +186,11 @@
 						});
 
 				$("#btn-all").on("click", function() {
-					$(".cb").attr("checked", "checked");
+					$(".cb").prop('checked', true); 
 
+				});
+				$("#btn-clear").on("click", function() {
+					$(".cb").removeProp("checked"); 
 				});
 			});
 

@@ -113,7 +113,6 @@
 </body>
 <script>
 	$(document).ready(function() {
-
 		$(".btn-register").on("click", function() {
 			$("#modal-dam-los").modal();
 		});

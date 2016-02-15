@@ -69,6 +69,7 @@
 				<div class="row" style="margin: 20px 0px;">
 				<form class="form-inline" role="form" method="post" action="ManagerDonationRegisterBook.nds">
 				<input type="hidden" name="req_don_id" value="${book.req_don_id}" />
+				<input type="hidden" name="isbn" value="${book.isbn}" />
 					<div class="col-md-8">
 						<table class="table text-center" id="donation-table">
 							<tbody>

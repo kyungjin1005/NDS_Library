@@ -16,8 +16,17 @@ public class ReqAndDon {
 	private String name;
 	private String req_don_id;
 	private String category_id;
+	private String information_id;
 	
 	
+
+	public String getInformation_id() {
+		return information_id;
+	}
+
+	public void setInformation_id(String information_id) {
+		this.information_id = information_id;
+	}
 
 	public String getCategory_id() {
 		return category_id;
