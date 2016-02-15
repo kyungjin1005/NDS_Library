@@ -15,10 +15,7 @@
 					</select>
 				</div>
 				<div class="tsrch">
-
-
 					<fieldset>
-
 						<legend>통합검색</legend>
 						<input name="searchWord" id="searchWord" type="text"
 							class="tsrch_input"
@@ -52,9 +49,7 @@
 								class="el">마이페이지</strong></span></a></li>
 					<li class="lnb9"><a href="#" class="tmOff" title="이용안내"><span><strong
 								class="el">이용안내</strong></span></a></li>
-
-
-					<li class="lnb13"><a href="#" class="tmOff" title="커뮤니티"><span><strong
+					<li class="lnb13"><a href="BoardNoticeList.nds" class="tmOff" title="커뮤니티"><span><strong
 								class="el">커뮤니티</strong></span></a></li>
 				</ul>
 			</div>

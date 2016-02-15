@@ -57,6 +57,61 @@
 		order by reqanddon.registered_date desc
 	</select>
 
+
+	<select id="bList" parameterType="java.util.Map"
+		resultType="com.nds.library.mypage.ReqAndDon">
+
+		select b.* from
+		(select rownum as rnum, a.* from
+		(select req_don_id, image, title, author, publisher, name,
+		TO_CHAR(reqanddon.REGISTERED_DATE,
+		'yyyy-mm-dd') AS registered_date,
+		current_state, TO_CHAR(finished_date,
+		'yyyy-mm-dd') AS finished_date
+		from users join reqanddon using(user_id)
+		<if test="filter == 0">  <!-- 전체 -->
+			where (current_state='신청대기'
+			or current_state='신청완료' or
+			current_state='구매완료' or current_state='신청반려')
+		</if>
+		<if test="filter == 1">  <!-- 구매완료 -->
+			where current_state='구매완료'
+		</if>
+		<if test="filter == 2">  <!-- 신청완료 -->
+			where current_state='신청완료'
+		</if>
+		<if test="filter == 3"> <!-- 신청대기 -->
+			where current_state='신청대기'
+		</if>
+		<if test="filter == 4">  <!-- 신청반려 -->
+			where current_state='신청반려'
+		</if>
+		order by reqanddon.registered_date desc) a )b <![CDATA[
+            where rnum >= #{start} and rnum <= #{end}
+            ]]>
+	</select>
+	
+	<select id="totalCount" resultType="Integer" parameterType="String">
+		select count(*) from reqanddon
+		<if test="filter == 0">  <!-- 전체 -->
+			where (current_state='신청대기'
+			or current_state='신청완료' or
+			current_state='구매완료' or current_state='신청반려')
+		</if>
+		<if test="filter == 1">  <!-- 구매완료 -->
+			where current_state='구매완료'
+		</if>
+		<if test="filter == 2">  <!-- 신청완료 -->
+			where current_state='신청완료'
+		</if>
+		<if test="filter == 3"> <!-- 신청대기 -->
+			where current_state='신청대기'
+		</if>
+		<if test="filter == 4">  <!-- 신청반려 -->
+			where current_state='신청반려'
+		</if>
+	</select>
+
 	<select id="getReqAndDonBook" resultType="com.nds.library.mypage.ReqAndDon">
 		SELECT req_don_id,
 		name,
@@ -149,7 +204,8 @@
 	<select id="memberList" resultType="com.nds.library.manager.User">
 		SELECT user_id, nds_number,
 		name, position, department, picture, authority,
-		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date from users order by user_id
+		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date from users
+		order by user_id
 	</select>
 
 	<select id="getUser" resultType="com.nds.library.manager.User">
@@ -203,10 +259,13 @@
 		(current_state='기증완료' or current_state='기증대기' or current_state='기증반려')
 		order by reqanddon.registered_date desc
 	</select>
-	
+
 	<insert id="messageSend">
-		INSERT INTO messages (message_id, user_id, title, content, sended_date, is_checked)
-		VALUES ((SELECT NVL(MAX(message_id),0)+1 FROM messages), #{user_id}, #{title}, #{content}, SYSDATE, 0);
+		INSERT INTO messages (message_id, user_id, title,
+		content, sended_date, is_checked)
+		VALUES ((SELECT
+		NVL(MAX(message_id),0)+1 FROM messages), #{user_id}, #{title},
+		#{content}, SYSDATE, 0);
 	</insert>
 
 	<select id="getInformation" resultType="com.nds.library.mypage.ReqAndDon">
@@ -221,27 +280,33 @@
 		BOOKS),#{information_id},'대여가능',sysdate,
 
 		<if test="category_id == 1">
-			(select 'A_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1) from books where location
+			(select 'A_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'A%')
 		</if>
 		<if test="category_id == 2">
-			(select 'B_' ||  (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'B_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'B%')
 		</if>
 		<if test="category_id == 3">
-			(select 'C_' ||  (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'C_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'C%')
 		</if>
 		<if test="category_id == 4">
-			(select 'D_' ||  (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'D_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'D%')
 		</if>
 		<if test="category_id == 5">
-			(select 'E_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'E_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'E%')
 		</if>
 		<if test="category_id == 6">
-			(select 'F_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'F_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'F%')
 		</if>
 		)

@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: Dalcong
 Build-Jdk: 1.8.0_65
+=======
+Built-By: ￪ﾹﾀ￭ﾘﾜ￬ﾛﾐ
+Build-Jdk: 1.8.0_71
+>>>>>>> b9603c03f5f8d57b9bb2e54761bf53ce36d2868e
 Created-By: Maven Integration for Eclipse
 
