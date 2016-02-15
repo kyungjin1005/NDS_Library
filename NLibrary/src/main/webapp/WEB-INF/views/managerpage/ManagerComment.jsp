@@ -74,16 +74,10 @@
 			<div class="col-md-10">
 				<h1 id="mTitle">게시판 관리</h1>
 				<hr class="title-line" />
-
-
-
 				<!-- <div id="member-header">
 					Count <span class="badge">10</span>
 					<button class="btn btn-sm btn-default">일괄선택</button>
 				</div> -->
-
-
-
 				<div style="margin-bottom: 1%;">
 					<div>
 						<ul class="nav nav-pills nav-justified ">
