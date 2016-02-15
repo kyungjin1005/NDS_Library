@@ -3,7 +3,7 @@ package com.nds.library.board;
 public class Board {
 	
 	
-	private int board_id, user_id, read_count, blind;
+	private int board_id, user_id, read_count, blind; 
 	private String category, title, content, boarded_date, modified_date, name;
 	
 	
@@ -68,6 +68,6 @@ public class Board {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	
 }

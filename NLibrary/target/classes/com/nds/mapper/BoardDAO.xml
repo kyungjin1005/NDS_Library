@@ -5,17 +5,43 @@
 <mapper namespace="com.nds.library.board.IBoardDAO">
 
    <select id="boardList" parameterType="java.util.HashMap" resultType="com.nds.library.board.Board">
-     SELECT * 
+ <!--     SELECT * 
 	 FROM boards join users using(user_id)
 	 
       <if test="type == 'notice'">
-			WHERE category = '공지'
+      		<![CDATA[
+			WHERE category = '공지' and rownum>=#{startNumber} and rownum<#{startNumber}+10
 			order by board_id desc
+			]]>
 	  </if>
 	   <if test="type == 'study'">
-			WHERE category = '스터디'
-			BoardNoticeList.nds
+	   		<![CDATA[
+			WHERE category = '스터디' and rownum>=#{startNumber} and rownum<#{startNumber}+10
+			order by board_id desc
+			]]>
+	  </if> -->
+	  
+	   select * 
+	   from
+		 (
+		 select rownum rn, aa.* 
+		 from
+		 (select * from boards join users using(user_id)
+	   <if test="type == 'notice'">
+      		<![CDATA[
+			WHERE category = '공지' 
+			order by board_id desc)aa)
+			where rn between #{startNumber} and #{startNumber}+9
+			]]>
 	  </if>
+	  <if test="type == 'study'">
+      		<![CDATA[
+			WHERE category = '스터디' 
+			order by board_id desc)aa)
+			where rn between #{startNumber} and #{startNumber}+9
+			]]>
+	  </if>
+	
    </select>
    
    <select id="reqaAndDonList" parameterType="java.util.HashMap" resultType="com.nds.library.board.ReqandDon">
@@ -65,5 +91,22 @@
    <delete id="deleteReply" parameterType="java.util.HashMap">
     Delete from replys where reply_id=#{reply_id} 
    </delete>
+   
+   <insert id="addBoard">
+	  INSERT INTO boards (board_id, user_id, category, title, content) 
+	  VALUES ((SELECT NVL(MAX(board_id)+1, 1) FROM boards), #{user_id} , #{category} , #{title} , #{content} )
+   </insert>
 
+	<select id="Boardcount" parameterType="java.util.HashMap" resultType="Integer">
+     SELECT count(*)
+	 FROM boards
+	  <if test="type == 'notice'">
+			WHERE category = '공지'
+			order by board_id desc
+	  </if>
+	   <if test="type == 'study'">
+			WHERE category = '스터디'
+			order by board_id desc
+	  </if>
+   </select>
 </mapper>   
