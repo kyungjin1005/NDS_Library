@@ -10,13 +10,6 @@
 
 <title>기증도서</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 
 <style type="text/css">
 #list-title {
@@ -54,13 +47,24 @@
 	margin-bottom: 40px;
 }
 </style>
-<script>
-	$(document).ready(function() {
 
-	});
-</script>
 </head>
 <body>
+
+	<c:set var="totalCount" value="${totalCount}" />
+	<c:set var="indexCount" value="${indexCount}" />
+	<%
+		int pageNumTemp = 1;
+		int listCount = 10;
+		int pagePerBlock = 10;
+		int totalCount = (Integer) pageContext.getAttribute("totalCount");
+		String pageNum = request.getParameter("pageNum");
+		if (pageNum != null) {
+			pageNumTemp = Integer.parseInt(pageNum);
+		}
+		int index = (Integer) pageContext.getAttribute("indexCount");
+	%>
+
 
 	<div class="container">
 
@@ -70,18 +74,25 @@
 				<div id="list-title">
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="BoardNoticeList.nds">공지사항</a></li>
-					<li class="list-group-item"><a href="BoardRequireList.nds">도서신청</a></li>
-					<li class="list-group-item"><a href="BoardDonationList.nds">기증도서</a></li>
-					<li class="list-group-item"><a href="BoardStudyList.nds">스터디모집</a></li>
-				</ul>
-
+				<%@include file="/include/BoardSide.jsp"%>
 			</div>
 			<div class="col-md-10">
 				<h1 id="mTitle">기증도서</h1>
+				<div id="filter">
+					<form class="form-inline" role="form" method="get"
+						style="display: inline-block; float: right; margin-bottom: 15px">
+						<select class="form-control filter" id="borrow-filter"
+							name="borrow-filter" onchange="location.href=this.value;">
+							<option value="BoardDonationList.nds" >전체</option>
+							<option value="ReqDonFilterList.nds?type=donation&filter=5">기증대기</option>
+							<option value="ReqDonFilterList.nds?type=donation&filter=6">기증완료</option>
+							<option value="ReqDonFilterList.nds?type=donation&filter=7">기증반려</option>
+						</select>
+
+					</form>
+				</div>
 				<hr class="title-line" />
-				<table class="table table-condensed">
+				<table class="table table-condensed" id="board">
 					<thead>
 						<tr>
 							<th>번호</th>
@@ -93,25 +104,133 @@
 					</thead>
 					<tbody>
 						<c:forEach var="req" items="${list}">
-								<tr>
-									<td>${req.req_don_id}</td>
-									<td>${req.title}</td>
-									<td>${req.current_state}</td>
-									<td>${req.name}</td>
-									<td>${req.registered_date}</td>
-								</tr>
+							<tr
+								href="ReqAndDonDetail.nds?req_don_id=${req.req_don_id}&type=donation"
+								style="cursor: pointer;">
+								<td><%=index--%></td>
+								<td>${req.title}</td>
+								<td>${req.current_state}</td>
+								<td>${req.name}</td>
+								<td>${req.registered_date}</td>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 
 			</div>
 
+			<!-- 페이징 시작 -->
+			<div>
+				<%
+					if (totalCount > 0) {
+						int totalNumOfPage = (totalCount % listCount == 0)
+								? totalCount / listCount
+								: totalCount / listCount + 1;
 
-		</div>
+						int totalNumOfBlock = (totalNumOfPage % pagePerBlock == 0)
+								? totalNumOfPage / pagePerBlock
+								: totalNumOfPage / pagePerBlock + 1;
 
-		<footer>
-			<%@include file="/include/footer.jsp"%>
-		</footer>
-	</div>
+						int currentBlock = (pageNumTemp % pagePerBlock == 0)
+								? pageNumTemp / pagePerBlock
+								: pageNumTemp / pagePerBlock + 1;
+
+						int startPage = (currentBlock - 1) * pagePerBlock + 1;
+						int endPage = startPage + pagePerBlock - 1;
+
+						if (endPage > totalNumOfPage)
+							endPage = totalNumOfPage;
+						boolean isNext = false;
+						boolean isPrev = false;
+						if (currentBlock < totalNumOfBlock)
+							isNext = true;
+						if (currentBlock > 1)
+							isPrev = true;
+						if (totalNumOfBlock == 1) {
+							isNext = false;
+							isPrev = false;
+						}
+						StringBuffer sb = new StringBuffer();
+				%>
+				<br />
+				<br />
+				<br />
+				<br />
+				<div align="center">
+					<ul class="pagination pagination-style-2">
+						<%
+							if (pageNumTemp > 1) {
+						%>
+						<li><a href="BoardDonationList.nds?pageNum=1">«</a></li>
+						<%
+							}
+						%>
+						<%
+							if (isPrev) {
+									int goPrevPage = startPage - pagePerBlock;
+						%>
+						<li><a href="BoardDonationList.nds?pageNum="<%=goPrevPage%>">«</a></li>
+						<%
+							} else {
+
+								}
+								for (int i = startPage; i <= endPage; i++) {
+									if (i == pageNumTemp) {
+						%>
+						<li class="active"><a href="#"><%=i%></a></li>
+						<%
+							} else {
+						%>
+						<li><a href="BoardDonationList.nds?pageNum=<%=i%>"><%=i%></a></li>
+						<%
+							}
+								}
+								if (isNext) {
+									int goNextPage = startPage + pagePerBlock;
+						%>
+						<li><a href="BoardDonationList.nds?ageNum=<%=goNextPage%>">»</a></li>
+						<%
+							} else {
+
+								}
+								if (totalNumOfPage > pageNumTemp) {
+						%>
+						<li><a
+							href="BoardDonationList.nds?pageNum=<%=totalNumOfPage%>">»</a></li>
+						<%
+							}
+							}
+						%>
+					
+				</div>
+
+				<br />
+				<br />
+				<br />
+
+				<div style="text-align: right">
+					<form action="#" method="get">
+						<input type="hidden" name="type" value="study" /> <label><input
+							type="submit" value=신청하기 class="btn btn-default" /></label>
+					</form>
+				</div>
+
+
+				<footer>
+					<%@include file="/include/footer.jsp"%>
+				</footer>
+			</div>
 </body>
+<script>
+	$(document).ready(function() {
+		$('table tr').click(function() {
+			window.location = $(this).attr('href');
+			return false;
+		});
+		
+		
+	$("#borrow-filter").find("option[value='ReqDonFilterList.nds?type=donation&filter=${filter}']").attr("selected" , true);
+		
+	});
+</script>
 </html>

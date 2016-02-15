@@ -10,14 +10,6 @@
 
 <title>신청도서</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <style type="text/css">
 #list-title {
 	text-align: center;
@@ -125,11 +117,7 @@
 	font-size: 15px;
 }
 </style>
-<script>
-	$(document).ready(function() {
 
-	});
-</script>
 </head>
 <body>
 
@@ -139,14 +127,10 @@
 			<div class="col-md-2">
 
 				<div id="list-title">
-					<img src="pictures/mypage.png" alt="" />
+					<img src="pictures/boardpage.png" alt="" />
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item">Java</li>
-					<li class="list-group-item">Database</li>
-					<li class="list-group-item">JSP/Servlet</li>
-					<li class="list-group-item">Cloud</li>
-				</ul>
+				
+				<%@include file="/include/BoardSide.jsp"%>
 
 			</div>
 			<div class="col-md-10">
@@ -158,55 +142,54 @@
 							<tbody>
 								<tr>
 									<th>신청인</th>
-									<td>홍길동</td>
-
-
+									<td>${board.name}</td>
 								</tr>
 								<tr>
 									<th>신청일</th>
-									<td>2016-02-02</td>
+									<td>${board.registered_date}</td>
 								</tr>
 								<tr>
 									<th>제목</th>
-									<td>이것이 자바다</td>
+									<td>${board.title}</td>
 								</tr>
 								<tr>
 									<th>저자</th>
-									<td>홍길동</td>
+									<td>${board.author}</td>
 								</tr>
 								<tr>
 									<th>출판사</th>
-									<td>oo출판</td>
+									<td>${board.publisher}</td>
 								</tr>
 								<tr>
 									<th>발행일</th>
-									<td>2016-01-03</td>
+									<td>${board.pubdate}</td>
 								</tr>
 								<tr>
 									<th>ISBN</th>
-									<td>3432423</td>
+									<td>${board.isbn}</td>
 								</tr>
 								<tr>
 									<th>신청한마디</th>
-									<td colspan="3">NDS임직원들이 읽으면 도움이 될 수 있을 것 같습니다.</td>
+									<td colspan="3">${board.user_comment}</td>
 								</tr>
 
 							</tbody>
 						</table>
 					</div>
 					<div class="col-md-4" style="text-align: center; margin: 0px auto;" >
-						<img src="pictures/booksample01.jpg" alt="" id="img-book" />
+						<img src="${board.image}" alt="" id="img-book" />
 						<div class="alert alert-info" id="alert-state">
-							신청상태 : <span>구매완료</span>
+							신청상태 : <span>${board.current_state}</span>
 						</div>
 
 					</div>
 				</div>
 
 
+				<!-- 댓글 -->
 				<div class="sub-title">
 					<span class="glyphicon glyphicon-list-alt icon"></span> <span>댓글</span>
-					<span class="badge" style="margin-left: 3px">3</span>
+					<span class="badge" style="margin-left: 3px">${replyCount}</span>
 					<hr class="sub-title-line" />
 				</div>
 				<table class="table table-hover text-center" id="reply-table">
@@ -218,56 +201,46 @@
 							<th>작성일</th>
 						</tr>
 					</thead>
+					<c:set var="replyCount" value="${replyCount}" />
+					<%int replyCount=(Integer)pageContext.getAttribute("replyCount");%>		
 					<tbody>
-
-						<tr>
-							<td>1</td>
-							<td>좋은 책 감사드립니다!!</td>
-							<td>김혜원</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>좋은 책 감사드립니다!!</td>
-							<td>김혜원</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>좋은 책 감사드립니다!!</td>
-							<td>김혜원</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>좋은 책 감사드립니다!!</td>
-							<td>김혜원</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>좋은 책 감사드립니다!!</td>
-							<td>김혜원</td>
-							<td>2016-02-05</td>
-						</tr>
-
+						<c:forEach var="reply" items="${replylist}">
+								<tr>
+									<td><%=replyCount-- %></td>
+									<td>${reply.content}</td>
+									<td>${reply.name}</td>
+									<td>${reply.replyed_date}  
+										<a id="modify" href="UpdateReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice">
+								          <span class="glyphicon glyphicon-pencil"></span>
+								        </a>
+								        <a href="DeleteReply.nds?reply_id=${reply.reply_id}&req_don_id=${board.req_don_id}&type=require"> 
+        								  <span class="glyphicon glyphicon-minus"></span>
+      									</a>
+							        </td>
+								</tr>
+						</c:forEach>
 					</tbody>
 				</table>
-				<form role="form">
-
+				<form role="form" action="InsertReply.nds" method="post">
+					
+					<input type="hidden" value="require" name="type" />
+					<input type="hidden" value="3" name="user_id" />
+					<input type="hidden" value="${board.req_don_id}" name="req_don_id" />
+					
 					<div class="row">
 						<div class="col-md-11">
 							<div class="form-group">
 								<input type="text" placeholder="댓글을 입력해주세요(50)"
 									required="required" maxlength="100" class="form-control"
-									id="comment">
+									id="comment" name="content">
 							</div>
 						</div>
 						<div class="col-md-1" style="padding: 0px; margin: 0px;">
-							<button class="btn btn-lg btn-warning" id="btn-write">등록</button>
+							<button class="btn btn-md btn-warning" id="btn-write">등록</button>
 						</div>
 					</div>
 				</form>
+
 			</div>
 		</div>
 <footer>
@@ -276,4 +249,9 @@
 
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>
