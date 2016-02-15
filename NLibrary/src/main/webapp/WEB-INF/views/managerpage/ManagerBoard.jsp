@@ -7,70 +7,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>회원관리</title>
 
-<style type="text/css">
-#mTitle {
-	background-image: url("pictures/title.png");
-	background-position: 0px 0px;
-	background-repeat: no-repeat;
-	font-family: "맑은고딕";
-	font-weight: bold;
-	font-size: 25px;
-	padding-left: 20px;
-}
-
-.title-line {
-	border: 1px solid red;
-	margin-top: 5px;
-	margin-bottom: 40px;
-}
-
-#member-header {
-	font-weight: bold;
-	font-size: 15px;
-}
-
-#member-header button {
-	margin: 0px 10px;
-}
-
-#member-table {
-	margin: 20px auto;
-}
-
-#member-table th {
-	height: 30px;
-	background-color: #ddd;
-	font-weight: bold;
-	font-size: 15px;
-}
-
-#member-table th, #member-table td {
-	font-family: "맑은고딕";
-	text-align: center;
-	vertical-align: middle;
-}
-
-#member-table td {
-	font-size: 15px;
-	height: 50px;
-}
-
-#member-footer {
-	text-align: right;
-	margin: 15px 0px;
-}
-</style>
 </head>
 <body>
 	<div class="container">
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+		<%@include file="/include/topMenu.jsp"%>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">게시판 관리</h1>
 				<hr class="title-line" />
@@ -187,6 +133,7 @@
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
+
 	</div>
 </body>
 <script>

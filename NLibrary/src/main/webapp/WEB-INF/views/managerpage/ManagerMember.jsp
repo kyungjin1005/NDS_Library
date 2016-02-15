@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>회원관리</title>
 
@@ -99,11 +100,9 @@
 </head>
 <body>
 	<div class="container">
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+		<%@include file="/include/topMenu.jsp"%>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">회원관리</h1>
 				<hr class="title-line" />
@@ -113,6 +112,7 @@
 						Count <span class="badge">${size}</span>
 						<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
 						<button type="button" class="btn btn-sm btn-default" id="btn-clear">일괄선택</button>
+
 					</div>
 					<table class="table table-hover" id="member-table">
 						<thead>
@@ -138,6 +138,7 @@
 								<td>사원</td>
 								<td>2016-02-02</td>
 							</tr> -->
+
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="user" items="${userList}">
 								<tr>

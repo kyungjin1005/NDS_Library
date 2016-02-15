@@ -69,11 +69,6 @@
 <body>
 
 	<div class="container">
-
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
-
 		<div class="row" style="margin-top: 80px;">
 			<div class="col-md-2">
 
