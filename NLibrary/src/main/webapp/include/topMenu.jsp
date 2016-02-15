@@ -6,18 +6,30 @@
 	</div>
 	<div class="col-md-4">
 		<div class="gnbContainer gnbResize">
-			<div class="tsrch">
-				<fieldset>
-					<legend>통합검색</legend>
-					<input name="searchWord" id="searchWord" type="text"
-						class="tsrch_input"
-						onkeydown="javascript:if(event.keyCode ==13) fnSearchUser();"
-						style="outline: none; height: 20px;" />
-					<button type="button" class="tsrch_btn">
-						<span>검색</span>
-					</button>
-				</fieldset>
-			</div>
+			<form action="" method="POST" class="form-inline" role="form">
+				<div class="tsrch" style="left: 25%; background: none;">
+					<select name="" id="" class="">
+						<option value="">도서제목</option>
+						<option value="">저자</option>
+						<option value="">출판사</option>
+					</select>
+				</div>
+				<div class="tsrch">
+
+
+					<fieldset>
+
+						<legend>통합검색</legend>
+						<input name="searchWord" id="searchWord" type="text"
+							class="tsrch_input"
+							onkeydown="javascript:if(event.keyCode ==13) fnSearchUser();"
+							style="outline: none; height: 20px;" />
+						<button type="button" class="tsrch_btn">
+							<span>검색</span>
+						</button>
+					</fieldset>
+				</div>
+			</form>
 		</div>
 	</div>
 	<div class="col-md-4">
