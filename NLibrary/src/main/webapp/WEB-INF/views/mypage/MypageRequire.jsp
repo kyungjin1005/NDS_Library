@@ -10,12 +10,6 @@
 
 <title>도서신청현황</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 
 <style type="text/css">
@@ -139,95 +133,6 @@
 	font-weight: bold;
 }
 </style>
-<script>
-	$(document).ready(
-			function() {
-
-				$("#borrow-filter option:eq(${filter})").attr("selected",
-						"selected");
-
-				$("#btn-require").on("click", function() {
-					$("#req-modal").modal();
-				});
-
-				$("#btn-search").on("click", function() {
-					var query = $("#query").val();
-					loadDoc(query);
-
-				});
-
-				$("#borrow-filter").change(
-						function() {
-							/* alert($("#borrow-filter").val()); */
-							$(location).attr(
-									"href",
-									"MypageRequire.nds?filter="
-											+ $("#borrow-filter").val());
-						});
-			});
-
-	function loadDoc(query) {
-		$
-				.get(
-						"NaverAjax.nds?query=" + query,
-						function(data) {
-							var rootElement = $(data).find(":root");
-							var books = $(rootElement).find("book");
-							var result = "";
-
-							for (var i = 0; i < $(books).length; ++i) {
-								var book = $(books).eq(i);
-								result += "<tr>";
-								result += "<td>" + (i + 1) + "</td>";
-								result += "<td>" + "<div class=\"clearfix\">";
-								result += "<img src="
-										+ $(book).find("image").text()
-										+ " class=\"modal-img\" />";
-								result += "<ul class=\"modal-list\">";
-								result += "<li>" + $(book).find("title").text()
-										+ "</li>";
-								result += "<li>저자 - "
-										+ $(book).find("author").text()
-										+ "</li>";
-								result += "<li>출판사 - "
-										+ $(book).find("publisher").text()
-										+ "</li>";
-								result += "<li>발행일 - "
-										+ $(book).find("pubdate").text()
-										+ "</li>";
-								result += "<li>ISBN - "
-										+ $(book).find("isbn").text() + "</li>";
-								result += "</ul>";
-								result += "</div>";
-								result += "</td>";
-								result += "<td>"
-										+ "<button type=\"button\" value=\""
-										+ $(book).find("isbn").text()
-										+ "\"class=\"btn btn-md btn-default btn-register\" >신청하기</button>"
-										+ "</td>";
-
-								result += "</tr>";
-							}
-
-							/* 	$("#boardTable").find("tbody").append(result);		 */
-							$("#modal-table").find("tbody").html(result);
-
-							$(".btn-register").on(
-									"click",
-									function() {
-										/* $("#isbn").val($(this).parents("tr").find("td:eq(1)").text()); */
-										//alert("zz");
-										alert($(this).val());
-
-										$(location).attr(
-												"href",
-												"MypageRequireForm.nds?isbn="
-														+ $(this).val());
-									});
-						}, "xml");
-
-	}
-</script>
 </head>
 <body>
 
@@ -377,4 +282,94 @@
 		</footer>
 	</div>
 </body>
+
+<script>
+	$(document).ready(
+			function() {
+
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$("#btn-require").on("click", function() {
+					$("#req-modal").modal();
+				});
+
+				$("#btn-search").on("click", function() {
+					var query = $("#query").val();
+					loadDoc(query);
+
+				});
+
+				$("#borrow-filter").change(
+						function() {
+							/* alert($("#borrow-filter").val()); */
+							$(location).attr(
+									"href",
+									"MypageRequire.nds?filter="
+											+ $("#borrow-filter").val());
+						});
+			});
+
+	function loadDoc(query) {
+		$
+				.get(
+						"NaverAjax.nds?query=" + query,
+						function(data) {
+							var rootElement = $(data).find(":root");
+							var books = $(rootElement).find("book");
+							var result = "";
+
+							for (var i = 0; i < $(books).length; ++i) {
+								var book = $(books).eq(i);
+								result += "<tr>";
+								result += "<td>" + (i + 1) + "</td>";
+								result += "<td>" + "<div class=\"clearfix\">";
+								result += "<img src="
+										+ $(book).find("image").text()
+										+ " class=\"modal-img\" />";
+								result += "<ul class=\"modal-list\">";
+								result += "<li>" + $(book).find("title").text()
+										+ "</li>";
+								result += "<li>저자 - "
+										+ $(book).find("author").text()
+										+ "</li>";
+								result += "<li>출판사 - "
+										+ $(book).find("publisher").text()
+										+ "</li>";
+								result += "<li>발행일 - "
+										+ $(book).find("pubdate").text()
+										+ "</li>";
+								result += "<li>ISBN - "
+										+ $(book).find("isbn").text() + "</li>";
+								result += "</ul>";
+								result += "</div>";
+								result += "</td>";
+								result += "<td>"
+										+ "<button type=\"button\" value=\""
+										+ $(book).find("isbn").text()
+										+ "\"class=\"btn btn-md btn-default btn-register\" >신청하기</button>"
+										+ "</td>";
+
+								result += "</tr>";
+							}
+
+							/* 	$("#boardTable").find("tbody").append(result);		 */
+							$("#modal-table").find("tbody").html(result);
+
+							$(".btn-register").on(
+									"click",
+									function() {
+										/* $("#isbn").val($(this).parents("tr").find("td:eq(1)").text()); */
+										//alert("zz");
+										alert($(this).val());
+
+										$(location).attr(
+												"href",
+												"MypageRequireForm.nds?isbn="
+														+ $(this).val());
+									});
+						}, "xml");
+
+	}
+</script>
 </html>

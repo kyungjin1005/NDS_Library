@@ -10,14 +10,6 @@
 
 <title>도서기증하기</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <style type="text/css">
 
 #mTitle {
@@ -70,14 +62,7 @@
 	font-size: 20px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		$("#btn-require").on("click", function() {
-			$("#req-modal").modal();
-		});
 
-	});
-</script>
 </head>
 <body>
 
@@ -157,4 +142,12 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+		$("#btn-require").on("click", function() {
+			$("#req-modal").modal();
+		});
+
+	});
+</script>
 </html>

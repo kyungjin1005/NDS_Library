@@ -40,7 +40,7 @@
 			<img src="pictures/managerpage.png" alt="" />
 		</div>
 		<ul class="list-group">
-			<li class="list-group-item"><a href="">회원관리</a></li>
+			<li class="list-group-item"><a href="ManagerBookMember.nds">회원관리</a></li>
 			<li class="list-group-item"><a href="">대출관리</a></li>
 			<li class="list-group-item"><a data-toggle="collapse"
 				href="#collapse1">도서관리<span
@@ -51,8 +51,8 @@
 					<ul class="list-group"
 						style="margin: 0px; padding: 0px; text-align: center;">
 						<li class="list-group-item"><a href="">- 모든도서</a></li>
-						<li class="list-group-item"><a href="">- 신청도서</a></li>
-						<li class="list-group-item"><a href="">- 기증도서</a></li>
+						<li class="list-group-item"><a href="ManagerBookRequire.nds">- 신청도서</a></li>
+						<li class="list-group-item"><a href="ManagerBookDonation.nds">- 기증도서</a></li>
 					</ul>
 				</div>
 			</li>

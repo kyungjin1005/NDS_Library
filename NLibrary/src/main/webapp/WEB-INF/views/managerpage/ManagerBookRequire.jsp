@@ -8,7 +8,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>도서관리</title>
 
 <style type="text/css">
 #mTitle {
@@ -135,84 +134,7 @@
 	margin: 10px 0px;
 }
 </style>
-<script>
-	$(document).ready(
-			function() {
 
-				$("#borrow-filter option:eq(${filter})").attr("selected",
-						"selected");
-
-				$("#borrow-filter").change(
-						function() {
-							$(location).attr(
-									"href",
-									"ManagerBookRequire.nds?filter="
-											+ $("#borrow-filter").val());
-				});
-				
-				
-				$(".btn-register").on(
-						"click",
-						function() {
-							
-							//문제) Ajax 요청 및 응답 결과 출력
-							var req_don_id = $(this).val();
-							//alert(req_don_id);
-							$.get("AjaxBookRegister.nds?req_don_id="
-									+ req_don_id, function(data) {
-										
-								var rootElement = $(data).find(":root");
-								var book = $(rootElement).find("book");
-
-								
-								//alert($(book).find("isbn").text());
-								
-								var result = "";
-								result += "<tr> <td>ISBN ID</td>";
-								result += "<td>" + $(book).find("isbn").text() + "</td>";
-								result += "<td>카테고리</td>";
-								result += "<td><select class=\"form-control filter\" id=\"category_id\" name=\"category_id\"> <option value=\"1\">java</option> <option value=\"2\">웹프로그래밍</option> <option value=\"3\">데이터베이스</option> <option value=\"4\">프레임워크</option> <option value=\"5\">클라우드</option>  <option value=\"6\">기타</option> </select></td> </tr>";
-								result += "<tr><td>제목</td>";
-								result += "<td colspan=\"3\">" + $(book).find("title").text()+ "</td></tr>";
-								result += "<tr><td>저자</td><td colspan=\"3\">" + $(book).find("author").text()+ "</td></tr>";
-								result += "<tr><td>출판사</td><td colspan=\"3\">" + $(book).find("publisher").text() + "</td></tr>";
-								result += "<tr><td>신청일</td><td colspan=\"3\">"+$(book).find("registered_date").text()+"</td></tr>";
-								result += "<tr><td>신청자</td><td colspan=\"3\">"+$(book).find("name").text()+"</td></tr>";
-								result += "<tr><td>신청한마디</td><td colspan=\"3\">"+$(book).find("user_comment").text()+"</td></tr>";
-								$("#modal-table").find("tbody").append(result);
-									
-								 var right = "";
-								right += "<img src=" + $(book).find("image").text() + "id=\"img-book\" />";
-								right += "<button type=\"submit\" class=\"btn btn-warning btn-lg  btn-modal\" value=\"" + req_don_id + "\">도서등록</button>";
-								right += "<input type=\"hidden\" value=" + $(book).find("req_don_id").text() + " name=\"req_don_id\" />"
-								
-								$("#right-box").append(right);
-								$("#modal-register").modal();
-								
-								//alert($(".btn-modal").val());
-							});
-				});
-	
-				$(".btn-confirm").on("click",
-						function() {
-							$(location).attr("href",
-									"ManagerBookRequireConfirm.nds?req_don_id=" + $(this).val());
-
-				});
-	
-				
-				
-				
-				
-
-	});
-
-/* 	function goConfirm(req_don_id) {
-		$(location).attr("href",
-				"ManagerBookRequireConfirm.nds?req_don_id=" + req_don_id);
-
-	} */
-</script>
 </head>
 <body>
 	<div class="container">
@@ -392,4 +314,83 @@
 	</div>
 
 </body>
+
+<script>
+	$(document).ready(
+			function() {
+
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$("#borrow-filter").change(
+						function() {
+							$(location).attr(
+									"href",
+									"ManagerBookRequire.nds?filter="
+											+ $("#borrow-filter").val());
+				});
+				
+				
+				$(".btn-register").on(
+						"click",
+						function() {
+							
+							//문제) Ajax 요청 및 응답 결과 출력
+							var req_don_id = $(this).val();
+							//alert(req_don_id);
+							$.get("AjaxBookRegister.nds?req_don_id="
+									+ req_don_id, function(data) {
+										
+								var rootElement = $(data).find(":root");
+								var book = $(rootElement).find("book");
+
+								
+								//alert($(book).find("isbn").text());
+								
+								var result = "";
+								result += "<tr> <td>ISBN ID</td>";
+								result += "<td>" + $(book).find("isbn").text() + "</td>";
+								result += "<td>카테고리</td>";
+								result += "<td><select class=\"form-control filter\" id=\"category_id\" name=\"category_id\"> <option value=\"1\">java</option> <option value=\"2\">웹프로그래밍</option> <option value=\"3\">데이터베이스</option> <option value=\"4\">프레임워크</option> <option value=\"5\">클라우드</option>  <option value=\"6\">기타</option> </select></td> </tr>";
+								result += "<tr><td>제목</td>";
+								result += "<td colspan=\"3\">" + $(book).find("title").text()+ "</td></tr>";
+								result += "<tr><td>저자</td><td colspan=\"3\">" + $(book).find("author").text()+ "</td></tr>";
+								result += "<tr><td>출판사</td><td colspan=\"3\">" + $(book).find("publisher").text() + "</td></tr>";
+								result += "<tr><td>신청일</td><td colspan=\"3\">"+$(book).find("registered_date").text()+"</td></tr>";
+								result += "<tr><td>신청자</td><td colspan=\"3\">"+$(book).find("name").text()+"</td></tr>";
+								result += "<tr><td>신청한마디</td><td colspan=\"3\">"+$(book).find("user_comment").text()+"</td></tr>";
+								$("#modal-table").find("tbody").append(result);
+									
+								 var right = "";
+								right += "<img src=" + $(book).find("image").text() + "id=\"img-book\" />";
+								right += "<button type=\"submit\" class=\"btn btn-warning btn-lg  btn-modal\" value=\"" + req_don_id + "\">도서등록</button>";
+								right += "<input type=\"hidden\" value=" + $(book).find("req_don_id").text() + " name=\"req_don_id\" />"
+								
+								$("#right-box").append(right);
+								$("#modal-register").modal();
+								
+								//alert($(".btn-modal").val());
+							});
+				});
+	
+				$(".btn-confirm").on("click",
+						function() {
+							$(location).attr("href",
+									"ManagerBookRequireConfirm.nds?req_don_id=" + $(this).val());
+
+				});
+	
+				
+				
+				
+				
+
+	});
+
+/* 	function goConfirm(req_don_id) {
+		$(location).attr("href",
+				"ManagerBookRequireConfirm.nds?req_don_id=" + req_don_id);
+
+	} */
+</script>
 </html>
