@@ -18,7 +18,6 @@ public class ReqAndDon {
 	private String category_id;
 	
 	
-	
 
 	public String getCategory_id() {
 		return category_id;

@@ -122,6 +122,11 @@
 					"ManagerMemberInfo.nds?user_id="
 							+ $(this).val());
 		});
+		
+		$("#btn-all").on("click", function(){
+			$(".cb").attr("checked","checked");
+			
+		});
 	});
 	
 	function goMemberInfo(member_id){
@@ -168,10 +173,10 @@
 			<div class="col-md-10">
 				<h1 id="mTitle">회원관리</h1>
 				<hr class="title-line" />
-				<form class="form-inline" role="form" method="post" action="">
+				<form class="form-inline" role="form" method="post" action="ManagerMemberMsg.nds">
 					<div id="member-header">
 						Count <span class="badge">${size}</span>
-						<button class="btn btn-sm btn-default">일괄선택</button>
+						<button	type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
 					</div>
 					<table class="table table-hover" id="member-table">
 						<thead>
@@ -200,7 +205,7 @@
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="user" items="${userList}">
 								<tr>
-									<td><input type="checkbox" class="form-control"></td>
+									<td><input type="checkbox"  class="form-control cb" name="user_id" value="${user.user_id }"></td>
 									<td>${count}</td>
 									<td>${user.nds_number}</td>
 									<td>${user.name}</td>

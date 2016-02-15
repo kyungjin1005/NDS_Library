@@ -266,7 +266,16 @@ section {
 									<td>${empty book.borrowing_date?"-":book.borrowing_date}</td>
 									<td>${empty book.scheduled_date?"-":book.scheduled_date}</td>
 									<td>${empty book.returned_date?"-":book.returned_date}</td>
-									<td>반납완료</td>
+									<td>
+									<c:choose>
+										<c:when test="${empty book.returned_date}">
+										대여중
+										</c:when>
+										<c:otherwise>
+										반납완료
+										</c:otherwise>
+									</c:choose>
+									</td>
 								</tr>
 
 							<c:set var="count" value="${count+1}"></c:set>
@@ -284,7 +293,7 @@ section {
 
 						<span class="glyphicon glyphicon-list-alt icon"></span> <span
 							style="">도서신청내역</span><span class="badge"
-							style="margin-left: 3px">7</span>
+							style="margin-left: 3px">${rSize }</span>
 					</div>
 					<hr class="sub-title-line" />
 
@@ -293,8 +302,6 @@ section {
 						id="require-table">
 						<thead>
 							<tr>
-
-
 								<th>번호</th>
 								<th>제목</th>
 								<th>저자</th>
@@ -307,7 +314,7 @@ section {
 						</thead>
 						<tbody>
 
-							<tr>
+							<!-- <tr>
 								<td>1</td>
 								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
 								<td>홍길동</td>
@@ -316,47 +323,21 @@ section {
 								<td>구매완료</td>
 								<td>2016-02-05</td>
 								<td>-</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>구매완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>구매완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>구매완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>구매완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr>
+							</tr> -->
+							<c:set var="count" value="1"></c:set>
+							<c:forEach var="book" items="${rList}">
+								<tr>
+									<td>${count }</td>
+									<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
+									<td>${book.author}</td>
+									<td>${book.publisher}</td>
+									<td>${empty book.registered_date?"-":book.registered_date}</td>
+									<td>${empty book.current_state?"-":book.current_state}</td>
+									<td>${empty book.finished_date?"-":book.finished_date}</td>
+									<td>${empty book.manager_comment?"-":book.manager_comment}</td>
+								</tr>
+							<c:set var="count" value="${count+1}"></c:set>
+							</c:forEach>
 
 						</tbody>
 					</table>
@@ -369,7 +350,7 @@ section {
 
 						<span class="glyphicon glyphicon-list-alt icon"></span> <span
 							style="">도서기증내역</span><span class="badge"
-							style="margin-left: 3px">7</span>
+							style="margin-left: 3px">${dSize }</span>
 					</div>
 					<hr class="sub-title-line" />
 
@@ -390,7 +371,7 @@ section {
 						</thead>
 						<tbody>
 
-							<tr>
+							<!-- <tr>
 								<td>1</td>
 								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
 								<td>홍길동</td>
@@ -399,37 +380,22 @@ section {
 								<td>기증완료</td>
 								<td>2016-02-05</td>
 								<td>-</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>기증완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>기증완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>기증완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr>
+							</tr> -->
+							
+							<c:set var="count" value="1"></c:set>
+							<c:forEach var="book" items="${dList}">
+								<tr>
+									<td>${count }</td>
+									<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
+									<td>${book.author}</td>
+									<td>${book.publisher}</td>
+									<td>${empty book.registered_date?"-":book.registered_date}</td>
+									<td>${empty book.current_state?"-":book.current_state}</td>
+									<td>${empty book.finished_date?"-":book.finished_date}</td>
+									<td>${empty book.manager_comment?"-":book.manager_comment}</td>
+								</tr>
+							<c:set var="count" value="${count+1}"></c:set>
+							</c:forEach>
 						</tbody>
 					</table>
 

@@ -23,7 +23,8 @@
 	<select id="messageDetail" resultType="com.nds.library.manager.Message">
 		SELECT message_id,
 		user_id, is_checked, title, content, sended_date, checked_date
-		FROM messages
+		FROM
+		messages
 		WHERE message_id = #{msg_id}
 	</select>
 
@@ -53,7 +54,7 @@
 		<if test="filter == 4">  <!-- 신청반려 -->
 			where current_state='신청반려'
 		</if>
-		order by reqanddon.REGISTERED_DATE
+		 order by reqanddon.REGISTERED_DATE
 	</select>
 
 	<select id="getReqAndDonBook" resultType="com.nds.library.mypage.ReqAndDon">
@@ -161,35 +162,39 @@
 
 	<select id="userBorrowList" resultType="com.nds.library.manager.User">
 		select title, publisher,
-		pubdate, author, image, TO_CHAR(borrowing_date,'yyyy-mm-dd') as
-		borrowing_date, TO_CHAR(scheduled_date,'yyyy-mm-dd') as
+		current_state,
+		pubdate, author, image,
+		TO_CHAR(borrowing_date,'yyyy-mm-dd') as
+		borrowing_date,
+		TO_CHAR(scheduled_date,'yyyy-mm-dd') as
 		scheduled_date,
 		TO_CHAR(returned_date,'yyyy-mm-dd') as returned_date, DELAY_COUNT
-		from borrowings natural join books
+		from
+		borrowings natural join books
 		natural join informations
-		where user_id=#{user_id}
+		where
+		user_id=#{user_id}
 		order by
 		borrowing_date desc
 	</select>
 
-	<select id="userRequireList" resultType="com.nds.library.manager.User">
-		select title, publisher,
-		pubdate, borrowing_date,SCHEDULED_DATE,
-		returned_date, DELAY_COUNT
-		from
-		borrowings natural join books natural join informations
-		where user_id=1
-		order by borrowing_date desc
+	<select id="userRequireList" resultType="com.nds.library.mypage.ReqAndDon">
+		select req_don_id, title, publisher, author, pubdate, image, manager_comment, TO_CHAR(reqanddon.registered_date,'yyyy-mm-dd') as
+		registered_date, TO_CHAR(finished_date,
+		'yyyy-mm-dd') AS finished_date, current_state
+		from reqanddon join users using(user_id)
+		where user_id=#{user_id} and not (current_state='기증완료' or current_state='기증대기' or
+		current_state='기증반려')
+		order by reqanddon.registered_date desc
 	</select>
 
-	<select id="userDonationList" resultType="com.nds.library.manager.User">
-		select title,
-		publisher, pubdate, image, borrowing_date,SCHEDULED_DATE,
-		returned_date, DELAY_COUNT
-		from borrowings natural join books natural
-		join informations
-		where user_id=1
-		order by borrowing_date desc
+	<select id="userDonationList" resultType="com.nds.library.mypage.ReqAndDon">
+		select req_don_id, title, publisher, author, pubdate, image, manager_comment, TO_CHAR(reqanddon.registered_date,'yyyy-mm-dd') as
+		registered_date, TO_CHAR(finished_date,
+		'yyyy-mm-dd') AS finished_date, current_state
+		from reqanddon join users using(user_id)
+		where user_id=#{user_id} and (current_state='기증완료' or current_state='기증대기' or current_state='기증반려')
+		order by reqanddon.registered_date desc
 	</select>
 
 </mapper>   

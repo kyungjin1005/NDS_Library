@@ -210,34 +210,29 @@ public class ManagerController {
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 		User u = dao.getUser(user);
 		ArrayList<User> bList = dao.userBorrowList(user);
-		ArrayList<User> rList = dao.userRequireList(user);
-		ArrayList<User> dList = dao.userDonationList(user);
+		ArrayList<ReqAndDon> rList = dao.userRequireList(user);
+		ArrayList<ReqAndDon> dList = dao.userDonationList(user);
 		
 		model.addAttribute("user", u);
 		model.addAttribute("bList", bList);
 		model.addAttribute("bSize", bList.size());
-	//	model.addAttribute("rList", rList);
-	//	model.addAttribute("dList", dList);
+		model.addAttribute("rList", rList);
+		model.addAttribute("rSize", rList.size());
+		model.addAttribute("dList", dList);
+		model.addAttribute("dSize", dList.size());
+		
 		return "WEB-INF/views/managerpage/ManagerMemberInfo.jsp";
 	}
 	
-	/*--화면 23 : 대여내역
-	select title, publisher, pubdate, borrowing_date, returned_date
-	from borrowings natural join books natural join informations
-	where user_id=1
-	order by borrowing_date desc;
+	@RequestMapping(value = "/ManagerMemberMsg.nds", method = RequestMethod.POST)
+	public String managerMemberMsg(Model model, String[] user_id) {
 
-	--화면 23 : 신청내역. 
-	select name, publisher, pubdate, reqanddon.registered_date, current_state
-	from reqanddon join users using(user_id)
-	where user_id=1 and not (current_state='기증완료' or current_state='기증대기' or current_state='기증반려')
-	order by reqanddon.registered_date desc;
-
-	--화면 23 : 도서 기증 내역. 
-	select name, publisher, pubdate, reqanddon.registered_date, current_state
-	from reqanddon join users using(user_id)
-	where user_id=1 and (current_state='기증완료' or current_state='기증대기')
-	order by reqanddon.registered_date desc;*/
+		System.out.println("size : " + user_id.length);
+		for(String s : user_id){
+			System.out.print(s + ",");
+		}
+		return "WEB-INF/views/managerpage/ManagerMemberMsg.jsp";
+	}
 	
-
+	
 }

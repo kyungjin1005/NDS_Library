@@ -24,6 +24,6 @@ public interface IManagerDAO {
 	public ArrayList<User> memberList();
 	public User getUser(User user);
 	public ArrayList<User> userBorrowList(User user);
-	public ArrayList<User> userRequireList(User user);
-	public ArrayList<User> userDonationList(User user);
+	public ArrayList<ReqAndDon> userRequireList(User user);
+	public ArrayList<ReqAndDon> userDonationList(User user);
 }

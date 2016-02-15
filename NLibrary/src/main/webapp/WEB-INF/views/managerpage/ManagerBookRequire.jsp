@@ -256,7 +256,7 @@
 					<img src="pictures/managerpage.png" alt="" />
 				</div>
 				<ul class="list-group">
-					<li class="list-group-item"><a href="">회원관리</a></li>
+					<li class="list-group-item"><a href="ManagerMember.nds">회원관리</a></li>
 					<li class="list-group-item"><a href="">대출관리</a></li>
 					<li class="list-group-item"><a data-toggle="collapse"
 						href="#collapse1">도서관리<span

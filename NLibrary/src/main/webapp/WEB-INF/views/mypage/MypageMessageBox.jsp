@@ -19,25 +19,6 @@
 
 
 <style type="text/css">
-#list-title {
-	text-align: center;
-	padding: 0px;
-}
-
-#list-title img {
-	width: 100%;
-	margin: 0px;
-}
-
-.list-group-item {
-	font-family: "맑은고딕";
-	font-weight: bold;
-	color: #555555;
-	height: 50px;
-	display: list-item;
-	vertical-align: middle;
-}
-
 #mTitle {
 	background-image: url("pictures/title.png");
 	background-position: 0px 0px;
@@ -90,19 +71,8 @@
 			<%@include file="/include/header.jsp"%>
 		</header>
 		<div class="row" style="margin-top: 80px;">
-			<div class="col-md-2">
-
-				<div id="list-title">
-					<img src="pictures/mypage.png" alt="" />
-				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">대출현황조회</a></li>
-					<li class="list-group-item"><a href="">메세지함</a></li>
-					<li class="list-group-item"><a href="">도서신청현황</a></li>
-					<li class="list-group-item"><a href="">도서기증현황</a></li>
-				</ul>
-			</div>
-			<div class="col-md-10"">
+			<%@include file="/include/mypageSideMenu.jsp"%>
+			<div class="col-md-10">
 				<h1 id="mTitle">메세지함</h1>
 				<hr class="title-line" />
 
