@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 
 <style type="text/css">
 #mTitle {
@@ -142,10 +142,10 @@
 <body>
 	<div class="container">
 		<header>
-			<%@include file="/include/header.jsp"%>
+			<%@include file="/include/topMenu.jsp"%>
 		</header>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">도서관리 -> 신청도서</h1>
 				<hr class="title-line" />
@@ -345,6 +345,7 @@
 															"AjaxBookRegister.nds?req_don_id="
 																	+ req_don_id,
 															function(data) {
+																		
 
 																var rootElement = $(
 																		data)
@@ -355,8 +356,7 @@
 																		.find(
 																				"book");
 
-																//alert($(book).find("isbn").text());
-
+																alert($(book).find("isbn").text());
 																var result = "";
 																result += "<tr> <td>ISBN ID</td>";
 																result += "<td>"
@@ -427,14 +427,9 @@
 																				.text()
 																		+ "id=\"img-book\" />";
 																right += "<button type=\"submit\" class=\"btn btn-warning btn-lg  btn-modal\" value=\"" + req_don_id + "\">도서등록</button>";
-																right += "<input type=\"hidden\" value="
-																		+ $(
-																				book)
-																				.find(
-																						"req_don_id")
-																				.text()
-																		+ " name=\"req_don_id\" />"
-
+																right += "<input type=\"hidden\" value="+ $(book).find("req_don_id").text()
+																+ " name=\"req_don_id\" />"
+																right += "<input type=\"hidden\" value=\""+ $(book).find("isbn").text()+ "\" name=\"isbn\" />"
 																$("#right-box")
 																		.append(
 																				right);

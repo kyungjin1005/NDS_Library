@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 <title>도서신청하기</title>
 
 
@@ -71,8 +71,7 @@
 	<div class="container">
 
 		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+			<%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/mypageSideMenu.jsp"%>
 			<div class="col-md-10">

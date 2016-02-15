@@ -7,12 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 <title>도서기증현황</title>
-
-
 <style type="text/css">
-
 #mTitle {
 	background-image: url("pictures/title.png");
 	background-position: 0px 0px;
@@ -133,19 +130,15 @@
 </style>
 </head>
 <body>
-
-
 	<div class="container">
-
 		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+			<%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/mypageSideMenu.jsp"%>
-			<div class="col-md-10"">
+			<div class="col-md-10">
 				<h1 id="mTitle">도서기증현황</h1>
 				<hr class="title-line" />
-				
+
 				<form class="form-inline" role="form" method="post"
 					style="display: inline-block; float: right; margin-bottom: 20px;">
 					<select class="form-control" id="borrow-filter"
@@ -156,7 +149,7 @@
 						<option value="3">기증반려</option>
 					</select>
 				</form>
-				
+
 				<table class="table table-hover text-center" id="donation-table">
 					<thead>
 						<tr>
@@ -225,20 +218,20 @@
 							<div id="don-search">
 								<input type="search" class="form-control" size="50" id="query"
 									placeholder="책 제목을 입력하세요">
-								<button type="button" class="btn btn-danger"  id="btn-search">검색</button>
+								<button type="button" class="btn btn-danger" id="btn-search">검색</button>
 							</div>
 						</form>
 						<div id="scroll-box">
-						<table class="table table-hover text-center" id="modal-table">
-							<thead>
-								<tr>
-									<th>번호</th>
-									<th>책정보</th>
-									<th>기증하기</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- <tr>
+							<table class="table table-hover text-center" id="modal-table">
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>책정보</th>
+										<th>기증하기</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- <tr>
 									<td>1</td>
 									<td>
 										<div class="clearfix">
@@ -258,8 +251,8 @@
 										<button class="btn btn-md btn-default">기증하기</button>
 									</td>
 								</tr> -->
-							</tbody>
-						</table>
+								</tbody>
+							</table>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -276,32 +269,33 @@
 </body>
 
 <script>
-	$(document).ready(function() {
-		
-		$("#borrow-filter option:eq(${filter})").attr("selected",
-		"selected");
-		
-		$("#btn-donation").on("click", function() {
-			$("#don-modal").modal();
-		});
-		
-		$("#btn-search").on("click", function() {
-			var query = $("#query").val();
-			loadDoc(query);
+	$(document).ready(
+			function() {
 
-		});
-		
-		$("#borrow-filter").change(
-				function() {
-					/* alert($("#borrow-filter").val()); */
-					$(location).attr(
-							"href",
-							"MypageDonation.nds?filter="
-									+ $("#borrow-filter").val());
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$("#btn-donation").on("click", function() {
+					$("#don-modal").modal();
 				});
 
-	});
-	
+				$("#btn-search").on("click", function() {
+					var query = $("#query").val();
+					loadDoc(query);
+
+				});
+
+				$("#borrow-filter").change(
+						function() {
+							/* alert($("#borrow-filter").val()); */
+							$(location).attr(
+									"href",
+									"MypageDonation.nds?filter="
+											+ $("#borrow-filter").val());
+						});
+
+			});
+
 	function loadDoc(query) {
 		$
 				.get(

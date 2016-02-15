@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>회원관리</title>
 
@@ -100,34 +101,37 @@
 <body>
 	<div class="container">
 		<header>
-			<%@include file="/include/header.jsp"%>
+			<%@include file="/include/topMenu.jsp"%>
 		</header>
-		<%@include file="/include/ManagerpageSidebar.jsp"%>
-		<div class="col-md-10">
-			<h1 id="mTitle">회원관리</h1>
-			<hr class="title-line" />
-			<form class="form-inline" role="form" method="post"
-				action="ManagerMemberMsg.nds">
-				<div id="member-header">
-					Count <span class="badge">${size}</span>
-					<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
-				</div>
-				<table class="table table-hover" id="member-table">
-					<thead>
-						<tr>
-							<th>선택</th>
-							<th>번호</th>
-							<th>사원번호</th>
-							<th>성명</th>
-							<th>소속회사</th>
-							<th>부서</th>
-							<th>직위</th>
-							<th>등록날짜</th>
-							<th>상세보기</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- <tr>
+		<div class="row" style="margin-top: 80px;">
+			<%@include file="/include/managerSideMenu.jsp"%>
+			<div class="col-md-10">
+				<h1 id="mTitle">회원관리</h1>
+				<hr class="title-line" />
+				<form class="form-inline" role="form" method="post"
+					action="ManagerMemberMsg.nds">
+					<div id="member-header">
+						Count <span class="badge">${size}</span>
+						<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-clear">일괄선택</button>
+
+					</div>
+					<table class="table table-hover" id="member-table">
+						<thead>
+							<tr>
+								<th>선택</th>
+								<th>번호</th>
+								<th>사원번호</th>
+								<th>성명</th>
+								<th>소속회사</th>
+								<th>부서</th>
+								<th>직위</th>
+								<th>등록날짜</th>
+								<th>상세보기</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- <tr>
 								<td><input type="checkbox" class="form-control"></td>
 								<td>1</td>
 								<td>1510010</td>
@@ -136,35 +140,37 @@
 								<td>사원</td>
 								<td>2016-02-02</td>
 							</tr> -->
-						<c:set var="count" value="1"></c:set>
-						<c:forEach var="user" items="${userList}">
-							<tr>
-								<td><input type="checkbox" class="form-control cb"
-									name="user_id" value="${user.user_id }"></td>
-								<td>${count}</td>
-								<td>${user.nds_number}</td>
-								<td>${user.name}</td>
-								<td>NDS</td>
-								<td>${user.department}</td>
-								<td>${user.position}</td>
-								<td>${user.registered_date}</td>
-								<td><button type="button" value="${user.user_id}"
-										class="btn btn-sm btn-default btn-detail">상세보기</button></td>
-							</tr>
-							<c:set var="count" value="${count+1}"></c:set>
-						</c:forEach>
 
-					</tbody>
-				</table>
+							<c:set var="count" value="1"></c:set>
+							<c:forEach var="user" items="${userList}">
+								<tr>
+									<td><input type="checkbox" class="form-control cb"
+										name="uid" value="${user.user_id }"></td>
+									<td>${count}</td>
+									<td>${user.nds_number}</td>
+									<td>${user.name}</td>
+									<td>NDS</td>
+									<td>${user.department}</td>
+									<td>${user.position}</td>
+									<td>${user.registered_date}</td>
+									<td><button type="button" value="${user.user_id}"
+											class="btn btn-sm btn-default btn-detail">상세보기</button></td>
+								</tr>
+								<c:set var="count" value="${count+1}"></c:set>
+							</c:forEach>
 
-				<div id="member-footer">
-					<hr />
-					<button type="submit" class="btn btn-md btn-warning btn-msg">메세지
-						보내기</button>
-				</div>
-			</form>
+						</tbody>
+					</table>
+
+					<div id="member-footer">
+						<hr />
+						<button type="submit" class="btn btn-md btn-warning btn-msg">메세지
+							보내기</button>
+					</div>
+				</form>
+			</div>
+
 		</div>
-
 	</div>
 	<footer>
 		<%@include file="/include/footer.jsp"%>
@@ -183,8 +189,11 @@
 						});
 
 				$("#btn-all").on("click", function() {
-					$(".cb").attr("checked", "checked");
+					$(".cb").prop('checked', true); 
 
+				});
+				$("#btn-clear").on("click", function() {
+					$(".cb").removeProp("checked"); 
 				});
 			});
 

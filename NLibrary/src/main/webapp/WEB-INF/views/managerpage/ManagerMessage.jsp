@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>메세지관리</title>
 
@@ -62,10 +63,10 @@
 <body>
 	<div class="container">
 		<header>
-			<%@include file="/include/header.jsp"%>
+			<%@include file="/include/topMenu.jsp"%>
 		</header>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">메세지관리</h1>
 				<hr class="title-line" />
@@ -113,7 +114,6 @@
 </body>
 <script>
 	$(document).ready(function() {
-
 		$(".btn-register").on("click", function() {
 			$("#modal-dam-los").modal();
 		});

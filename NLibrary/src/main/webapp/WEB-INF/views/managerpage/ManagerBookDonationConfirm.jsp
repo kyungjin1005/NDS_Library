@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>도서관리</title>
 
@@ -58,10 +59,10 @@
 <body>
 	<div class="container">
 		<header>
-			<%@include file="/include/header.jsp"%>
+			<%@include file="/include/topMenu.jsp"%>
 		</header>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">도서관리 -> 기증도서</h1>
 				<hr class="title-line" />
@@ -69,6 +70,7 @@
 				<div class="row" style="margin: 20px 0px;">
 				<form class="form-inline" role="form" method="post" action="ManagerDonationRegisterBook.nds">
 				<input type="hidden" name="req_don_id" value="${book.req_don_id}" />
+				<input type="hidden" name="isbn" value="${book.isbn}" />
 					<div class="col-md-8">
 						<table class="table text-center" id="donation-table">
 							<tbody>
@@ -77,7 +79,6 @@
 									<td>${book.name }</td>
 									<td>대분류</td>
 									<td>
-									
 											<select class="form-control filter" id="category_id"
 												name="category_id">
 												<option value="1">JAVA</option>
