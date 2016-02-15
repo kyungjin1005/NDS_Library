@@ -104,19 +104,26 @@ header .list-inline {
 			</div>
 			<div class="col-md-4">
 				<div class="gnbContainer gnbResize">
+					<form class="inline-form" action="">
+						<div class="tsrch">
+							<!-- <select class="" name="" id="">
+								<option value="">책제목</option>
+								<option value="">출판사</option>
+								<option value="">저자</option>
+							</select> -->
+							<fieldset>
 
-					<div class="tsrch">
-						<fieldset>
-							<legend>통합검색</legend>
-							<input name="searchWord" id="searchWord" type="text"
-								class="tsrch_input"
-								onkeydown="javascript:if(event.keyCode ==13) fnSearchUser();"
-								style="outline: none; height: 20px;" />
-							<button type="button" class="tsrch_btn">
-								<span>검색</span>
-							</button>
-						</fieldset>
-					</div>
+								<legend>통합검색</legend>
+								<input name="searchWord" id="searchWord" type="text"
+									class="tsrch_input"
+									onkeydown="javascript:if(event.keyCode ==13) fnSearchUser();"
+									style="outline: none; height: 20px;" />
+								<button type="button" class="tsrch_btn">
+									<span>검색</span>
+								</button>
+							</fieldset>
+						</div>
+					</form>
 				</div>
 
 			</div>
