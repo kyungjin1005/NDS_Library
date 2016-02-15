@@ -70,6 +70,7 @@
 				<div class="row" style="margin: 20px 0px;">
 				<form class="form-inline" role="form" method="post" action="ManagerDonationRegisterBook.nds">
 				<input type="hidden" name="req_don_id" value="${book.req_don_id}" />
+				<input type="hidden" name="isbn" value="${book.isbn}" />
 					<div class="col-md-8">
 						<table class="table text-center" id="donation-table">
 							<tbody>
@@ -78,7 +79,6 @@
 									<td>${book.name }</td>
 									<td>대분류</td>
 									<td>
-									
 											<select class="form-control filter" id="category_id"
 												name="category_id">
 												<option value="1">JAVA</option>

@@ -112,8 +112,9 @@
 					action="ManagerMemberMsg.nds">
 					<div id="member-header">
 						Count <span class="badge">${size}</span>
-						<button type="button" class="btn btn-sm btn-default" id="btn-all" style="margin:0px;">전체선택</button>
-						<button type="button" class="btn btn-sm btn-default" id="btn-clear" style="margin:0px;">선택해제</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-clear">일괄선택</button>
+
 					</div>
 					<table class="table table-hover" id="member-table">
 						<thead>
@@ -131,14 +132,15 @@
 						</thead>
 						<tbody>
 							<!-- <tr>
-									<td><input type="checkbox" class="form-control"></td>
-									<td>1</td>
-									<td>1510010</td>
-									<td>김혜원</td>
-									<td>개발본부</td>
-									<td>사원</td>
-									<td>2016-02-02</td>
-								</tr> -->
+								<td><input type="checkbox" class="form-control"></td>
+								<td>1</td>
+								<td>1510010</td>
+								<td>김혜원</td>
+								<td>개발본부</td>
+								<td>사원</td>
+								<td>2016-02-02</td>
+							</tr> -->
+
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="user" items="${userList}">
 								<tr>
@@ -167,6 +169,7 @@
 					</div>
 				</form>
 			</div>
+
 		</div>
 	</div>
 	<footer>
@@ -174,17 +177,28 @@
 	</footer>
 </body>
 <script>
+	$(document).ready(
+			function() {
+				$(".btn-detail").on(
+						"click",
+						function() {
+							$(location).attr(
+									"href",
+									"ManagerMemberInfo.nds?user_id="
+											+ $(this).val());
+						});
 
-	$(".btn-detail").on("click", function() {
-			$(location).attr("href", "ManagerMemberInfo.nds?user_id="+$(this).val());
-	});
-	
-	$("#btn-all").on("click", function() {
-		$(".cb").prop("checked", true);
-	});
-	
-	$("#btn-clear").on("click", function() {
-		$(".cb").removeProp("checked", false);
-});
+				$("#btn-all").on("click", function() {
+					$(".cb").prop('checked', true); 
+
+				});
+				$("#btn-clear").on("click", function() {
+					$(".cb").removeProp("checked"); 
+				});
+			});
+
+	function goMemberInfo(member_id) {
+		alert(member_id);
+	}
 </script>
 </html>

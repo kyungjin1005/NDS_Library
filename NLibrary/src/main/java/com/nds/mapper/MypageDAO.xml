@@ -33,7 +33,7 @@
 		<if test="filter == 4">  <!-- 신청반려 -->
 			where current_state='신청반려'
 		</if>
-		and user_id=4 order by registered_date desc
+		and user_id=4 order by reqanddon.registered_date desc
 	</select>
 
 	<insert id="requireBookAdd">
@@ -76,7 +76,7 @@
 		<if test="filter == 3">  <!-- 기증반려 -->
 			where current_state='기증반려'
 		</if>
-		and user_id=4 order by registered_date desc
+		and user_id=4 order by reqanddon.registered_date desc
 	</select>
 	
 	<insert id="donationBookAdd">
