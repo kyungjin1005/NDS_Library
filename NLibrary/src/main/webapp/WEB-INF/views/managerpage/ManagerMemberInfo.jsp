@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>회원정보</title>
 
@@ -112,11 +113,9 @@ section {
 </head>
 <body>
 	<div class="container">
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+		<%@include file="/include/topMenu.jsp"%>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">회원관리->회원정보</h1>
 				<hr class="title-line" />
@@ -177,16 +176,6 @@ section {
 							</tr>
 						</thead>
 						<tbody>
-							<!-- <tr>
-								<td>1</td>
-								<td><img src="" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>2016-02-05</td>
-								<td>2016-02-05</td>
-								<td>반납완료</td>
-							</tr> -->
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="book" items="${bList}">
 								<tr>
@@ -233,17 +222,6 @@ section {
 							</tr>
 						</thead>
 						<tbody>
-
-							<!-- <tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>구매완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr> -->
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="book" items="${rList}">
 								<tr>
@@ -283,18 +261,6 @@ section {
 							</tr>
 						</thead>
 						<tbody>
-
-							<!-- <tr>
-								<td>1</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판사</td>
-								<td>2016-01-22</td>
-								<td>기증완료</td>
-								<td>2016-02-05</td>
-								<td>-</td>
-							</tr> -->
-
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="book" items="${dList}">
 								<tr>

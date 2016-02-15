@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>도서관리</title>
 
@@ -80,11 +81,9 @@
 </head>
 <body>
 	<div class="container">
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+		<%@include file="/include/topMenu.jsp"%>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10" style="margin-top: 10px;">
 				<h1 id="mTitle">도서관리 -> 신청도서</h1>
 				<hr class="title-line" />

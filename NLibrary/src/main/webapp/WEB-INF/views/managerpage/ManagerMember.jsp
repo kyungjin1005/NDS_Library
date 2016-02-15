@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="/include/link.jsp"%>
 
 <title>회원관리</title>
 
@@ -99,11 +100,9 @@
 </head>
 <body>
 	<div class="container">
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+		<%@include file="/include/topMenu.jsp"%>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
+			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">회원관리</h1>
 				<hr class="title-line" />
@@ -111,7 +110,8 @@
 					action="ManagerMemberMsg.nds">
 					<div id="member-header">
 						Count <span class="badge">${size}</span>
-						<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-all" style="margin:0px;">전체선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-clear" style="margin:0px;">선택해제</button>
 					</div>
 					<table class="table table-hover" id="member-table">
 						<thead>
@@ -172,25 +172,17 @@
 	</footer>
 </body>
 <script>
-	$(document).ready(
-			function() {
-				$(".btn-detail").on(
-						"click",
-						function() {
-							$(location).attr(
-									"href",
-									"ManagerMemberInfo.nds?user_id="
-											+ $(this).val());
-						});
 
-				$("#btn-all").on("click", function() {
-					$(".cb").attr("checked", "checked");
-
-				});
-			});
-
-	function goMemberInfo(member_id) {
-		alert(member_id);
-	}
+	$(".btn-detail").on("click", function() {
+			$(location).attr("href", "ManagerMemberInfo.nds?user_id="+$(this).val());
+	});
+	
+	$("#btn-all").on("click", function() {
+		$(".cb").prop("checked", true);
+	});
+	
+	$("#btn-clear").on("click", function() {
+		$(".cb").removeProp("checked", false);
+});
 </script>
 </html>
