@@ -58,14 +58,6 @@
 	margin: 30px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-		$(".btn-register").on("click", function() {
-			$("#modal-dam-los").modal();
-		});
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -119,4 +111,12 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+
+		$(".btn-register").on("click", function() {
+			$("#modal-dam-los").modal();
+		});
+	});
+</script>
 </html>

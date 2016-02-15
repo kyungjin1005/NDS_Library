@@ -81,28 +81,6 @@
 	width: 10%;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		
-		$("#donation-filter option:eq(${filter})").attr("selected",
-		"selected");
-
-		$("#donation-filter").change(
-			function() {
-				$(location).attr(
-						"href",
-						"ManagerBookDonation.nds?filter="
-								+ $("#donation-filter").val());
-		});
-
-		$(".btn-register").on("click",
-				function() {
-					$(location).attr("href",
-							"ManagerBookDonationConfirm.nds?req_don_id=" + $(this).val());
-
-		});
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -184,6 +162,27 @@
 			<%@include file="/include/footer.jsp"%>
 		</footer>
 	</div>
-
 </body>
+<script>
+	$(document).ready(function() {
+		
+		$("#donation-filter option:eq(${filter})").attr("selected",
+		"selected");
+
+		$("#donation-filter").change(
+			function() {
+				$(location).attr(
+						"href",
+						"ManagerBookDonation.nds?filter="
+								+ $("#donation-filter").val());
+		});
+
+		$(".btn-register").on("click",
+				function() {
+					$(location).attr("href",
+							"ManagerBookDonationConfirm.nds?req_don_id=" + $(this).val());
+
+		});
+	});
+</script>
 </html>

@@ -63,11 +63,6 @@
 	margin: 15px 0px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -79,13 +74,6 @@
 			<div class="col-md-10">
 				<h1 id="mTitle">게시판 관리</h1>
 				<hr class="title-line" />
-
-
-
-
-
-
-
 				<div style="margin-bottom: 1%;">
 					<div>
 						<ul class="nav nav-pills nav-justified ">
@@ -96,7 +84,6 @@
 					</div>
 				</div>
 				<br>
-
 				<div id="filter">
 					&nbsp;
 					<button class="btn btn-large btn-default">일괄선택</button>
@@ -117,10 +104,6 @@
 						</select>
 					</form>
 				</div>
-
-
-
-
 				<table class="table table-hover" id="member-table">
 					<thead>
 						<tr>
@@ -193,23 +176,22 @@
 							<td>스터디모집</td>
 							<td>2016-02-02</td>
 						</tr>
-
 					</tbody>
 				</table>
-
 				<div id="member-footer">
 					<hr />
 					<button class="btn btn-md btn-warning btn-msg">새글 작성</button>
 				</div>
 			</div>
-
 		</div>
-
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
 	</div>
-
-
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>

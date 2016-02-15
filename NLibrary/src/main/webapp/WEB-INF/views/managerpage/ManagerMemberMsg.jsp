@@ -61,11 +61,6 @@
 	text-align: right;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -112,4 +107,9 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>

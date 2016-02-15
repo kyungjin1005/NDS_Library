@@ -93,14 +93,6 @@
 	font-size: 20px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-		$(".btn-register").on("click", function() {
-			$("#modal-dam-los").modal();
-		});
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -164,7 +156,7 @@
 									분실 등록</button>
 							</td>
 						</tr>
-						
+
 						<tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
@@ -179,8 +171,8 @@
 									분실 등록</button>
 							</td>
 						</tr>
-						
-						
+
+
 						<tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
@@ -195,7 +187,7 @@
 									분실 등록</button>
 							</td>
 						</tr>
-					
+
 						<tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
@@ -234,8 +226,8 @@
 							<td>파손도서</td>
 							<td>-</td>
 							<td>
-								<button class="btn btn-md btn-danger btn-register disabled">파손 및
-									분실 등록</button>
+								<button class="btn btn-md btn-danger btn-register disabled">파손
+									및 분실 등록</button>
 							</td>
 						</tr>
 						<tr>
@@ -248,8 +240,8 @@
 							<td>분실도서</td>
 							<td>-</td>
 							<td>
-								<button class="btn btn-md btn-danger btn-register disabled">파손 및
-									분실 등록</button>
+								<button class="btn btn-md btn-danger btn-register disabled">파손
+									및 분실 등록</button>
 							</td>
 						</tr>
 
@@ -319,10 +311,17 @@
 				</div>
 			</div>
 		</div>
-			<footer>
+		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
 	</div>
-
 </body>
+<script>
+	$(document).ready(function() {
+
+		$(".btn-register").on("click", function() {
+			$("#modal-dam-los").modal();
+		});
+	});
+</script>
 </html>

@@ -54,16 +54,6 @@
 	margin: 4px 0px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-		$("#btn-register").on("click", function() {
-		});
-		$("#btn-reject").on("click", function() {
-			$("#modal-reject").modal();
-		});
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -182,4 +172,14 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+
+		$("#btn-register").on("click", function() {
+		});
+		$("#btn-reject").on("click", function() {
+			$("#modal-reject").modal();
+		});
+	});
+</script>
 </html>
