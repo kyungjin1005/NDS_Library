@@ -112,7 +112,7 @@
 		<header>
 			<%@include file="/include/header.jsp"%>
 		</header>
-			<%@include file="ManagerpageSidebar.jsp"%>
+			<%@include file="/include/ManagerpageSidebar.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">회원관리</h1>
 				<hr class="title-line" />

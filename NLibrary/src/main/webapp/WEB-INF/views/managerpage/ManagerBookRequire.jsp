@@ -142,7 +142,7 @@
 			<%@include file="/include/header.jsp"%>
 		</header>
 		<div class="row" style="margin-top: 80px;">
-			<%@include file="ManagerpageSidebar.jsp"%>
+			<%@include file="/include/ManagerpageSidebar.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">도서관리 -> 신청도서</h1>
 				<hr class="title-line" />
