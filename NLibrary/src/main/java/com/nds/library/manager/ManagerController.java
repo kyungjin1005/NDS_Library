@@ -205,7 +205,6 @@ public class ManagerController {
 		System.out.println("category_id : " + book.getCategory_id());
 		System.out.println("isbn : " + book.getIsbn());
 
-		dao.requireRegisterBook(book); // 신청현황 업데이트
 
 		ReqAndDon info = dao.getInformation(book);
 

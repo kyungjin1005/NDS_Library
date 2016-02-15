@@ -78,7 +78,6 @@
 									<td>${book.name }</td>
 									<td>대분류</td>
 									<td>
-									
 											<select class="form-control filter" id="category_id"
 												name="category_id">
 												<option value="1">JAVA</option>
