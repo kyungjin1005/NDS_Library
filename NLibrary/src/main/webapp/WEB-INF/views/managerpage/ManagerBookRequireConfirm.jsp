@@ -77,21 +77,6 @@
 	margin: 4px 0px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-		$("#btn-confirm").on("click", function() {
-			 $(location).attr(
-					"href",
-					"RequireConfirm.nds?req_don_id="
-							+ "${book.req_don_id }"); 
-		});
-		
-		$("#btn-reject").on("click", function(){
-			$("#modal-reject").modal();
-		});
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -152,8 +137,8 @@
 				</div>
 			</div>
 		</div>
-		
-		
+
+
 		<!-- Modal -->
 		<div class="modal fade" id="modal-reject" role="dialog">
 			<div class="modal-dialog modal-md">
@@ -166,13 +151,14 @@
 					</div>
 					<div class="modal-body" style="margin: 20px auto;">
 
-						<form action="ManagerRequireRejectBook.nds" method="post" class="form-horizontal">
+						<form action="ManagerRequireRejectBook.nds" method="post"
+							class="form-horizontal">
 							<input type="hidden" name="req_don_id" value="${book.req_don_id}" />
 							<div class="form-group">
 								<label class="control-label col-md-2" for="manager_comment">반려이유:</label>
 								<div class="col-md-8">
-									<input type="text" class="form-control" name="manager_comment" id="manager_comment" required="required"
-										placeholder="30자이내">
+									<input type="text" class="form-control" name="manager_comment"
+										id="manager_comment" required="required" placeholder="30자이내">
 								</div>
 
 								<div class="col-md-2">
@@ -183,7 +169,7 @@
 						</form>
 
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
@@ -193,4 +179,22 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(
+			function() {
+
+				$("#btn-confirm").on(
+						"click",
+						function() {
+							$(location).attr(
+									"href",
+									"RequireConfirm.nds?req_don_id="
+											+ "${book.req_don_id }");
+						});
+
+				$("#btn-reject").on("click", function() {
+					$("#modal-reject").modal();
+				});
+			});
+</script>
 </html>

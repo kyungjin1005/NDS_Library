@@ -73,30 +73,6 @@
 	font-family: "맑은고딕";
 }
 </style>
-<script>
-	$(document).ready(
-			function() {
-
-				$("#msg-filter option:eq(${filter})").attr("selected",
-						"selected");
-
-				$(".btn-register").on("click", function() {
-					$("#modal-dam-los").modal();
-				});
-
-				$("#msg-filter").change(
-						function() {
-							$(location).attr(
-									"href",
-									"MessageList.nds?filter="
-											+ $("#msg-filter").val());
-						});
-
-				$("table tr").click(function() {
-					window.document.location = $(this).data("url");
-				});
-			});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -150,4 +126,29 @@
 		</footer>
 	</div>
 </body>
+
+<script>
+	$(document).ready(
+			function() {
+
+				$("#msg-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$(".btn-register").on("click", function() {
+					$("#modal-dam-los").modal();
+				});
+
+				$("#msg-filter").change(
+						function() {
+							$(location).attr(
+									"href",
+									"MessageList.nds?filter="
+											+ $("#msg-filter").val());
+						});
+
+				$("table tr").click(function() {
+					window.document.location = $(this).data("url");
+				});
+			});
+</script>
 </html>

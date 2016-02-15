@@ -109,86 +109,81 @@ section {
 	vertical-align: middle;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-	});
-</script>
 </head>
 <body>
 	<div class="container">
 		<header>
 			<%@include file="/include/header.jsp"%>
 		</header>
-			<%@include file="/include/ManagerpageSidebar.jsp"%>
-			<div class="col-md-10">
-				<h1 id="mTitle">회원관리->회원정보</h1>
-				<hr class="title-line" />
+		<%@include file="/include/ManagerpageSidebar.jsp"%>
+		<div class="col-md-10">
+			<h1 id="mTitle">회원관리->회원정보</h1>
+			<hr class="title-line" />
 
-				<div class="row">
-					<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-3">
 
-						<img src=${user.picture } alt="" id="member-picture" />
-					</div>
-					<div class="col-md-9">
-						<div class="panel panel-info">
+					<img src=${user.picture } alt="" id="member-picture" />
+				</div>
+				<div class="col-md-9">
+					<div class="panel panel-info">
 
-							<div class="panel-heading" id="info-header">회원정보</div>
-							<div class="panel-body" style="padding: 8px">
+						<div class="panel-heading" id="info-header">회원정보</div>
+						<div class="panel-body" style="padding: 8px">
 
-								<table class="table sub-table" id="member-table">
-									<tbody>
-										<tr>
-											<th>이름</th>
-											<td>${user.name }</td>
-										</tr>
-										<tr>
-											<th>사번</th>
-											<td>${user.nds_number }</td>
-										</tr>
-										<tr>
-											<th>부서</th>
-											<td>${user.department }</td>
-										</tr>
-										<tr>
-											<th>직위</th>
-											<td>${user.position }</td>
-										</tr>
-										<tr>
-											<th>입사날짜</th>
-											<td>${user.registered_date }</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+							<table class="table sub-table" id="member-table">
+								<tbody>
+									<tr>
+										<th>이름</th>
+										<td>${user.name }</td>
+									</tr>
+									<tr>
+										<th>사번</th>
+										<td>${user.nds_number }</td>
+									</tr>
+									<tr>
+										<th>부서</th>
+										<td>${user.department }</td>
+									</tr>
+									<tr>
+										<th>직위</th>
+										<td>${user.position }</td>
+									</tr>
+									<tr>
+										<th>입사날짜</th>
+										<td>${user.registered_date }</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<section class="row">
+			<section class="row">
 
-					<div class="sub-title">
+				<div class="sub-title">
 
-						<span class="glyphicon glyphicon-list-alt icon"></span> <span>대여내역</span><span
-							class="badge" style="margin-left: 3px">${bSize}</span>
-					</div>
-					<hr class="sub-title-line" />
-					<table class="table table-bordered text-center sub-table"
-						id="borrow-table">
-						<thead>
-							<tr>
-								<th>번호</th>
-								<th>제목</th>
-								<th>저자</th>
-								<th>출판사</th>
-								<th>대출일</th>
-								<th>반납예정일</th>
-								<th>반납일</th>
-								<th>대출상태</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!-- <tr>
+					<span class="glyphicon glyphicon-list-alt icon"></span> <span>대여내역</span><span
+						class="badge" style="margin-left: 3px">${bSize}</span>
+				</div>
+				<hr class="sub-title-line" />
+				<table class="table table-bordered text-center sub-table"
+					id="borrow-table">
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>저자</th>
+							<th>출판사</th>
+							<th>대출일</th>
+							<th>반납예정일</th>
+							<th>반납일</th>
+							<th>대출상태</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- <tr>
 								<td>1</td>
 								<td><img src="" alt="" /><span>이것이자바다</span></td>
 								<td>홍길동</td>
@@ -199,65 +194,62 @@ section {
 								<td>반납완료</td>
 							</tr> -->
 
-							<c:set var="count" value="1"></c:set>
-							<c:forEach var="book" items="${bList}">
-								<tr>
-									<td>${count }</td>
-									<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
-									<td>${book.author}</td>
-									<td>${book.publisher}</td>
-									<td>${empty book.borrowing_date?"-":book.borrowing_date}</td>
-									<td>${empty book.scheduled_date?"-":book.scheduled_date}</td>
-									<td>${empty book.returned_date?"-":book.returned_date}</td>
-									<td>
-									<c:choose>
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${bList}">
+							<tr>
+								<td>${count }</td>
+								<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${empty book.borrowing_date?"-":book.borrowing_date}</td>
+								<td>${empty book.scheduled_date?"-":book.scheduled_date}</td>
+								<td>${empty book.returned_date?"-":book.returned_date}</td>
+								<td><c:choose>
 										<c:when test="${empty book.returned_date}">
 										대여중
 										</c:when>
 										<c:otherwise>
 										반납완료
 										</c:otherwise>
-									</c:choose>
-									</td>
-								</tr>
+									</c:choose></td>
+							</tr>
 
 							<c:set var="count" value="${count+1}"></c:set>
-							</c:forEach>
-						</tbody>
-					</table>
+						</c:forEach>
+					</tbody>
+				</table>
 
 
-				</section>
+			</section>
 
 
-				<section class="row">
+			<section class="row">
 
-					<div class="sub-title">
+				<div class="sub-title">
 
-						<span class="glyphicon glyphicon-list-alt icon"></span> <span
-							style="">도서신청내역</span><span class="badge"
-							style="margin-left: 3px">${rSize }</span>
-					</div>
-					<hr class="sub-title-line" />
+					<span class="glyphicon glyphicon-list-alt icon"></span> <span
+						style="">도서신청내역</span><span class="badge" style="margin-left: 3px">${rSize }</span>
+				</div>
+				<hr class="sub-title-line" />
 
 
-					<table class="table table-bordered text-center sub-table"
-						id="require-table">
-						<thead>
-							<tr>
-								<th>번호</th>
-								<th>제목</th>
-								<th>저자</th>
-								<th>출판사</th>
-								<th>신청일</th>
-								<th>신청상태</th>
-								<th>완료일/구매일</th>
-								<th>비고</th>
-							</tr>
-						</thead>
-						<tbody>
+				<table class="table table-bordered text-center sub-table"
+					id="require-table">
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>저자</th>
+							<th>출판사</th>
+							<th>신청일</th>
+							<th>신청상태</th>
+							<th>완료일/구매일</th>
+							<th>비고</th>
+						</tr>
+					</thead>
+					<tbody>
 
-							<!-- <tr>
+						<!-- <tr>
 								<td>1</td>
 								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
 								<td>홍길동</td>
@@ -267,54 +259,53 @@ section {
 								<td>2016-02-05</td>
 								<td>-</td>
 							</tr> -->
-							<c:set var="count" value="1"></c:set>
-							<c:forEach var="book" items="${rList}">
-								<tr>
-									<td>${count }</td>
-									<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
-									<td>${book.author}</td>
-									<td>${book.publisher}</td>
-									<td>${empty book.registered_date?"-":book.registered_date}</td>
-									<td>${empty book.current_state?"-":book.current_state}</td>
-									<td>${empty book.finished_date?"-":book.finished_date}</td>
-									<td>${empty book.manager_comment?"-":book.manager_comment}</td>
-								</tr>
-							<c:set var="count" value="${count+1}"></c:set>
-							</c:forEach>
-
-						</tbody>
-					</table>
-
-				</section>
-
-				<section class="row">
-
-					<div class="sub-title">
-
-						<span class="glyphicon glyphicon-list-alt icon"></span> <span
-							style="">도서기증내역</span><span class="badge"
-							style="margin-left: 3px">${dSize }</span>
-					</div>
-					<hr class="sub-title-line" />
-
-
-					<table class="table table-bordered text-center sub-table"
-						id="donation-table">
-						<thead>
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${rList}">
 							<tr>
-								<th>번호</th>
-								<th>제목</th>
-								<th>저자</th>
-								<th>출판사</th>
-								<th>기증일</th>
-								<th>기증상태</th>
-								<th>완료일/구매일</th>
-								<th>비고</th>
+								<td>${count }</td>
+								<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${empty book.registered_date?"-":book.registered_date}</td>
+								<td>${empty book.current_state?"-":book.current_state}</td>
+								<td>${empty book.finished_date?"-":book.finished_date}</td>
+								<td>${empty book.manager_comment?"-":book.manager_comment}</td>
 							</tr>
-						</thead>
-						<tbody>
+							<c:set var="count" value="${count+1}"></c:set>
+						</c:forEach>
 
-							<!-- <tr>
+					</tbody>
+				</table>
+
+			</section>
+
+			<section class="row">
+
+				<div class="sub-title">
+
+					<span class="glyphicon glyphicon-list-alt icon"></span> <span
+						style="">도서기증내역</span><span class="badge" style="margin-left: 3px">${dSize }</span>
+				</div>
+				<hr class="sub-title-line" />
+
+
+				<table class="table table-bordered text-center sub-table"
+					id="donation-table">
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>저자</th>
+							<th>출판사</th>
+							<th>기증일</th>
+							<th>기증상태</th>
+							<th>완료일/구매일</th>
+							<th>비고</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<!-- <tr>
 								<td>1</td>
 								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
 								<td>홍길동</td>
@@ -324,31 +315,35 @@ section {
 								<td>2016-02-05</td>
 								<td>-</td>
 							</tr> -->
-							
-							<c:set var="count" value="1"></c:set>
-							<c:forEach var="book" items="${dList}">
-								<tr>
-									<td>${count }</td>
-									<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
-									<td>${book.author}</td>
-									<td>${book.publisher}</td>
-									<td>${empty book.registered_date?"-":book.registered_date}</td>
-									<td>${empty book.current_state?"-":book.current_state}</td>
-									<td>${empty book.finished_date?"-":book.finished_date}</td>
-									<td>${empty book.manager_comment?"-":book.manager_comment}</td>
-								</tr>
+
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${dList}">
+							<tr>
+								<td>${count }</td>
+								<td><img src=${book.image } alt="" /><span>${book.title}</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${empty book.registered_date?"-":book.registered_date}</td>
+								<td>${empty book.current_state?"-":book.current_state}</td>
+								<td>${empty book.finished_date?"-":book.finished_date}</td>
+								<td>${empty book.manager_comment?"-":book.manager_comment}</td>
+							</tr>
 							<c:set var="count" value="${count+1}"></c:set>
-							</c:forEach>
-						</tbody>
-					</table>
+						</c:forEach>
+					</tbody>
+				</table>
 
-				</section>
-			</div>
-
+			</section>
 		</div>
-		<footer>
-			<%@include file="/include/footer.jsp"%>
-		</footer>
+
 	</div>
+	<footer>
+		<%@include file="/include/footer.jsp"%>
+	</footer>
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>

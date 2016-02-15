@@ -63,11 +63,6 @@
 	margin: 15px 0px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-	});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -213,6 +208,10 @@
 			<%@include file="/include/footer.jsp"%>
 		</footer>
 	</div>
-
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>
