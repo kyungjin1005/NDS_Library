@@ -113,7 +113,9 @@ section {
 </head>
 <body>
 	<div class="container">
-		<%@include file="/include/topMenu.jsp"%>
+		<header>
+			<%@include file="/include/topMenu.jsp"%>
+		</header>
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">

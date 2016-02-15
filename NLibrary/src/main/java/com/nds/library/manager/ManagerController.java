@@ -223,14 +223,17 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value = "/ManagerMemberMsg.nds", method = RequestMethod.POST)
-	public String managerMemberMsg(Model model, String[] user_id) {
-
-		System.out.println("size : " + user_id.length);
-		for(String s : user_id){
-			System.out.print(s + ",");
+	public String managerMemberMsg(Model model, String[] uid, Message m) {
+		
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		
+		System.out.println("size : " + uid.length);
+		for(String user_id : uid){
+			System.out.print(user_id);
+			m.setUser_id(Integer.parseInt(user_id));
+			dao.messageSend(m);
 		}
+		
 		return "WEB-INF/views/managerpage/ManagerMemberMsg.jsp";
 	}
-	
-	
 }

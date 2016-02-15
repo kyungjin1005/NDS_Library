@@ -196,5 +196,9 @@
 		where user_id=#{user_id} and (current_state='기증완료' or current_state='기증대기' or current_state='기증반려')
 		order by reqanddon.registered_date desc
 	</select>
-
+	
+	<insert id="messageSend">
+	INSERT INTO messages (message_id, user_id, title, content, sended_date, is_checked)
+	VALUES ((SELECT NVL(MAX(message_id),0)+1 FROM messages), #{uid}, #{title}, #{content}, SYSDATE, 0);
+	</insert>
 </mapper>   

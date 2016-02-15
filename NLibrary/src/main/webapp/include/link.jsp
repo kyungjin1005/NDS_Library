@@ -33,39 +33,40 @@
 	rel="stylesheet" />
 	
 <style type="text/css">
+
 header {
-	border: 0px solid red;
-	height: 100px;
-	position: relative;
-	z-index: 1;
-	padding-top: 10px;
+   border: 0px solid red;
+   height: 100px;
+   position: relative;
+   z-index: 1;
+   padding-top: 10px;
 }
 
 header .row {
-	height: 100%;
-	vertical-align: middle;
+   height: 100%;
+   vertical-align: middle;
 }
 
 header .row .col-md-4 {
-	vertical-align: middle;
+   vertical-align: middle;
 }
 
 #logo a {
-	border: 0px solid blue;
-	float: left;
+   border: 0px solid blue;
+   float: left;
 }
 
 #logo img {
-	border: 0px solid red;
-	width: 130px;
+   border: 0px solid red;
+   width: 130px;
 }
 
 .logout a {
-	color: #ff0000;
+   color: #ff0000;
 }
 
 header .list-inline {
-	float: right;
+   float: right;
 }
 
 
@@ -166,10 +167,5 @@ footer ul li {
 	text-align: right;
 	margin: 15px 0px;
 }
-
-
-
-
-
 
 </style>

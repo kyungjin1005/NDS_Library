@@ -65,14 +65,16 @@
 </head>
 <body>
 	<div class="container">
-		<%@include file="/include/topMenu.jsp"%>
+		<header>
+			<%@include file="/include/topMenu.jsp"%>
+		</header>
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10 body-box">
 				<h1 id="mTitle">회원관리</h1>
 				<hr class="title-line" />
 				<div id="box">
-					<form action="" method="POST">
+					<form action="managerMemberMsg.nds" method="POST">
 						<table class="table" id="msg-table">
 							<tr>
 								<th>제목</th>
@@ -81,7 +83,7 @@
 							</tr>
 							<tr>
 								<th>받는사람</th>
-								<td>홍길동 (개발본부 / 사원)</td>
+								<td>List로 보여주기~~~</td>
 							</tr>
 							<tr>
 								<th>내용</th>
