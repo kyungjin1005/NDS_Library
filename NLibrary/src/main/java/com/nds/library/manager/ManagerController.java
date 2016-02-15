@@ -33,8 +33,8 @@ public class ManagerController {
 			filter = "0";
 		}
 		map.put("filter", filter);
-
 		ArrayList<Message> list = dao.MessageList(map);
+
 		model.addAttribute("messageList", list);
 		model.addAttribute("filter", filter);
 
@@ -53,7 +53,7 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/ManagerBookRequire.nds", method = RequestMethod.GET)
-	public String managerBookRequire(Model model, String filter) {
+	public String managerBookRequire(Model model, String filter, String page) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
@@ -64,7 +64,101 @@ public class ManagerController {
 		}
 		map.put("filter", filter);
 
-		ArrayList<ReqAndDon> list = dao.requireBookList(map);
+		//ArrayList<ReqAndDon> list = dao.requireBookList(map);
+		
+
+		// 페이징 처리
+		int nowpage = 0; // 현재 페이지 번호
+		int totalCount = 0; // 총 게시물 수
+		int totalPage = 0; // 총 페이지 수
+		int pageSize = 10; // 한페이지당 게시물 수
+		int n = 0, loop = 0;
+		int start = 0, end = 0;
+		int blockSize = 10;
+
+		if (page == null) {
+			nowpage = 1;
+		} else {
+			nowpage = Integer.parseInt(page);
+		}
+
+		start = ((nowpage - 1) * pageSize) + 1;
+		end = start + pageSize - 1;
+		
+	
+		// 페이징
+		map.put("start", start + "");
+		map.put("end", end + "");
+		
+		ArrayList<ReqAndDon> list = dao.bList(map);
+
+		// 페이징
+		// 총 페이지 수?
+		totalCount = dao.totalCount(filter); // 124건
+		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 무조건
+																		// 올림(3.1
+																		// -> 4)
+
+		// 페이지 바 생성
+		String pagebar = "";
+
+		pagebar += "<nav id='nav1'><ul class='pagination'>";
+
+		/*
+		 * for (int i=1; i<= totalPage; i++) { pagebar += String.format(
+		 * "<li><a href='#'>%d</a></li>", i); }
+		 */
+
+		// blockSize : 한번에 보여질 페이지 최대 갯수
+
+		// 페이지 번호를 만들기 위한 루프 변수
+		loop = 1;
+
+		// 페이지 출력 번호 변수(페이지 번호)
+		// 5페이지 -> 1
+		// 8페이지 -> 1
+		// 10페이지 -> 1
+		// 15페이지 -> 11
+		n = ((nowpage - 1) / blockSize) * blockSize + 1;
+
+		// 이전 10페이지
+		if (n == 1) {
+			pagebar += String.format(
+					"<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
+		} else {
+			pagebar += String.format(
+					"<li><a href='ManagerBookRequire.nds?page=%d' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>",
+					n - 1);
+		}
+
+		// 페이지 번호 출력
+		while (!(loop > blockSize || n > totalPage)) {
+
+			// 현재 페이지
+			if (n == nowpage) {
+				pagebar += String.format("<li class='active'><a href='#'>%d</a></li>", n);
+			} else {
+				pagebar += String.format("<li><a href='ManagerBookRequire.nds?page=%d'>%d</a></li>", n, n);
+			}
+
+			loop++;
+			n++;
+		}
+
+		// 다음 10페이지
+		if (n > totalPage) {
+			pagebar += String.format(
+					"<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
+		} else {
+			pagebar += String.format(
+					"<li><a href='ManagerBookRequire.nds?page=%d' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>",
+					n);
+		}
+		pagebar += "</ul></nav>";
+
+		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("map", map);
+
 		model.addAttribute("requireList", list);
 		model.addAttribute("filter", filter);
 
@@ -200,11 +294,10 @@ public class ManagerController {
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
 		dao.donationRegisterBook(book);
-		
+
 		System.out.println("req_don_id : " + book.getReq_don_id());
 		System.out.println("category_id : " + book.getCategory_id());
 		System.out.println("isbn : " + book.getIsbn());
-
 
 		ReqAndDon info = dao.getInformation(book);
 
@@ -235,7 +328,7 @@ public class ManagerController {
 			System.out.println("�엳�뒗梨낆씠�떎. 諛붾줈 insert");
 			dao.insertBook(info);
 		}
-		
+
 		return "redirect:ManagerBookDonation.nds";
 	}
 
@@ -285,16 +378,16 @@ public class ManagerController {
 
 	@RequestMapping(value = "/ManagerMemberMsg.nds", method = RequestMethod.POST)
 	public String managerMemberMsg(Model model, String[] uid, Message m) {
-		
+
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		
+
 		System.out.println("size : " + uid.length);
-		for(String user_id : uid){
+		for (String user_id : uid) {
 			System.out.print(user_id);
 			m.setUser_id(Integer.parseInt(user_id));
 			dao.messageSend(m);
 		}
-		
+
 		return "WEB-INF/views/managerpage/ManagerMemberMsg.jsp";
 	}
 }
