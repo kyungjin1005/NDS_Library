@@ -7,7 +7,6 @@ public class Board {
 	private String category, title, content, boarded_date, modified_date, name;
 	private String picture, department, position;
 	
-	
 	public int getBoard_id() {
 		return board_id;
 	}
@@ -87,6 +86,4 @@ public class Board {
 	public void setPosition(String position) {
 		this.position = position;
 	}
-
-	
 }

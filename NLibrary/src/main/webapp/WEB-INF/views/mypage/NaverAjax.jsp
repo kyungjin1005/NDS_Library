@@ -11,6 +11,7 @@
 			<pubdate><![CDATA[${book.pubdate}]]></pubdate>
 			<publisher><![CDATA[${book.publisher}]]></publisher>
 			<author><![CDATA[${book.author}]]></author>
+			<description><![CDATA[${book.explanation}]]></description>
 		</book>
 	</c:forEach>
 </books>

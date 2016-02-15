@@ -10,13 +10,6 @@
 
 <title>공지사항</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 
 <style type="text/css">
 #list-title {
@@ -53,20 +46,31 @@
 	margin-top: 5px;
 	margin-bottom: 40px;
 }
-</style>
-<script>
-	$(document).ready(function() {
 
-	});
-</script>
+
+
+</style>
+
 </head>
 <body>
 
-	<div class="container">
+	<c:set var="totalCount" value="${totalCount}" />
+	<c:set var="indexCount" value="${indexCount}" />	
+	<%	
+		int pageNumTemp = 1;
+		int listCount = 10;
+		int pagePerBlock = 10;
+		int totalCount = (Integer)pageContext.getAttribute("totalCount");
+		String pageNum = request.getParameter("pageNum");
+		if (pageNum != null) {
+			pageNumTemp = Integer.parseInt(pageNum);
+		}
+		int index = (Integer)pageContext.getAttribute("indexCount");
+		
+	%>  
 
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+
+	<div class="container">
 
 		<div class="row" style="margin-top: 80px;">
 			<div class="col-md-2">
@@ -74,19 +78,14 @@
 				<div id="list-title">
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">공지사항</a></li>
-					<li class="list-group-item"><a href="">도서신청</a></li>
-					<li class="list-group-item"><a href="">기증도서</a></li>
-					<li class="list-group-item"><a href="">스터디모집</a></li>
-				</ul>
+				<%@include file="/include/BoardSide.jsp"%>
 
 			</div>
 			<div class="col-md-10">
 				<h1 id="mTitle">공지사항</h1>
-
+				
 				<hr class="title-line" />
-				<table class="table table-condensed">
+				<table class="table table-condensed" id="board">
 					<thead>
 						<tr>
 							<th>번호</th>
@@ -96,66 +95,129 @@
 							<th>조회수</th>
 						</tr>
 					</thead>
+					
 					<tbody>
-						<tr>
-							<td>105</td>
-							<td><a href="#">1월 3째주 IT핫이슈</a></td>
-							<td>관리자</td>
-							<td>2016-01-22</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td>104</td>
-							<td><a href="#">1월 2째주 IT핫이슈</a></td>
-							<td>김혜원</td>
-							<td>2016-01-21</td>
-							<td>200</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-							<td>...</td>
-						</tr>
+						<c:forEach var="board" items="${list}">
+								<tr href="BoardDetail.nds?board_id=${board.board_id}&type=notice" style="cursor:pointer;">
+									<%-- <td>${board.board_id}</td> --%>
+									<td><%=index-- %></td>
+									<td>${board.title}</td>
+									<td>${board.name}</td>
+									<td>${board.boarded_date}</td>
+									<td>${board.read_count}</td>
+								</tr>
+						</c:forEach>
 					</tbody>
+					
 				</table>
-
+				
+				
+				<!-- 페이징 시작 -->
+	<div>
+	<% 
+	if(totalCount > 0) {
+		int totalNumOfPage = (totalCount % listCount == 0) ? 
+				totalCount / listCount :
+				totalCount / listCount + 1;
+		
+		int totalNumOfBlock = (totalNumOfPage % pagePerBlock == 0) ?
+				totalNumOfPage / pagePerBlock :
+				totalNumOfPage / pagePerBlock + 1;
+		
+		int currentBlock = (pageNumTemp % pagePerBlock == 0) ? 
+				pageNumTemp / pagePerBlock :
+				pageNumTemp / pagePerBlock + 1;
+		
+		int startPage = (currentBlock - 1) * pagePerBlock + 1;
+		int endPage = startPage + pagePerBlock - 1;
+		
+		if(endPage > totalNumOfPage)
+			endPage = totalNumOfPage;
+		boolean isNext = false;
+		boolean isPrev = false;
+		if(currentBlock < totalNumOfBlock)
+			isNext = true;
+		if(currentBlock > 1)
+			isPrev = true;
+		if(totalNumOfBlock == 1){
+			isNext = false;
+			isPrev = false;
+		}
+		StringBuffer sb = new StringBuffer();
+		%>
+		<br/><br/><br/><br/>
+		 <div align="center">
+         <ul class="pagination pagination-style-2">
+		<% 
+		if(pageNumTemp > 1){
+			%>
+				<li><a href="BoardNoticeList.nds?pageNum=1">«</a></li>
+			<% 
+		}
+%><% 
+          
+		if (isPrev) {
+			int goPrevPage = startPage - pagePerBlock;
+			
+			%>
+				<li><a href="BoardNoticeList.nds?pageNum="<%=goPrevPage%>">«</a></li>
+			<% 
+		} else {
+			
+		}
+		for (int i = startPage; i <= endPage; i++) {
+			if (i == pageNumTemp) {
+				%>
+					<li class="active"><a href="#"><%=i %></a></li>
+				<% 
+			} else {
+				%>
+					<li><a href="BoardNoticeList.nds?pageNum=<%=i%>"><%=i %></a></li>
+				<% 
+			}
+		}
+		if (isNext) {
+			int goNextPage = startPage + pagePerBlock;
+			%>
+				 <li><a href="BoardNoticeList.nds?pageNum=<%=goNextPage%>">»</a></li>
+			<% 
+		} else {
+			
+		}
+		if(totalNumOfPage > pageNumTemp){
+			%>
+				<li><a href="BoardNoticeList.nds?pageNum=<%=totalNumOfPage%>">»</a></li>
+			<%
+		}
+	}
+	%>
+			</div>	
+				<br/><br/><br/>
+				
+				<div style="text-align: right">
+					<form action="AddBoard.nds" method="get">
+						<input type="hidden" name="type" value="notice" />
+						<label><input type="submit" value="글쓰기"  class="btn btn-default"/></label>
+					</form>
+				</div>
 			</div>
 
 		</div>
+	
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
 
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+		
+		    $('table tr').click(function(){
+		        window.location = $(this).attr('href');
+		        return false;
+		    });
+		
+	});
+</script>
 </html>

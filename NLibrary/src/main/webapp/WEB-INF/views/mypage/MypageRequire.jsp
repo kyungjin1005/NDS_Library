@@ -7,36 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 <title>도서신청현황</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 
 <style type="text/css">
-#list-title {
-	text-align: center;
-	padding: 0px;
-}
 
-#list-title img {
-	width: 100%;
-	margin: 0px;
-}
-
-.list-group-item {
-	font-family: "맑은고딕";
-	font-weight: bold;
-	color: #555555;
-	height: 50px;
-	display: list-item;
-	vertical-align: middle;
-}
 
 #mTitle {
 	background-image: url("pictures/title.png");
@@ -84,7 +61,7 @@
 	
 }
 
-#aa {
+#scroll-box {
 	max-height: 500px;
 	overflow-y: scroll;
 }
@@ -156,66 +133,6 @@
 	font-weight: bold;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		$("#btn-require").on("click", function() {
-			$("#req-modal").modal();
-		});
-
-		$("#btn-search").on("click", function() {
-			var query = $("#query").val();
-			loadDoc(query);
-
-		});
-
-	});
-
-	function loadDoc(query) {
-		$.get(
-						"NaverAjax.nds?query=" + query,
-						function(data) {
-							var rootElement = $(data).find(":root");
-							var books = $(rootElement).find("book");
-							var result = "";
-
-							for (var i = 0; i < $(books).length; ++i) {
-								var book = $(books).eq(i);
-								result += "<tr>";
-								result += "<td>" + (i+1) + "</td>";
-								result += "<td>" + "<div class=\"clearfix\">";
-								result += "<img src=\""
-										+ $(book).find("image").text()
-										+ "\" class=\"modal-img\" />";
-								result += "<ul class=\"modal-list\">";
-								result += "<li>" + $(book).find("title").text()
-										+ "</li>";
-								result += "<li>저자 - "
-										+ $(book).find("author").text()
-										+ "</li>";
-								result += "<li>출판사 - "
-										+ $(book).find("publisher").text()
-										+ "</li>";
-								result += "<li>발행일 - "
-										+ $(book).find("pubdate").text()
-										+ "</li>";
-								result += "<li>ISBN - "
-										+ $(book).find("isbn").text() + "</li>";
-								result += "</ul>";
-								result += "</div>";
-								result += "</td>";
-								result += "<td>"
-										+ "<button class=\"btn btn-md btn-default\">신청하기</button>"
-										+ "</td>";
-
-								result += "</tr>";
-							}
-
-							/* 	$("#boardTable").find("tbody").append(result);		 */
-							$("#modal-table").find("tbody").html(result)
-						}, "xml");
-
-	}
-</script>
 </head>
 <body>
 
@@ -223,29 +140,16 @@
 	<div class="container">
 
 		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+			<%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
-			<div class="col-md-2">
-
-				<div id="list-title">
-					<img src="pictures/mypage.png" alt="" />
-				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">대출현황조회</a></li>
-					<li class="list-group-item"><a href="">메세지함</a></li>
-					<li class="list-group-item"><a href="">도서신청현황</a></li>
-					<li class="list-group-item"><a href="">도서기증현황</a></li>
-				</ul>
-
-			</div>
+			<%@include file="/include/mypageSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">도서신청현황</h1>
 				<hr class="title-line" />
 
 
 
-				<form class="form-inline" role="form" method="post"
+				<form class="form-inline" role="form" method="get"
 					style="display: inline-block; float: right; margin-bottom: 20px;">
 					<select class="form-control" id="borrow-filter"
 						name="borrow-filter">
@@ -273,7 +177,7 @@
 					</thead>
 					<tbody>
 
-						<tr>
+						<!-- 	<tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" /><span>이것이자바다</span></td>
 							<td>홍길동</td>
@@ -282,53 +186,23 @@
 							<td>구매완료</td>
 							<td>2016-02-05</td>
 							<td>-</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>구매완료</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-						</tr>
+						</tr> -->
 
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${requireList}">
+							<tr>
+								<td>${count}</td>
+								<td><img src="${book.image}" alt="" /><span>${book.title }</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${book.registered_date}</td>
+								<td>${empty book.current_state?"-":book.current_state}</td>
+								<td>${empty book.finished_date?"-":book.finished_date}</td>
+								<td>${empty book.manager_comment?"-":book.manager_comment}</td>
+							</tr>
+							<c:set var="count" value="${count+1}"></c:set>
+						</c:forEach>
 
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>신청완료</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-						</tr>
-
-
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>신청대기</td>
-							<td>-</td>
-							<td>-</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>신청반려</td>
-							<td>2016-02-05</td>
-							<td>중복도서</td>
-						</tr>
 					</tbody>
 				</table>
 
@@ -336,7 +210,6 @@
 					<button class="btn btn-md btn-warning" id="btn-require">신청하기</button>
 				</div>
 			</div>
-
 		</div>
 
 
@@ -360,7 +233,7 @@
 								<button type="button" class="btn btn-danger" id="btn-search">검색</button>
 							</div>
 						</form>
-						<div id="aa">
+						<div id="scroll-box">
 							<table class="table table-hover text-center" id="modal-table">
 								<thead>
 									<tr>
@@ -370,6 +243,7 @@
 									</tr>
 								</thead>
 								<tbody>
+
 									<!-- <tr>
 									<td>1</td>
 									<td>
@@ -407,4 +281,94 @@
 		</footer>
 	</div>
 </body>
+
+<script>
+	$(document).ready(
+			function() {
+
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$("#btn-require").on("click", function() {
+					$("#req-modal").modal();
+				});
+
+				$("#btn-search").on("click", function() {
+					var query = $("#query").val();
+					loadDoc(query);
+
+				});
+
+				$("#borrow-filter").change(
+						function() {
+							/* alert($("#borrow-filter").val()); */
+							$(location).attr(
+									"href",
+									"MypageRequire.nds?filter="
+											+ $("#borrow-filter").val());
+						});
+			});
+
+	function loadDoc(query) {
+		$
+				.get(
+						"NaverAjax.nds?query=" + query,
+						function(data) {
+							var rootElement = $(data).find(":root");
+							var books = $(rootElement).find("book");
+							var result = "";
+
+							for (var i = 0; i < $(books).length; ++i) {
+								var book = $(books).eq(i);
+								result += "<tr>";
+								result += "<td>" + (i + 1) + "</td>";
+								result += "<td>" + "<div class=\"clearfix\">";
+								result += "<img src="
+										+ $(book).find("image").text()
+										+ " class=\"modal-img\" />";
+								result += "<ul class=\"modal-list\">";
+								result += "<li>" + $(book).find("title").text()
+										+ "</li>";
+								result += "<li>저자 - "
+										+ $(book).find("author").text()
+										+ "</li>";
+								result += "<li>출판사 - "
+										+ $(book).find("publisher").text()
+										+ "</li>";
+								result += "<li>발행일 - "
+										+ $(book).find("pubdate").text()
+										+ "</li>";
+								result += "<li>ISBN - "
+										+ $(book).find("isbn").text() + "</li>";
+								result += "</ul>";
+								result += "</div>";
+								result += "</td>";
+								result += "<td>"
+										+ "<button type=\"button\" value=\""
+										+ $(book).find("isbn").text()
+										+ "\"class=\"btn btn-md btn-default btn-register\" >신청하기</button>"
+										+ "</td>";
+
+								result += "</tr>";
+							}
+
+							/* 	$("#boardTable").find("tbody").append(result);		 */
+							$("#modal-table").find("tbody").html(result);
+
+							$(".btn-register").on(
+									"click",
+									function() {
+										/* $("#isbn").val($(this).parents("tr").find("td:eq(1)").text()); */
+										//alert("zz");
+										alert($(this).val());
+
+										$(location).attr(
+												"href",
+												"MypageRequireForm.nds?isbn="
+														+ $(this).val());
+									});
+						}, "xml");
+
+	}
+</script>
 </html>

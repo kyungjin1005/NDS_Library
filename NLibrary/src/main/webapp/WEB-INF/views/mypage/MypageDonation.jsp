@@ -7,37 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 <title>도서기증현황</title>
-
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <style type="text/css">
-#list-title {
-	text-align: center;
-	padding: 0px;
-}
-
-#list-title img {
-	width: 100%;
-	margin: 0px;
-}
-
-.list-group-item {
-	font-family: "맑은고딕";
-	font-weight: bold;
-	color: #555555;
-	height: 50px;
-	display: list-item;
-	vertical-align: middle;
-}
-
 #mTitle {
 	background-image: url("pictures/title.png");
 	background-position: 0px 0px;
@@ -86,7 +58,10 @@
 
 .modal-content {
 	z-index: 1;
-	max-height: 800px;
+}
+
+#scroll-box {
+	max-height: 500px;
 	overflow-y: scroll;
 }
 
@@ -153,41 +128,17 @@
 	font-weight: bold;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		$("#btn-donation").on("click", function() {
-			$("#don-modal").modal();
-		});
-
-	});
-</script>
 </head>
 <body>
-
-
 	<div class="container">
-
 		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+			<%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
-			<div class="col-md-2">
-
-				<div id="list-title">
-					<img src="pictures/mypage.png" alt="" />
-				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">대출현황조회</a></li>
-					<li class="list-group-item"><a href="">메세지함</a></li>
-					<li class="list-group-item"><a href="">도서신청현황</a></li>
-					<li class="list-group-item"><a href="">도서기증현황</a></li>
-				</ul>
-
-			</div>
-			<div class="col-md-10"">
+			<%@include file="/include/mypageSideMenu.jsp"%>
+			<div class="col-md-10">
 				<h1 id="mTitle">도서기증현황</h1>
 				<hr class="title-line" />
-				
+
 				<form class="form-inline" role="form" method="post"
 					style="display: inline-block; float: right; margin-bottom: 20px;">
 					<select class="form-control" id="borrow-filter"
@@ -198,7 +149,7 @@
 						<option value="3">기증반려</option>
 					</select>
 				</form>
-				
+
 				<table class="table table-hover text-center" id="donation-table">
 					<thead>
 						<tr>
@@ -214,7 +165,7 @@
 					</thead>
 					<tbody>
 
-						<tr>
+						<!-- <tr>
 							<td>1</td>
 							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
 							<td>홍길동</td>
@@ -223,58 +174,27 @@
 							<td>기증완료</td>
 							<td>2016-02-05</td>
 							<td>-</td>
-						</tr>
+						</tr> -->
 
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>기증대기</td>
-							<td>-</td>
-							<td>-</td>
-						</tr>
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>기증대기</td>
-							<td>-</td>
-							<td>-</td>
-						</tr>
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>기증반려</td>
-							<td>2016-02-05</td>
-							<td>파손도서</td>
-						</tr>
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>기증완료</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-						</tr>
-
+						<c:set var="count" value="1"></c:set>
+						<c:forEach var="book" items="${donationList}">
+							<tr>
+								<td>${count}</td>
+								<td><img src="${book.image}" alt="" /><span>${book.title }</span></td>
+								<td>${book.author}</td>
+								<td>${book.publisher}</td>
+								<td>${book.registered_date}</td>
+								<td>${empty book.current_state?"-":book.current_state}</td>
+								<td>${empty book.finished_date?"-":book.finished_date}</td>
+								<td>${empty book.manager_comment?"-":book.manager_comment}</td>
+							</tr>
+							<c:set var="count" value="${count+1}"></c:set>
+						</c:forEach>
 					</tbody>
 				</table>
 
 				<div style="text-align: right;">
-					<button class="btn btn-lg btn-warning" id="btn-donation">기증하기</button>
+					<button class="btn btn-md btn-warning" id="btn-donation">기증하기</button>
 				</div>
 			</div>
 
@@ -296,22 +216,22 @@
 
 						<form class="form-inline">
 							<div id="don-search">
-								<input type="search" class="form-control" size="50"
+								<input type="search" class="form-control" size="50" id="query"
 									placeholder="책 제목을 입력하세요">
-								<button type="button" class="btn btn-danger">검색</button>
+								<button type="button" class="btn btn-danger" id="btn-search">검색</button>
 							</div>
 						</form>
-
-						<table class="table table-hover text-center" id="modal-table">
-							<thead>
-								<tr>
-									<th>번호</th>
-									<th>책정보</th>
-									<th>기증하기</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
+						<div id="scroll-box">
+							<table class="table table-hover text-center" id="modal-table">
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>책정보</th>
+										<th>기증하기</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- <tr>
 									<td>1</td>
 									<td>
 										<div class="clearfix">
@@ -330,110 +250,10 @@
 									<td>
 										<button class="btn btn-md btn-default">기증하기</button>
 									</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>
-										<div class="clearfix">
-											<img src="pictures/booksample01.jpg" alt="" class="modal-img" />
-											<ul class="modal-list">
-												<li>프로그래머로 사는 법</li>
-
-												<li>저자 - <span class="mb-title">샘 라이트스톤</span></li>
-												<li>출판사 - <span class="mb-company">한빛미디어</span></li>
-												<li>발행일 - <span class="mb-pubdate">2012.10.04</span></li>
-												<li>ISBN - <span class="mb-isbn"> 9788979149623</span></li>
-											</ul>
-										</div>
-									</td>
-
-									<td>
-										<button class="btn btn-md btn-default">기증하기</button>
-									</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>
-										<div class="clearfix">
-											<img src="pictures/booksample01.jpg" alt="" class="modal-img" />
-											<ul class="modal-list">
-												<li>프로그래머로 사는 법</li>
-
-												<li>저자 - <span class="mb-title">샘 라이트스톤</span></li>
-												<li>출판사 - <span class="mb-company">한빛미디어</span></li>
-												<li>발행일 - <span class="mb-pubdate">2012.10.04</span></li>
-												<li>ISBN - <span class="mb-isbn"> 9788979149623</span></li>
-											</ul>
-										</div>
-									</td>
-
-									<td>
-										<button class="btn btn-md btn-default">기증하기</button>
-									</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>
-										<div class="clearfix">
-											<img src="pictures/booksample01.jpg" alt="" class="modal-img" />
-											<ul class="modal-list">
-												<li>프로그래머로 사는 법</li>
-
-												<li>저자 - <span class="mb-title">샘 라이트스톤</span></li>
-												<li>출판사 - <span class="mb-company">한빛미디어</span></li>
-												<li>발행일 - <span class="mb-pubdate">2012.10.04</span></li>
-												<li>ISBN - <span class="mb-isbn"> 9788979149623</span></li>
-											</ul>
-										</div>
-									</td>
-
-									<td>
-										<button class="btn btn-md btn-default">기증하기</button>
-									</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>
-										<div class="clearfix">
-											<img src="pictures/booksample01.jpg" alt="" class="modal-img" />
-											<ul class="modal-list">
-												<li>프로그래머로 사는 법</li>
-
-												<li>저자 - <span class="mb-title">샘 라이트스톤</span></li>
-												<li>출판사 - <span class="mb-company">한빛미디어</span></li>
-												<li>발행일 - <span class="mb-pubdate">2012.10.04</span></li>
-												<li>ISBN - <span class="mb-isbn"> 9788979149623</span></li>
-											</ul>
-										</div>
-									</td>
-
-									<td>
-										<button class="btn btn-md btn-default">기증하기</button>
-									</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>
-										<div class="clearfix">
-											<img src="pictures/booksample01.jpg" alt="" class="modal-img" />
-											<ul class="modal-list">
-												<li>프로그래머로 사는 법</li>
-
-												<li>저자 - <span class="mb-title">샘 라이트스톤</span></li>
-												<li>출판사 - <span class="mb-company">한빛미디어</span></li>
-												<li>발행일 - <span class="mb-pubdate">2012.10.04</span></li>
-												<li>ISBN - <span class="mb-isbn"> 9788979149623</span></li>
-											</ul>
-										</div>
-									</td>
-
-									<td>
-										<button class="btn btn-md btn-default">기증하기</button>
-									</td>
-								</tr>
-
-							</tbody>
-						</table>
+								</tr> -->
+								</tbody>
+							</table>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -447,4 +267,95 @@
 		</footer>
 	</div>
 </body>
+
+<script>
+	$(document).ready(
+			function() {
+
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$("#btn-donation").on("click", function() {
+					$("#don-modal").modal();
+				});
+
+				$("#btn-search").on("click", function() {
+					var query = $("#query").val();
+					loadDoc(query);
+
+				});
+
+				$("#borrow-filter").change(
+						function() {
+							/* alert($("#borrow-filter").val()); */
+							$(location).attr(
+									"href",
+									"MypageDonation.nds?filter="
+											+ $("#borrow-filter").val());
+						});
+
+			});
+
+	function loadDoc(query) {
+		$
+				.get(
+						"NaverAjax.nds?query=" + query,
+						function(data) {
+							var rootElement = $(data).find(":root");
+							var books = $(rootElement).find("book");
+							var result = "";
+
+							for (var i = 0; i < $(books).length; ++i) {
+								var book = $(books).eq(i);
+								result += "<tr>";
+								result += "<td>" + (i + 1) + "</td>";
+								result += "<td>" + "<div class=\"clearfix\">";
+								result += "<img src="
+										+ $(book).find("image").text()
+										+ " class=\"modal-img\" />";
+								result += "<ul class=\"modal-list\">";
+								result += "<li>" + $(book).find("title").text()
+										+ "</li>";
+								result += "<li>저자 - "
+										+ $(book).find("author").text()
+										+ "</li>";
+								result += "<li>출판사 - "
+										+ $(book).find("publisher").text()
+										+ "</li>";
+								result += "<li>발행일 - "
+										+ $(book).find("pubdate").text()
+										+ "</li>";
+								result += "<li>ISBN - "
+										+ $(book).find("isbn").text() + "</li>";
+								result += "</ul>";
+								result += "</div>";
+								result += "</td>";
+								result += "<td>"
+										+ "<button type=\"button\" value=\""
+										+ $(book).find("isbn").text()
+										+ "\"class=\"btn btn-md btn-default btn-register\" >기증하기</button>"
+										+ "</td>";
+
+								result += "</tr>";
+							}
+
+							/* 	$("#boardTable").find("tbody").append(result);		 */
+							$("#modal-table").find("tbody").html(result);
+
+							$(".btn-register").on(
+									"click",
+									function() {
+										/* $("#isbn").val($(this).parents("tr").find("td:eq(1)").text()); */
+										//alert("zz");
+										alert($(this).val());
+
+										$(location).attr(
+												"href",
+												"MypageDonationForm.nds?isbn="
+														+ $(this).val());
+									});
+						}, "xml");
+
+	}
+</script>
 </html>

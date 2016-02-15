@@ -10,13 +10,6 @@
 
 <title>스터디모집</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 
 <style type="text/css">
 #list-title {
@@ -60,19 +53,11 @@
 	margin-bottom: 40px;
 }
 </style>
-<script>
-	$(document).ready(function() {
 
-	});
-</script>
 </head>
 <body>
 
 	<div class="container">
-
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
 
 		<div class="row" style="margin-top: 80px;">
 			<div class="col-md-2">
@@ -80,12 +65,7 @@
 				<div id="list-title">
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">공지사항</a></li>
-					<li class="list-group-item"><a href="">도서신청</a></li>
-					<li class="list-group-item"><a href="">기증도서</a></li>
-					<li class="list-group-item"><a href="">스터디모집</a></li>
-				</ul>
+				<%@include file="/include/BoardSide.jsp"%>
 
 			</div>
 			<div class="col-md-10">
@@ -100,16 +80,22 @@
 						<table>
 							<tr>
 								<td>&nbsp;</td>
+					
+				<form action="WriteBoard.nds" method="get">			
+					
+								<input type="hidden" name="category" value="스터디" />
+								<input type="hidden" name="user_id" value="5" />
+								
 								<td align="center">제 목&nbsp;&nbsp;</td>
 								<td><input class="form-control" id="focusedInput"
-									type="text" size="80"></td>
+									type="text" size="80" name="title"></td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr height="5">
 								<!-- <td colspan="4"></td> -->
 							</tr>
 
-							<tr>
+							<!-- <tr>
 								<td>&nbsp;</td>
 								<td align="center">파일첨부&nbsp;&nbsp;</td>
 								<td>
@@ -117,25 +103,15 @@
 										data-toggle="modal" data-target="#myModal">사진</button>
 								</td>
 								<td>&nbsp;</td>
-							</tr>
+							</tr> -->
 							<tr height="5">
 							</tr>
-							<!-- 
+	
 							<tr>
 								<td>&nbsp;</td>
-								<td></td>
-								<td></td>
-								<td>&nbsp;</td>
-
-							</tr>
-							<tr height="1">
-							</tr> -->
-
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center">내 용</td>
+								<td align="center" name="content">내 용</td>
 								<td><textarea class="form-control" id="focusedInput"
-										cols="80" rows="13"></textarea></td>
+										cols="80" rows="13" name="content"></textarea></td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr height="9">
@@ -144,8 +120,9 @@
 
 							<tr align="center">
 								<td>&nbsp;</td>
-								<td colspan="2"><input type=button value="등록"> <input
-									type=button value="취소">
+								<td colspan="2"><input type="submit" value="등록"> 
+					</form>
+								<from><input type=button value="취소"></from>
 								<td>&nbsp;</td>
 							</tr>
 						</table>
@@ -197,4 +174,9 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>

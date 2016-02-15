@@ -7,36 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 <title>도서신청하기</title>
-
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 
 <style type="text/css">
-#list-title {
-	text-align: center;
-	padding: 0px;
-}
-
-#list-title img {
-	width: 100%;
-	margin: 0px;
-}
-
-.list-group-item {
-	font-family: "맑은고딕";
-	font-weight: bold;
-	color: #555555;
-	height: 50px;
-	display: list-item;
-	vertical-align: middle;
-}
 
 #mTitle {
 	background-image: url("pictures/title.png");
@@ -88,14 +63,7 @@
 	font-size: 20px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-		$("#btn-require").on("click", function() {
-			$("#req-modal").modal();
-		});
 
-	});
-</script>
 </head>
 <body>
 
@@ -103,69 +71,65 @@
 	<div class="container">
 
 		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
+			<%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
-			<div class="col-md-2">
-
-				<div id="list-title">
-					<img src="pictures/mypage.png" alt="" />
-				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">대출현황조회</a></li>
-					<li class="list-group-item"><a href="">메세지함</a></li>
-					<li class="list-group-item"><a href="">도서신청현황</a></li>
-					<li class="list-group-item"><a href="">도서기증현황</a></li>
-				</ul>
-
-			</div>
+			<%@include file="/include/mypageSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">도서신청하기</h1>
 				<hr class="title-line" />
 
 				<div class="row" style="margin: 20px 0px;">
-					<form role="form" action="" method="post">
+					<form role="form" action="MypageRequireAdd.nds" method="post">
+					<input type="hidden" name="registered_date" value="${book.registered_date}" />
+					<input type="hidden" name="title" value="${book.title}" />
+					<input type="hidden" name="author" value="${book.author}" />
+					<input type="hidden" name="publisher" value="${book.publisher}" />
+					<input type="hidden" name="pubdate" value="${book.pubdate}" />
+					<input type="hidden" name="isbn" value="${book.isbn}" />
+					<input type="hidden" name="image" value="${book.image}" />
+					<input type="hidden" name="explanation" value="${book.explanation}" />
+					
 						<div class="col-md-7">
 							<table class="table text-center" id="require-table">
 
 								<tbody>
 									<tr>
 										<td>제목</td>
-										<td>이것이 자바다</td>
+										<td>${book.title }</td>
 									</tr>
 
 									<tr>
 										<td>지은이</td>
-										<td>홍길동</td>
+										<td>${book.author }</td>
 									</tr>
 									<tr>
 										<td>출판사</td>
-										<td>oo출판</td>
+										<td>${book.publisher }</td>
 									</tr>
 									<tr>
 										<td>발행년도</td>
-										<td>2016-01-03</td>
+										<td>${book.pubdate }</td>
 									</tr>
 									<tr>
 										<td>ISBN</td>
-										<td>32432432</td>
+										<td>${book.isbn }</td>
 									</tr>
 									<tr>
 										<td>신청일</td>
-										<td>2016-02-02</td>
+										<td>${book.registered_date}</td>
 									</tr>
 									<tr>
 										<td>신청한마디</td>
 										<td><input type="text" class="form-control"
-											id="reqComment" name="reqComment" placeholder="(30자 이내)"
+											id="user_comment" name="user_comment" placeholder="(30자 이내)"
 											maxlength="30" required="required"></td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 						<div class="col-md-5" id="right-box">
-							<img src="pictures/booksample01.jpg" alt="" id="img-book" />
-							<button class="btn btn-warning" id="btn-require">신청하기</button>
+							<img src=${book.image } alt="" id="img-book" />
+							<button type="submit" class="btn btn-warning" id="btn-require">신청하기</button>
 						</div>
 					</form>
 				</div>
@@ -177,4 +141,9 @@
 	</div>
 
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>
