@@ -52,8 +52,6 @@
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 
-
-
 <style type="text/css">
 header {
 	border: 0px solid red;

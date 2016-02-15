@@ -43,9 +43,7 @@ public class ManagerController {
 	
 	@RequestMapping(value = "/ManagerMemberMsg.nds", method = RequestMethod.GET)
 	public String messageDetail(Model model, int msg_id) {
-
-		System.out.println("msg_id : " + msg_id);
-		
+	
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 		
 		ArrayList<Message> msg = dao.messageDetail(msg_id);
