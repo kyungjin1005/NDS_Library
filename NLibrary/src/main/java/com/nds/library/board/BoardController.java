@@ -84,18 +84,37 @@ public class BoardController {
        return "WEB-INF/views/board/BoardRequireList.jsp";
     }   
     
-  /*@RequestMapping(value = "/BoardDonationList.nds", method = RequestMethod.GET)
-    public String boardDonationList(Model model) {
+    @RequestMapping(value = "/BoardDonationList.nds", method = RequestMethod.GET)
+    public String boardDonationList(Model model, HttpServletRequest request) {
 
-        IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
+    	int pageNumTemp = 1;
+ 		// 한 페이지에 10개의 글이 보임
+ 		int listCount = 10;
+ 		// 뷰에서 글번호를 받아옴
+ 		String pageNum = request.getParameter("pageNum");
+ 		System.out.println("pegeNum : " + pageNum);
+ 		if (pageNum != null) {
+ 			pageNumTemp = Integer.parseInt(pageNum);
+ 		}
+ 		// 시작하는 글번호를 계산함
+ 		int startNumber = listCount * (pageNumTemp-1)+1;
+   	
+    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
         Map<String, Object> map = new HashMap<String, Object>();
-		map.put("type", "donation");
+       
+        map.put("type", "donation");
+        map.put("startNumber", startNumber);
         
-        ArrayList<Board> list = dao.reqaAndDonList(map);
+        ArrayList<ReqandDon> list = dao.reqaAndDonList(map);
         model.addAttribute("list", list);
+        model.addAttribute("totalCount", dao.reQandDonCount(map));
+        model.addAttribute("indexCount", dao.reQandDonCount(map)-(pageNumTemp-1)*10);
+        model.addAttribute("pageNum", pageNum);
         
+     
        return "WEB-INF/views/board/BoardDonationList.jsp";
-    }   */
+    }   
+    
     
     @RequestMapping(value = "/BoardStudyList.nds", method = RequestMethod.GET)
     public String boardStudyList(Model model, HttpServletRequest request) {
@@ -201,25 +220,28 @@ public class BoardController {
        else if(type.equals("study"))    
     	   return "redirect:BoardDetail.nds?board_id="+reply.getBoard_id()+"&type=study";
        else if(type.equals("require"))
-    	   return "redirect:ReqAndDonDetail.nds?req_don_id="+reply.getBoard_id()+"&type=require";
+    	   return "redirect:ReqAndDonDetail.nds?req_don_id="+reply.getReq_don_id()+"&type=require";
        else
-    	   return "redirect:ReqAndDonDetail.nds?req_don_id="+reply.getBoard_id()+"&type=donation";
+    	   return "redirect:ReqAndDonDetail.nds?req_don_id="+reply.getReq_don_id()+"&type=donation";
     }
     
     /* 댓글 삭제 */
     @RequestMapping(value = "/DeleteReply.nds", method = RequestMethod.GET)
-    public String deleteReply(Model model, String board_id, int reply_id, String type) {
+    public String deleteReply(Model model, Reply reply, String type) {
     	
     	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("reply_id", reply_id);
+        map.put("reply_id", reply.getReply_id());
         dao.deleteReply(map);
         
        if(type.equals("notice"))
-    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=notice";
-       
-       else 
-    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=study";
+    	   return "redirect:BoardDetail.nds?board_id="+reply.getBoard_id()+"&type=notice";
+       else if(type.equals("study"))
+    	   return "redirect:BoardDetail.nds?board_id="+reply.getBoard_id()+"&type=study";
+       else if(type.equals("require"))
+    	   return "redirect:ReqAndDonDetail.nds?req_don_id="+reply.getReq_don_id()+"&type=require";
+       else
+    	   return "redirect:ReqAndDonDetail.nds?req_don_id="+reply.getReq_don_id()+"&type=donation";
     }
     
     /* 댓글 수정 */
@@ -259,5 +281,42 @@ public class BoardController {
     	else
     		return "redirect:BoardNoticeList.nds";
     }
+   
+    @RequestMapping(value = "/ReqDonFilterList.nds", method = RequestMethod.GET)
+    public String  reqDonFilterList(Model model, HttpServletRequest request, String type, String filter) {
+
+    	int pageNumTemp = 1;
+ 		// 한 페이지에 10개의 글이 보임
+ 		int listCount = 10;
+ 		// 뷰에서 글번호를 받아옴
+ 		String pageNum = request.getParameter("pageNum");
+ 		System.out.println("pegeNum : " + pageNum);
+ 		if (pageNum != null) {
+ 			pageNumTemp = Integer.parseInt(pageNum);
+ 		}
+ 		// 시작하는 글번호를 계산함
+ 		int startNumber = listCount * (pageNumTemp-1)+1;
+   	
+    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+       
+        
+        map.put("filter", filter);
+        map.put("startNumber", startNumber);
+       
+        
+        ArrayList<ReqandDon> list = dao.reqaAndDonFilterList(map);
+        model.addAttribute("list", list);
+        model.addAttribute("totalCount", dao.reqaAndDonFilterCount(map));
+        model.addAttribute("indexCount", dao.reQandDonCount(map)-(pageNumTemp-1)*10);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("filter", filter);
+        
+       
+       if(type.equals("require"))
+    	   return "WEB-INF/views/board/BoardRequireList.jsp";
+       else
+    	   return "WEB-INF/views/board/BoardDonationList.jsp";
+    }   
 
 }

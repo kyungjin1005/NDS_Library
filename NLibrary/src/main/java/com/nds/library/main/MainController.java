@@ -19,6 +19,8 @@ public class MainController {
 	
 	@RequestMapping(value = "/Main.nds", method = RequestMethod.GET)
 	public String bookList(Model model) {
+		
+
 
 		// model.addAttribute("message", "Hello Spring MVC Framework!");
 

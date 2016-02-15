@@ -8,8 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>도서신청하기</title>
-
+<title>도서기증하기</title>
 
 <style type="text/css">
 
@@ -29,7 +28,7 @@
 	margin-bottom: 30px;
 }
 
-#require-table td {
+#donation-table td {
 	font-size: 15px;
 	vertical-align: middle;
 	text-align: left;
@@ -37,12 +36,12 @@
 	height: 80px;
 }
 
-#require-table td:nth-child(1) {
+#donation-table td:nth-child(1) {
 	width: 20%;
 	font-weight: bold;
 }
 
-#require-table td:nth-child(2) {
+#donation-table td:nth-child(2) {
 	width: 80%;
 }
 
@@ -56,7 +55,7 @@
 	margin-bottom: 10px;
 }
 
-#btn-require {
+#btn-donation {
 	width: 100%;
 	height: 60px;
 	font-weight: bold;
@@ -75,12 +74,12 @@
 		</header>
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/mypageSideMenu.jsp"%>
-			<div class="col-md-10">
-				<h1 id="mTitle">도서신청하기</h1>
+			<div class="col-md-10"">
+				<h1 id="mTitle">도서기증하기</h1>
 				<hr class="title-line" />
 
 				<div class="row" style="margin: 20px 0px;">
-					<form role="form" action="MypageRequireAdd.nds" method="post">
+					<form role="form" action="MypageDonationAdd.nds" method="post">
 					<input type="hidden" name="registered_date" value="${book.registered_date}" />
 					<input type="hidden" name="title" value="${book.title}" />
 					<input type="hidden" name="author" value="${book.author}" />
@@ -89,10 +88,11 @@
 					<input type="hidden" name="isbn" value="${book.isbn}" />
 					<input type="hidden" name="image" value="${book.image}" />
 					<input type="hidden" name="explanation" value="${book.explanation}" />
-					
 						<div class="col-md-7">
-							<table class="table text-center" id="require-table">
+							<table class="table text-center" id="donation-table">
 
+								<tbody>
+								
 								<tbody>
 									<tr>
 										<td>제목</td>
@@ -116,21 +116,22 @@
 										<td>${book.isbn }</td>
 									</tr>
 									<tr>
-										<td>신청일</td>
+										<td>기증일</td>
 										<td>${book.registered_date}</td>
 									</tr>
 									<tr>
-										<td>신청한마디</td>
+										<td>기증한마디</td>
 										<td><input type="text" class="form-control"
 											id="user_comment" name="user_comment" placeholder="(30자 이내)"
 											maxlength="30" required="required"></td>
 									</tr>
+									
 								</tbody>
 							</table>
 						</div>
 						<div class="col-md-5" id="right-box">
 							<img src=${book.image } alt="" id="img-book" />
-							<button type="submit" class="btn btn-warning" id="btn-require">신청하기</button>
+							<button type="submit" class="btn btn-warning" id="btn-donation">기증하기</button>
 						</div>
 					</form>
 				</div>
@@ -140,10 +141,12 @@
 			<%@include file="/include/footer.jsp"%>
 		</footer>
 	</div>
-
 </body>
 <script>
 	$(document).ready(function() {
+		$("#btn-require").on("click", function() {
+			$("#req-modal").modal();
+		});
 
 	});
 </script>

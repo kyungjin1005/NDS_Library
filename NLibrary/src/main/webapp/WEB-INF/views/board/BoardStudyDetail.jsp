@@ -10,14 +10,6 @@
 
 <title>스터디모집</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <style type="text/css">
 #list-title {
 	text-align: center;
@@ -60,11 +52,9 @@
 	margin-bottom: 40px;
 }
 </style>
-<script>
-	$(document).ready(function() {
 
-	});
-</script>
+
+
 </head>
 <body>
 
@@ -80,12 +70,7 @@
 				<div id="list-title">
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="BoardNoticeList.nds">공지사항</a></li>
-					<li class="list-group-item"><a href="BoardRequireList.nds">도서신청</a></li>
-					<li class="list-group-item"><a href="BoardDonationList.nds">기증도서</a></li>
-					<li class="list-group-item"><a href="BoardStudyList.nds">스터디모집</a></li>
-				</ul>
+				<%@include file="/include/BoardSide.jsp"%>
 
 			</div>
 			<div class="col-md-10">
@@ -172,4 +157,9 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>

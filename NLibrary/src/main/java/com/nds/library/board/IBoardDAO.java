@@ -29,4 +29,8 @@ public interface IBoardDAO {
 	public int reQandDonCount(Map<String, Object> map);
 	// 신청, 기증 상세보기
 	public ReqandDon detailReQandDon(Map<String, Object> map);
+	// 신청, 기증 상태별로 보기
+	public ArrayList<ReqandDon> reqaAndDonFilterList(Map<String, Object> map);
+	// 신청, 기증 상태별로 갯수 받아오기
+	public Object reqaAndDonFilterCount(Map<String, Object> map);
 }

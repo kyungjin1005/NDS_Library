@@ -10,34 +10,8 @@
 
 <title>대출현황조회</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 
 <style type="text/css">
-#list-title {
-	text-align: center;
-	padding: 0px;
-}
-
-#list-title img {
-	width: 100%;
-	margin: 0px;
-}
-
-.list-group-item {
-	font-family: "맑은고딕";
-	font-weight: bold;
-	color: #555555;
-	height: 50px;
-	display: list-item;
-	vertical-align: middle;
-}
-
 #mTitle {
 	background-image: url("pictures/title.png");
 	background-position: 0px 0px;
@@ -93,11 +67,6 @@
 	color: #2C2255;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-	});
-</script>
 </head>
 <body>
 
@@ -108,19 +77,7 @@
 			<%@include file="/include/header.jsp"%>
 		</header>
 		<div class="row" style="margin-top: 80px;">
-			<div class="col-md-2">
-
-				<div id="list-title">
-					<img src="pictures/mypage.png" alt="" />
-				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">대출현황조회</a></li>
-					<li class="list-group-item"><a href="">메세지함</a></li>
-					<li class="list-group-item"><a href="">도서신청현황</a></li>
-					<li class="list-group-item"><a href="">도서기증현황</a></li>
-				</ul>
-
-			</div>
+			<%@include file="/include/mypageSideMenu.jsp"%>
 			<div class="col-md-10">
 				<h1 id="mTitle">대출현황조회</h1>
 				<hr class="title-line" />
@@ -254,4 +211,11 @@
 	</div>
 
 </body>
+
+
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>

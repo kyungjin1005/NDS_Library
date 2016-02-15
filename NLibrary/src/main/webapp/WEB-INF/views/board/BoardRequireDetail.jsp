@@ -10,14 +10,6 @@
 
 <title>신청도서</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <style type="text/css">
 #list-title {
 	text-align: center;
@@ -125,11 +117,7 @@
 	font-size: 15px;
 }
 </style>
-<script>
-	$(document).ready(function() {
 
-	});
-</script>
 </head>
 <body>
 
@@ -143,14 +131,10 @@
 			<div class="col-md-2">
 
 				<div id="list-title">
-					<img src="pictures/boardpage.png" alt="책 이미지" />
+					<img src="pictures/boardpage.png" alt="" />
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item">Java</li>
-					<li class="list-group-item">Database</li>
-					<li class="list-group-item">JSP/Servlet</li>
-					<li class="list-group-item">Cloud</li>
-				</ul>
+				
+				<%@include file="/include/BoardSide.jsp"%>
 
 			</div>
 			<div class="col-md-10">
@@ -197,7 +181,7 @@
 						</table>
 					</div>
 					<div class="col-md-4" style="text-align: center; margin: 0px auto;" >
-						<img src="pictures/booksample01.jpg" alt="" id="img-book" />
+						<img src="${board.image}" alt="" id="img-book" />
 						<div class="alert alert-info" id="alert-state">
 							신청상태 : <span>${board.current_state}</span>
 						</div>
@@ -233,7 +217,7 @@
 										<a id="modify" href="UpdateReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice">
 								          <span class="glyphicon glyphicon-pencil"></span>
 								        </a>
-								        <a href="DeleteReply.nds?reply_id=${reply.reply_id}&board_id=${board.req_don_id}&type=require"> 
+								        <a href="DeleteReply.nds?reply_id=${reply.reply_id}&req_don_id=${board.req_don_id}&type=require"> 
         								  <span class="glyphicon glyphicon-minus"></span>
       									</a>
 							        </td>
@@ -269,4 +253,9 @@
 
 	</div>
 </body>
+<script>
+	$(document).ready(function() {
+
+	});
+</script>
 </html>

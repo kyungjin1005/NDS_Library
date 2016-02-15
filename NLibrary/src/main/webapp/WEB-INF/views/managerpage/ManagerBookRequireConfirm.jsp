@@ -10,14 +10,6 @@
 
 <title>도서관리</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <style type="text/css">
 #list-title {
 	text-align: center;
@@ -85,52 +77,14 @@
 	margin: 4px 0px;
 }
 </style>
-<script>
-	$(document).ready(function() {
-
-		$(".btn-register").on("click", function() {
-			$("#modal-dam-los").modal();
-		});
-	});
-</script>
 </head>
 <body>
-
-
 	<div class="container">
-
 		<header>
 			<%@include file="/include/header.jsp"%>
 		</header>
 		<div class="row" style="margin-top: 80px;">
-			<div class="col-md-2">
-
-				<div id="list-title">
-					<img src="pictures/managerpage.png" alt="" />
-				</div>
-				<ul class="list-group">
-					<li class="list-group-item"><a href="">회원관리</a></li>
-					<li class="list-group-item"><a href="">대출관리</a></li>
-					<li class="list-group-item"><a data-toggle="collapse"
-						href="#collapse1">도서관리<span
-							class="glyphicon glyphicon-menu-right"
-							style="margin-left: 5px; font-size: 10px;"></span></a></li>
-					<li>
-						<div id="collapse1" class="panel-collapse collapse">
-							<ul class="list-group"
-								style="margin: 0px; padding: 0px; text-align: center;">
-								<li class="list-group-item"><a href="">- 모든도서</a></li>
-								<li class="list-group-item"><a href="">- 신청도서</a></li>
-								<li class="list-group-item"><a href="">- 기증도서</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="list-group-item"><a href="">게시판관리</a></li>
-					<li class="list-group-item"><a href="">메세지관리</a></li>
-				</ul>
-
-
-			</div>
+			<%@include file="/include/ManagerpageSidebar.jsp"%>
 			<div class="col-md-10" style="margin-top: 10px;">
 				<h1 id="mTitle">도서관리 -> 신청도서</h1>
 				<hr class="title-line" />
@@ -176,10 +130,46 @@
 						</table>
 					</div>
 					<div class="col-md-5 text-center">
-						<img src="${book.user_comment }" alt="" id="img-book" />
-						<button class="btn btn-primary btn-require">승인</button>
-						<button class="btn btn-danger btn-require">반려</button>
+						<img src="${book.image }" alt="" id="img-book" />
+						<button class="btn btn-primary btn-require" id="btn-confirm">승인</button>
+						<button class="btn btn-danger btn-require" id="btn-reject">반려</button>
 					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal -->
+		<div class="modal fade" id="modal-reject" role="dialog">
+			<div class="modal-dialog modal-md">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 id="mTitle">도서반려</h4>
+					</div>
+					<div class="modal-body" style="margin: 20px auto;">
+
+						<form action="ManagerRequireRejectBook.nds" method="post"
+							class="form-horizontal">
+							<input type="hidden" name="req_don_id" value="${book.req_don_id}" />
+							<div class="form-group">
+								<label class="control-label col-md-2" for="manager_comment">반려이유:</label>
+								<div class="col-md-8">
+									<input type="text" class="form-control" name="manager_comment"
+										id="manager_comment" required="required" placeholder="30자이내">
+								</div>
+
+								<div class="col-md-2">
+									<button type="submit" value=""
+										class="form-control btn btn-md btn-warning">확인</button>
+								</div>
+							</div>
+						</form>
+
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -189,4 +179,22 @@
 		</footer>
 	</div>
 </body>
+<script>
+	$(document).ready(
+			function() {
+
+				$("#btn-confirm").on(
+						"click",
+						function() {
+							$(location).attr(
+									"href",
+									"RequireConfirm.nds?req_don_id="
+											+ "${book.req_don_id }");
+						});
+
+				$("#btn-reject").on("click", function() {
+					$("#modal-reject").modal();
+				});
+			});
+</script>
 </html>
