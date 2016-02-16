@@ -5,9 +5,8 @@
 <mapper namespace="com.nds.library.manager.IManagerDAO">
 
 	<select id="MessageList" resultType="com.nds.library.manager.Message">
-		SELECT message_id, user_id, is_checked, title, content, sended_date,
-		checked_date
-		FROM messages
+		SELECT message_id, user_id, is_checked, title, content, sended_date, checked_date, name
+		FROM messages JOIN users USING(user_id)
 		<if test="filter == 0">  <!-- 전체 -->
 			where sended_date is not null
 		</if>
@@ -260,4 +259,10 @@
 		#{pubdate},
 		#{explanation})
 	</insert>
+	
+	<select id="findUserByUserId" resultType="com.nds.library.manager.User">
+		SELECT name
+		FROM users
+		WHERE user_id = #{user_id}
+	</select>
 </mapper>   

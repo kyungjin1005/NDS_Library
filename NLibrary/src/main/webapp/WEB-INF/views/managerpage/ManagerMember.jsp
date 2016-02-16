@@ -131,21 +131,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- <tr>
-								<td><input type="checkbox" class="form-control"></td>
-								<td>1</td>
-								<td>1510010</td>
-								<td>김혜원</td>
-								<td>개발본부</td>
-								<td>사원</td>
-								<td>2016-02-02</td>
-							</tr> -->
-
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="user" items="${userList}">
 								<tr>
 									<td><input type="checkbox" class="form-control cb"
-										name="user_id" value="${user.user_id }" required="required"></td>
+										name="user_id" value="${user.user_id }" ></td>
 									<td>${count}</td>
 									<td>${user.nds_number}</td>
 									<td>${user.name}</td>

@@ -112,7 +112,7 @@
 								<td>${msg.message_id}</td>
 								<td>${msg.title}</td>
 								<td>${msg.content}</td>
-								<td>관리자?</td>
+								<td>${msg.name }</td>
 								<td>${msg.sended_date}</td>
 								<td>${msg.checked_date}</td>
 							</tr>

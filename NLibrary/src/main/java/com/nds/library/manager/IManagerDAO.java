@@ -10,7 +10,7 @@ public interface IManagerDAO {
 	public ArrayList<ReqAndDon> requireBookList(Map<String, Object> map);
 	public ReqAndDon getReqAndDonBook(ReqAndDon book);
 	public ArrayList<Message> MessageList(Map<String, Object> map);
-	public ArrayList<Message> messageDetail(int msg_id);
+	public Message messageDetail(int msg_id);
 	
 	public int requireConfirm(ReqAndDon book);
 	public int requireRegisterBook(ReqAndDon book);
@@ -31,4 +31,6 @@ public interface IManagerDAO {
 	
 	public ReqAndDon getInformation(ReqAndDon book);
 	public int insertInformation(ReqAndDon book);
+	
+	public User findUserByUserId(String user_id);
 }
