@@ -127,6 +127,10 @@
 #modal-table td li:first-child {
 	font-weight: bold;
 }
+
+#nav1 {
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -196,6 +200,8 @@
 				<div style="text-align: right;">
 					<button class="btn btn-md btn-warning" id="btn-donation">기증하기</button>
 				</div>
+				<!-- 페이징 -->
+				${pagebar}
 			</div>
 
 		</div>

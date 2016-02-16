@@ -57,16 +57,17 @@ public class ManagerController {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
+		System.out.println(filter);
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (filter == null) {
 			filter = "0";
 		}
+		
 		map.put("filter", filter);
 
 		//ArrayList<ReqAndDon> list = dao.requireBookList(map);
 		
-
 		// 페이징 처리
 		int nowpage = 0; // 현재 페이지 번호
 		int totalCount = 0; // 총 게시물 수
@@ -85,16 +86,18 @@ public class ManagerController {
 		start = ((nowpage - 1) * pageSize) + 1;
 		end = start + pageSize - 1;
 		
-	
 		// 페이징
 		map.put("start", start + "");
 		map.put("end", end + "");
 		
-		ArrayList<ReqAndDon> list = dao.bList(map);
+		map.put("kind", "donation");
+		System.out.println("satrt : " + start + ", end : " + end);
+		
+		ArrayList<ReqAndDon> list = dao.requireBookList(map);
 
 		// 페이징
 		// 총 페이지 수?
-		totalCount = dao.totalCount(filter); // 124건
+		totalCount = dao.totalCount(map); // 124건
 		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 무조건
 																		// 올림(3.1
 																		// -> 4)
@@ -127,8 +130,8 @@ public class ManagerController {
 					"<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
 		} else {
 			pagebar += String.format(
-					"<li><a href='ManagerBookRequire.nds?page=%d' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>",
-					n - 1);
+					"<li><a href='ManagerBookRequire.nds?page=%d&filter=%s' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>",
+					n - 1, filter);
 		}
 
 		// 페이지 번호 출력
@@ -138,7 +141,7 @@ public class ManagerController {
 			if (n == nowpage) {
 				pagebar += String.format("<li class='active'><a href='#'>%d</a></li>", n);
 			} else {
-				pagebar += String.format("<li><a href='ManagerBookRequire.nds?page=%d'>%d</a></li>", n, n);
+				pagebar += String.format("<li><a href='ManagerBookRequire.nds?page=%d&filter=%s'>%d</a></li>", n,filter, n);
 			}
 
 			loop++;
@@ -151,8 +154,8 @@ public class ManagerController {
 					"<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
 		} else {
 			pagebar += String.format(
-					"<li><a href='ManagerBookRequire.nds?page=%d' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>",
-					n);
+					"<li><a href='ManagerBookRequire.nds?page=%d&filter=%s' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>",
+					n, filter);
 		}
 		pagebar += "</ul></nav>";
 
@@ -258,18 +261,115 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/ManagerBookDonation.nds", method = RequestMethod.GET)
-	public String managerBookDonation(Model model, String filter) {
+	public String managerBookDonation(Model model, String filter, String page) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
+		System.out.println(filter);
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (filter == null) {
 			filter = "0";
 		}
+		
 		map.put("filter", filter);
 
+		//ArrayList<ReqAndDon> list = dao.requireBookList(map);
+		
+		// 페이징 처리
+		int nowpage = 0; // 현재 페이지 번호
+		int totalCount = 0; // 총 게시물 수
+		int totalPage = 0; // 총 페이지 수
+		int pageSize = 10; // 한페이지당 게시물 수
+		int n = 0, loop = 0;
+		int start = 0, end = 0;
+		int blockSize = 10;
+
+		if (page == null) {
+			nowpage = 1;
+		} else {
+			nowpage = Integer.parseInt(page);
+		}
+
+		start = ((nowpage - 1) * pageSize) + 1;
+		end = start + pageSize - 1;
+		
+		// 페이징
+		map.put("start", start + "");
+		map.put("end", end + "");
+		
+		map.put("kind", "donation");
+		System.out.println("satrt : " + start + ", end : " + end);
+		
 		ArrayList<ReqAndDon> list = dao.donationBookList(map);
+
+		// 페이징
+		// 총 페이지 수?
+		totalCount = dao.totalCount(map); // 124건
+		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 무조건
+																		// 올림(3.1
+																		// -> 4)
+
+		// 페이지 바 생성
+		String pagebar = "";
+
+		pagebar += "<nav id='nav1'><ul class='pagination'>";
+
+		/*
+		 * for (int i=1; i<= totalPage; i++) { pagebar += String.format(
+		 * "<li><a href='#'>%d</a></li>", i); }
+		 */
+
+		// blockSize : 한번에 보여질 페이지 최대 갯수
+
+		// 페이지 번호를 만들기 위한 루프 변수
+		loop = 1;
+
+		// 페이지 출력 번호 변수(페이지 번호)
+		// 5페이지 -> 1
+		// 8페이지 -> 1
+		// 10페이지 -> 1
+		// 15페이지 -> 11
+		n = ((nowpage - 1) / blockSize) * blockSize + 1;
+
+		// 이전 10페이지
+		if (n == 1) {
+			pagebar += String.format(
+					"<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
+		} else {
+			pagebar += String.format(
+					"<li><a href='ManagerBookDonation.nds?page=%d&filter=%s' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>",
+					n - 1, filter);
+		}
+
+		// 페이지 번호 출력
+		while (!(loop > blockSize || n > totalPage)) {
+
+			// 현재 페이지
+			if (n == nowpage) {
+				pagebar += String.format("<li class='active'><a href='#'>%d</a></li>", n);
+			} else {
+				pagebar += String.format("<li><a href='ManagerBookDonation.nds?page=%d&filter=%s'>%d</a></li>", n,filter, n);
+			}
+
+			loop++;
+			n++;
+		}
+
+		// 다음 10페이지
+		if (n > totalPage) {
+			pagebar += String.format(
+					"<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
+		} else {
+			pagebar += String.format(
+					"<li><a href='ManagerBookDonation.nds?page=%d&filter=%s' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>",
+					n, filter);
+		}
+		pagebar += "</ul></nav>";
+
+		model.addAttribute("pagebar", pagebar);
+		model.addAttribute("map", map);
+
 		model.addAttribute("donationList", list);
 		model.addAttribute("filter", filter);
 

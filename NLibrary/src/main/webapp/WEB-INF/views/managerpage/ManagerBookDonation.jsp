@@ -57,29 +57,40 @@
 	text-align: left;
 }
 
-#donation-table td:nth-child(1) { // 번호
-	width: 5%;
+#donation-table td:nth-child(1) { //
+	번호 width: 5%;
 }
-#donation-table td:nth-child(2) { // 제목
-	width: 30%;
+
+#donation-table td:nth-child(2) { //
+	제목 width: 30%;
 }
-#donation-table td:nth-child(3) { // 저자
-	width: 10%;
+
+#donation-table td:nth-child(3) { //
+	저자 width: 10%;
 }
-#donation-table td:nth-child(5) { // 출판사
-	width: 20%;
+
+#donation-table td:nth-child(5) { //
+	출판사 width: 20%;
 }
-#donation-table td:nth-child(6) { // 기증인
-	width: 5%;
+
+#donation-table td:nth-child(6) { //
+	기증인 width: 5%;
 }
-#donation-table td:nth-child(7) { // 기증일
-	width: 10%;
+
+#donation-table td:nth-child(7) { //
+	기증일 width: 10%;
 }
-#donation-table td:nth-child(8) { // 기증사애
-	width: 10%;
+
+#donation-table td:nth-child(8) { //
+	기증사애 width: 10%;
 }
-#donation-table td:nth-child(9) { // 도서등록
-	width: 10%;
+
+#donation-table td:nth-child(9) { //
+	도서등록 width: 10%;
+}
+
+#nav1 {
+	text-align: center;
 }
 </style>
 </head>
@@ -100,8 +111,8 @@
 						<select class="form-control filter" id="donation-filter"
 							name="donation-filter">
 							<option value="0">전체</option>
-							<option value="1">기증완료</option>
-							<option value="2">기증대기</option>
+							<option value="1">기증대기</option>
+							<option value="2">기증완료</option>
 							<option value="3">기증반려</option>
 						</select>
 					</form>
@@ -135,28 +146,31 @@
 						<c:set var="count" value="1"></c:set>
 						<c:forEach var="book" items="${donationList}">
 							<tr class="item">
-								<td>${count}</td>
+								<td>${book.rnum}</td>
 								<td><img src="${book.image}" alt="${book.req_don_id}" /><span>${book.title }</span></td>
 								<td>${book.author}</td>
 								<td>${book.publisher}</td>
 								<td>${book.name}</td>
 								<td>${book.registered_date}</td>
 								<td>${empty book.current_state?"-":book.current_state}</td>
-								<td>
-								<c:choose>
+								<td><c:choose>
 										<c:when test="${book.current_state=='기증대기'}">
-										<button class="btn btn-md btn-danger btn-register" value="${book.req_don_id}">승인 및 등록</button>
+											<button class="btn btn-md btn-danger btn-register"
+												value="${book.req_don_id}">승인 및 등록</button>
 										</c:when>
 										<c:otherwise>
-										<button class="btn btn-md btn-default" value="${book.req_don_id}" disabled="disabled">처리완료</button>
+											<button class="btn btn-md btn-default"
+												value="${book.req_don_id}" disabled="disabled">처리완료</button>
 										</c:otherwise>
-								</c:choose>
-								</td>
+									</c:choose></td>
 							</tr>
 							<c:set var="count" value="${count+1}"></c:set>
 						</c:forEach>
 					</tbody>
+
 				</table>
+				<!-- 페이징 -->
+				${pagebar}
 			</div>
 		</div>
 		<footer>
@@ -165,25 +179,29 @@
 	</div>
 </body>
 <script>
-	$(document).ready(function() {
-		
-		$("#donation-filter option:eq(${filter})").attr("selected",
-		"selected");
-
-		$("#donation-filter").change(
+	$(document).ready(
 			function() {
-				$(location).attr(
-						"href",
-						"ManagerBookDonation.nds?filter="
-								+ $("#donation-filter").val());
-		});
 
-		$(".btn-register").on("click",
-				function() {
-					$(location).attr("href",
-							"ManagerBookDonationConfirm.nds?req_don_id=" + $(this).val());
+				$("#donation-filter option:eq(${filter})").attr("selected",
+						"selected");
 
-		});
-	});
+				$("#donation-filter").change(
+						function() {
+							$(location).attr(
+									"href",
+									"ManagerBookDonation.nds?filter="
+											+ $("#donation-filter").val());
+						});
+
+				$(".btn-register").on(
+						"click",
+						function() {
+							$(location).attr(
+									"href",
+									"ManagerBookDonationConfirm.nds?req_don_id="
+											+ $(this).val());
+
+						});
+			});
 </script>
 </html>

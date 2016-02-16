@@ -32,5 +32,5 @@ public interface IManagerDAO {
 	public ReqAndDon getInformation(ReqAndDon book);
 	public int insertInformation(ReqAndDon book);
 	public ArrayList<ReqAndDon> bList(Map<String, Object> map);
-	public int totalCount(String filter);
+	public int totalCount(Map<String, Object> map);
 }

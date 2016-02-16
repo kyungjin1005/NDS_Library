@@ -31,30 +31,36 @@
 	<select id="requireBookList" parameterType="java.util.Map"
 		resultType="com.nds.library.mypage.ReqAndDon">
 
-		select req_don_id, image, title, author, publisher, name,
+		select b.* from
+		(select rownum as rnum, a.* from
+		(select req_don_id,
+		image, title, author, publisher, name,
 		TO_CHAR(reqanddon.REGISTERED_DATE,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
 		'yyyy-mm-dd') AS finished_date
 		from users join reqanddon using(user_id)
-		<if test="filter == 0">  <!-- 전체 -->
+		<if test="filter == 0">
 			where (current_state='신청대기'
 			or current_state='신청완료' or
 			current_state='구매완료' or current_state='신청반려')
 		</if>
-		<if test="filter == 1">  <!-- 구매완료 -->
+		<if test="filter == 1">
 			where current_state='구매완료'
 		</if>
-		<if test="filter == 2">  <!-- 신청완료 -->
+		<if test="filter == 2">
 			where current_state='신청완료'
 		</if>
-		<if test="filter == 3"> <!-- 신청대기 -->
+		<if test="filter == 3">
 			where current_state='신청대기'
 		</if>
-		<if test="filter == 4">  <!-- 신청반려 -->
+		<if test="filter == 4">
 			where current_state='신청반려'
 		</if>
-		order by reqanddon.registered_date desc
+		<![CDATA[
+		order by reqanddon.registered_date desc) a )b
+		where rnum >=#{start} and rnum <= #{end}]]>
+
 	</select>
 
 
@@ -63,7 +69,8 @@
 
 		select b.* from
 		(select rownum as rnum, a.* from
-		(select req_don_id, image, title, author, publisher, name,
+		(select req_don_id,
+		image, title, author, publisher, name,
 		TO_CHAR(reqanddon.REGISTERED_DATE,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
@@ -90,25 +97,47 @@
             where rnum >= #{start} and rnum <= #{end}
             ]]>
 	</select>
-	
-	<select id="totalCount" resultType="Integer" parameterType="String">
+
+	<select id="totalCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
 		select count(*) from reqanddon
-		<if test="filter == 0">  <!-- 전체 -->
-			where (current_state='신청대기'
-			or current_state='신청완료' or
-			current_state='구매완료' or current_state='신청반려')
+
+		<if test="kind == 'require'">
+			<if test="filter == 0">  <!-- 전체 -->
+				where (current_state='신청대기'
+				or current_state='신청완료' or
+				current_state='구매완료' or current_state='신청반려')
+			</if>
+			<if test="filter == 1">  <!-- 구매완료 -->
+				where current_state='구매완료'
+			</if>
+			<if test="filter == 2">  <!-- 신청완료 -->
+				where current_state='신청완료'
+			</if>
+			<if test="filter == 3"> <!-- 신청대기 -->
+				where current_state='신청대기'
+			</if>
+			<if test="filter == 4">  <!-- 신청반려 -->
+				where current_state='신청반려'
+			</if>
 		</if>
-		<if test="filter == 1">  <!-- 구매완료 -->
-			where current_state='구매완료'
-		</if>
-		<if test="filter == 2">  <!-- 신청완료 -->
-			where current_state='신청완료'
-		</if>
-		<if test="filter == 3"> <!-- 신청대기 -->
-			where current_state='신청대기'
-		</if>
-		<if test="filter == 4">  <!-- 신청반려 -->
-			where current_state='신청반려'
+		<!-- where (current_state='기증대기' or current_state='기증완료' or current_state='기증반려') -->
+
+		<if test="kind == 'donation'">
+			<if test="filter == 0">  <!-- 전체 -->
+				where (current_state='기증대기'
+				or current_state='기증완료' or
+				current_state='기증반려')
+			</if>
+			<if test="filter == 1">  <!-- 기증대기 -->
+				where current_state='기증대기'
+			</if>
+			<if test="filter == 2"> <!-- 기증완료 -->
+				where current_state='기증완료'
+			</if>
+			<if test="filter == 3">  <!-- 기증반려 -->
+				where current_state='기증반려'
+			</if>
 		</if>
 	</select>
 
@@ -158,8 +187,10 @@
 
 	<select id="donationBookList" parameterType="java.util.Map"
 		resultType="com.nds.library.mypage.ReqAndDon">
-
-		select req_don_id, image, title, author, publisher, name,
+		select b.* from
+		(select rownum as rnum, a.* from
+		(select req_don_id,
+		image, title, author, publisher, name,
 		TO_CHAR(reqanddon.REGISTERED_DATE,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
@@ -176,11 +207,12 @@
 		<if test="filter == 2">  <!-- 기증완료 -->
 			where current_state='기증완료'
 		</if>
-
 		<if test="filter == 3">  <!-- 기증반려 -->
 			where current_state='기증반려'
 		</if>
-		order by reqanddon.registered_date desc
+		<![CDATA[
+		order by reqanddon.registered_date desc) a )b
+		where rnum >=#{start} and rnum <= #{end}]]>
 	</select>
 
 	<update id="donationRegisterBook">
@@ -310,7 +342,6 @@
 			LIKE 'F%')
 		</if>
 		)
-
 	</insert>
 
 	<insert id="insertInformation" parameterType="com.nds.library.mypage.ReqAndDon">

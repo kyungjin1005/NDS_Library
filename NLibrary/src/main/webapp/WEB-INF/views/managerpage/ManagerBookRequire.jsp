@@ -137,6 +137,10 @@
 	font-weight: bold;
 	margin: 10px 0px;
 }
+
+#nav1{
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -202,7 +206,7 @@
 								<%-- onclick="goConfirm(${book.req_don_id})"}> --%>
 
 								<%-- ${book.current_state=='신청대기'?"onclick=\"goConfirm(${book.req_don_id})\"":""}> --%>
-								<td>${count}</td>
+								<td>${book.rnum}</td>
 								<td><img src="${book.image}" alt="${book.req_don_id}" /><span>${book.title }</span></td>
 								<td>${book.author}</td>
 								<td>${book.publisher}</td>

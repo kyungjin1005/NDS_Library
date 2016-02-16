@@ -13,8 +13,6 @@
 
 
 <style type="text/css">
-
-
 #mTitle {
 	background-image: url("pictures/title.png");
 	background-position: 0px 0px;
@@ -132,6 +130,10 @@
 #modal-table td li:first-child {
 	font-weight: bold;
 }
+
+#nav1 {
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -205,14 +207,13 @@
 
 					</tbody>
 				</table>
-
 				<div style="text-align: right;">
 					<button class="btn btn-md btn-warning" id="btn-require">신청하기</button>
 				</div>
+				<!-- 페이징 -->
+				${pagebar}
 			</div>
 		</div>
-
-
 
 		<!-- Modal -->
 		<div class="modal fade" id="req-modal" role="dialog">
