@@ -103,9 +103,10 @@
 							name="borrow-filter">
 							<option value="0">전체</option>
 							<option value="1">예약중</option>
+							<!-- 이미 대출중인 책을 예약한 상태 -->
 							<option value="2">대출대기</option>
+							<!-- 관리자의 승인을 기다리는 상태 -->
 							<option value="3">대출중</option>
-							<option value="4">반납완료</option>
 						</select>
 					</form>
 				</div>
@@ -123,95 +124,48 @@
 							<th>대출상태</th>
 							<th>대출회원</th>
 							<th>대출 및 반납</th>
+							<th>result</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>32434353</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>대출대기</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-warning btn-register">대출</button>
-								<button class="btn btn-md btn-danger btn-register disabled">반납</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>32434353</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>예약중</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-warning btn-register">대출</button>
-								<button class="btn btn-md btn-danger btn-register disabled">반납</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>2016-02-07</td>
-							<td>2016-02-07</td>
-							<td>반납완료</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-warning btn-register disabled">대출</button>
-								<button class="btn btn-md btn-danger btn-register disabled">반납</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>2016-02-07</td>
-							<td>-</td>
-							<td>대출중</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-warning btn-register disabled">대출</button>
-								<button class="btn btn-md btn-danger btn-register">반납</button>
-							</td>
-						</tr>
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>2016-02-07</td>
-							<td>2016-02-07</td>
-							<td>반납완료</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-warning btn-register disabled">대출</button>
-								<button class="btn btn-md btn-danger btn-register disabled">반납</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>2016-02-07</td>
-							<td>-</td>
-							<td>대출중</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-warning btn-register disabled">대출</button>
-								<button class="btn btn-md btn-danger btn-register">반납</button>
-							</td>
-						</tr>
-
+						<c:forEach var="borrowing" items="${borrowingList}">
+							<tr>
+								<td>${borrowing.borrowing_id }</td>
+								<td><img src="pictures/booksample01.jpg" alt="" /><span>${borrowing.title}</span></td>
+								<td>${borrowing.book_id}</td>
+								<td><c:choose>
+										<c:when test="${borrowing.borrowing_date != null}">
+											${borrowing.borrowing_date}
+										</c:when>
+										<c:otherwise>
+											-
+										</c:otherwise>
+									</c:choose></td>
+								<td><c:choose>
+										<c:when test="${borrowing.scheduled_date != null}">
+											${borrowing.scheduled_date}
+										</c:when>
+										<c:otherwise>
+											-
+										</c:otherwise>
+									</c:choose></td>
+								<td><c:choose>
+										<c:when test="${borrowing.returned_date != null}">
+											${borrowing.returned_date}
+										</c:when>
+										<c:otherwise>
+											-
+										</c:otherwise>
+									</c:choose></td>
+								<td>${borrowing.current_state }</td>
+								<td>${borrowing.name }</td>
+								<td>
+									<button class="btn btn-md btn-warning btn-borrow" value="${borrowing.borrowing_id }">대출</button>
+									<button class="btn btn-md btn-danger btn-return">반납</button>
+								</td>
+								<td>${result }<td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
@@ -223,7 +177,10 @@
 </body>
 <script>
 	$(document).ready(function() {
-
+		$(".btn-borrow").on("click", function() {
+			alert($(this).val());
+			$(location).attr("href", "changeToBorrow.nds?borrowing_id=" + $(this).val());
+		});
 	});
 </script>
 </html>

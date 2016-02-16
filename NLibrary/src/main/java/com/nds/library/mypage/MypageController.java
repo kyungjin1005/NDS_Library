@@ -217,4 +217,14 @@ public class MypageController {
 
 		return "redirect:MypageDonation.nds";
 	}
+	
+//	@RequestMapping(value = "/MypageBorrow.nds", method = RequestMethod.GET)
+//	public String mypageBorrow(Model model) {
+//		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
+//
+//		ArrayList<Borrowing> list = dao.mypageBorrow();
+//		model.addAttribute("borrowingList", list);
+//
+//		return "WEB-INF/views/mypage/MypageBorrow.jsp";
+//	}
 }

@@ -5,7 +5,8 @@
 <mapper namespace="com.nds.library.manager.IManagerDAO">
 
 	<select id="MessageList" resultType="com.nds.library.manager.Message">
-		SELECT message_id, user_id, is_checked, title, content, sended_date, checked_date, name
+		SELECT message_id, user_id, is_checked, title, content, sended_date,
+		checked_date, name
 		FROM messages JOIN users USING(user_id)
 		<if test="filter == 0">  <!-- 전체 -->
 			where sended_date is not null
@@ -148,7 +149,8 @@
 	<select id="memberList" resultType="com.nds.library.manager.User">
 		SELECT user_id, nds_number,
 		name, position, department, picture, authority,
-		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date from users order by user_id
+		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date from users
+		order by user_id
 	</select>
 
 	<select id="getUser" resultType="com.nds.library.manager.User">
@@ -202,10 +204,13 @@
 		(current_state='기증완료' or current_state='기증대기' or current_state='기증반려')
 		order by reqanddon.registered_date desc
 	</select>
-	
+
 	<insert id="messageSend">
-		INSERT INTO messages (message_id, user_id, title, content, sended_date, is_checked)
-		VALUES ((SELECT NVL(MAX(message_id),0)+1 FROM messages), #{user_id}, #{title}, #{content}, SYSDATE, 0)
+		INSERT INTO messages (message_id, user_id, title,
+		content, sended_date, is_checked)
+		VALUES ((SELECT
+		NVL(MAX(message_id),0)+1 FROM messages), #{user_id}, #{title},
+		#{content}, SYSDATE, 0)
 	</insert>
 
 	<select id="getInformation" resultType="com.nds.library.mypage.ReqAndDon">
@@ -220,27 +225,33 @@
 		BOOKS),#{information_id},'대여가능',sysdate,
 
 		<if test="category_id == 1">
-			(select 'A_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1) from books where location
+			(select 'A_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'A%')
 		</if>
 		<if test="category_id == 2">
-			(select 'B_' ||  (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'B_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'B%')
 		</if>
 		<if test="category_id == 3">
-			(select 'C_' ||  (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'C_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'C%')
 		</if>
 		<if test="category_id == 4">
-			(select 'D_' ||  (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'D_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'D%')
 		</if>
 		<if test="category_id == 5">
-			(select 'E_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'E_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'E%')
 		</if>
 		<if test="category_id == 6">
-			(select 'F_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)  from books where location
+			(select 'F_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
+			from books where location
 			LIKE 'F%')
 		</if>
 		)
@@ -259,10 +270,35 @@
 		#{pubdate},
 		#{explanation})
 	</insert>
-	
+
 	<select id="findUserByUserId" resultType="com.nds.library.manager.User">
 		SELECT name
 		FROM users
 		WHERE user_id = #{user_id}
+	</select>
+
+	<select id="managerBorrow" resultType="com.nds.library.manager.Borrowing">
+		select *
+		from (((books join informations using(information_id)) left outer join
+		borrowings using(book_id))) join users using(user_id)
+		order by book_id
+	</select>
+	
+	<update id="updateBorrowingDate">
+		update borrowings
+		set borrowing_date = SYSDATE, scheduled_date = to_date(borrowing_date, 'YYYY-MM-DD') + 14
+		where borrowing_id = #{borrowing_id}
+	</update>
+	
+	<update id="updateCurrentState"  parameterType="java.util.Map">
+		update books
+		set current_state = #{current_state}
+		where book_id = #{book_id}
+	</update>
+	
+	<select id="checkBorrowingDate" resultType="com.nds.library.manager.Borrowing">
+		select *
+		from borrowings
+		where borrowing_id = #{borrowing_id}
 	</select>
 </mapper>   

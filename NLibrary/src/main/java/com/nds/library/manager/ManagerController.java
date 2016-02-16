@@ -317,4 +317,35 @@ public class ManagerController {
 		}
 		return "redirect:MessageList.nds";
 	}
+	
+	@RequestMapping(value = "/ManagerBorrow.nds", method = RequestMethod.GET)
+	public String managerBorrow(Model model) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+
+		ArrayList<Borrowing> list = dao.managerBorrow();
+		model.addAttribute("borrowingList", list);
+
+		return "WEB-INF/views/managerpage/ManagerBorrow.jsp";
+	}
+	
+	@RequestMapping(value = "/changeToBorrow.nds", method = RequestMethod.GET)
+	public String changeToBorrow(Model model, String borrowing_id, String book_id) {
+		// 예약 또는 대출 신청이 되어있는 상태에서 대출 상태로 변경
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("current_state", "대출");
+		map.put("book_id", book_id);
+		
+		// 이미 대출일이 있는  애들은 update되면 안됨
+		String borrowing_date = dao.checkBorrowingDate(borrowing_id).getBorrowing_date();
+		
+		if(borrowing_date == null) {			
+			dao.updateBorrowingDate(borrowing_id);
+			dao.updateCurrentState(map);
+		}else {
+//			model.addAttribute("result", "이미 대출중인 도서입니다.");
+		}
+		return "WEB-INF/views/managerpage/ManagerBorrow.jsp";
+	}
 }

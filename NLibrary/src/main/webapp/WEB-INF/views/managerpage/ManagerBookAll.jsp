@@ -142,111 +142,22 @@
 						</tr>
 					</thead>
 					<tbody>
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>대출중</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">파손 및
-									분실 등록</button>
-							</td>
-						</tr>
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>대출중</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">파손 및
-									분실 등록</button>
-							</td>
-						</tr>
-
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>대출대기</td>
-							<td>김아무개</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">파손 및
-									분실 등록</button>
-							</td>
-						</tr>
-
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>대출가능</td>
-							<td>-</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">파손 및
-									분실 등록</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>대출가능</td>
-							<td>-</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register">파손 및
-									분실 등록</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>파손도서</td>
-							<td>-</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register disabled">파손
-									및 분실 등록</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>ㅇㅇ출판</td>
-							<td>32434353</td>
-							<td>2016-02-02</td>
-							<td>분실도서</td>
-							<td>-</td>
-							<td>
-								<button class="btn btn-md btn-danger btn-register disabled">파손
-									및 분실 등록</button>
-							</td>
-						</tr>
-
-
+						<c:forEach var="borrowing" items="${borrowingList}">
+							<tr>
+								<td>${borrowing.borrowing_id }</td>
+								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
+								<td>홍길동</td>
+								<td>ㅇㅇ출판</td>
+								<td>32434353</td>
+								<td>2016-02-02</td>
+								<td>대출중</td>
+								<td>김아무개</td>
+								<td>
+									<button class="btn btn-md btn-danger btn-register">파손
+										및 분실 등록</button>
+								</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>

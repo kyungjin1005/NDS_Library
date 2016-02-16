@@ -33,4 +33,10 @@ public interface IManagerDAO {
 	public int insertInformation(ReqAndDon book);
 	
 	public User findUserByUserId(String user_id);
+	
+	public ArrayList<Borrowing> managerBorrow();
+	public void updateBorrowingDate(String borrowing_id);
+	public void updateCurrentState(String book_id, String current_state);
+	public Borrowing checkBorrowingDate(String borrowing_id);
+	public void updateCurrentState(Map<String, Object> map);
 }
