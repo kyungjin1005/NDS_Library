@@ -3,9 +3,65 @@
    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.main.IMainDAO">
+	<select id="StudyBoardList" resultType="com.nds.library.board.Board">
+		select rownum as board_num, title, modified_date
+		from boards
+		where <![CDATA[ ROWNUM <= 10 ]]>
+		and
+		category='스터디'
+		order by BOARDED_DATE desc
+		<!-- SELECT * FROM Boards -->
+	</select>
 
-   <select id="BookList" resultType="com.nds.library.mypage.ReqAndDon">
-      SELECT * FROM books
-   </select>
+	<select id="NoticeBoardList" resultType="com.nds.library.board.Board">
+		select ROWNUM as board_num, title, modified_date
+		from boards
+		where <![CDATA[ ROWNUM <= 10 ]]>
+		order by BOARDED_DATE desc
+		<!-- SELECT * FROM Boards -->
+	</select>
 
+	<select id="MonthlyChampion" resultType="com.nds.library.board.Board">
+		select rownum, picture,
+		department, position, name, read_count
+		from users join
+		(
+		select user_id ,
+		count(*) as read_count
+		from users join borrowings using (user_id)
+		where
+		TO_CHAR(BORROWING_DATE, 'YYYY-MM') = TO_CHAR(TO_DATE(sysdate),
+		'YYYY-MM')
+		group by user_id
+		order by read_count desc
+		) using (user_id)
+		where rownum=1
+	</select>
+
+	<select id="MonthlyBookList" resultType="com.nds.library.main.Book">
+		select *
+		from (select rownum as r, isbn, read_count, title, publisher, author,
+		image
+		from (
+		select distinct isbn, read_count, title, publisher, author, image
+		from
+		((
+		select isbn, count(*) as read_count
+		from(
+		select *
+		from borrowings join books using(book_id) join informations
+		using(information_id)
+		where TO_CHAR(BORROWING_DATE, 'YYYY-MM') = TO_CHAR(TO_DATE(sysdate),
+		'YYYY-MM')
+		)
+		group by isbn
+		) join informations using(isbn))
+		order by read_count desc))
+		where <![CDATA[ r <= 3 ]]>
+	</select>
+	
+	<!-- <select id="NewBookList" resultType="com.nds.library.main.Book" >
+	
+	
+	</select> -->
 </mapper>   

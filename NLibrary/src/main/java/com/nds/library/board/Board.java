@@ -5,7 +5,7 @@ public class Board {
 	
 	private int board_id, user_id, read_count, blind; 
 	private String category, title, content, boarded_date, modified_date, name;
-	
+	private String picture, department, position;
 	
 	public int getBoard_id() {
 		return board_id;
@@ -68,6 +68,22 @@ public class Board {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	
+	public String getPicture() {
+		return picture;
+	}
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
 }

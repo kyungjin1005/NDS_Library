@@ -100,9 +100,7 @@
 </head>
 <body>
 	<div class="container">
-		<header>
-			<%@include file="/include/topMenu.jsp"%>
-		</header>
+		<%@include file="/include/topMenu.jsp"%>
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
@@ -145,7 +143,7 @@
 							<c:forEach var="user" items="${userList}">
 								<tr>
 									<td><input type="checkbox" class="form-control cb"
-										name="uid" value="${user.user_id }"></td>
+										name="user_id" value="${user.user_id }"></td>
 									<td>${count}</td>
 									<td>${user.nds_number}</td>
 									<td>${user.name}</td>

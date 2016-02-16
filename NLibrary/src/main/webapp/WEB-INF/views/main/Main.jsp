@@ -152,7 +152,17 @@ table td:HOVER {
 			<div class="panel-body">
 
 				<ul class="list-inline">
-
+					<c:forEach items="${monthlyBookList}" var="item">
+						<li>
+							<img src="${item.image}" class="mb_img"/>
+							<div>${item.title}</div>
+							<div>${item.author}</div>			
+							<div>${item.publisher}</div>
+						</li>
+					</c:forEach>
+				
+				<!-- 
+					
 					<li class="col-md-4"><span class="mb_number">1.</span> <img
 						src="pictures/booksample01.jpg" alt="" class="mb_img" />
 						<div class="mb_info">
@@ -181,23 +191,30 @@ table td:HOVER {
 							<div>한빛미디어</div>
 							<div>2015년 1월</div>
 							<div>평점 : ★★★★☆</div>
-						</div></li>
+						</div></li> -->
 				</ul>
 			</div>
 		</div>
 
 		<div class="row" id="mBoard">
 			<div class="col-md-3" style="width: 20%">
-
 				<div class="mTitle">
 					<span>1월의 다독왕</span>
 				</div>
 				<hr class="title-line" />
 				<div id="mKing">
-					<img src="pictures/profile.JPG" alt="" />
+					<c:forEach items="${monthlyChampion}" var="item">
+						<img src="${item.picture}"/>
+						<div>${item.department}</div>
+						<div>${item.name}</div>
+					</c:forEach>
+					<%-- 					<div>${monthlyChampion.department}</div>
+					<div>${monthlyChampion.name}</div> --%>
+					<!-- <img src="pictures/profile.JPG" alt="" />
 					<div>NDS개발본부</div>
-					<div>홍길동사원</div>
+					<div>홍길동사원</div> -->
 				</div>
+
 			</div>
 
 
@@ -212,7 +229,13 @@ table td:HOVER {
 				<table class="table">
 
 					<tbody>
-						<tr>
+						<c:forEach items="${noticeBoardList}" var="item">
+							<tr>
+								<td>${item.title}</td>
+								<td>${item.modified_date}</td>
+							</tr>
+						</c:forEach>
+						<!-- <tr>
 							<td>공지사항1공지사항1공지사항1</td>
 							<td>16-02-01</td>
 						</tr>
@@ -239,7 +262,7 @@ table td:HOVER {
 						<tr>
 							<td>공지사항1공지사항1공지사항1</td>
 							<td>16-02-01</td>
-						</tr>
+						</tr> -->
 
 
 					</tbody>
@@ -257,6 +280,16 @@ table td:HOVER {
 				<table class="table">
 
 					<tbody>
+
+						<c:forEach items="${studyBoardList}" var="item">
+							<tr>
+								<td>${item.title}</td>
+								<td>${item.modified_date}</td>
+							</tr>
+						</c:forEach>
+
+
+						<!-- 
 						<tr>
 							<td>자바스터디모집합니다</td>
 							<td>16-02-01</td>
@@ -284,7 +317,7 @@ table td:HOVER {
 						<tr>
 							<td>자바스터디모집합니다</td>
 							<td>16-02-01</td>
-						</tr>
+						</tr> -->
 					</tbody>
 				</table>
 			</div>
