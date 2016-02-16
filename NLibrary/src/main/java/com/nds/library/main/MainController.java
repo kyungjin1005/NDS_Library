@@ -8,30 +8,33 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+//import org.springframework.web.servlet.ModelAndView;
 
 import com.nds.library.board.Board;
-import com.nds.library.board.IBoardDAO;
 
 @Controller
 public class MainController {
 	@Autowired
-	   private SqlSession sqlSession;
+	private SqlSession sqlSession;
 	
 	@RequestMapping(value = "/Main.nds", method = RequestMethod.GET)
-	public String bookList(Model model) {
-		
-
-
-		// model.addAttribute("message", "Hello Spring MVC Framework!");
+	public String MainBoardList(Model model) {
 
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
-		ArrayList<Book> list = dao.BookList();
-
-		for (Book book : list) {
-			System.out.println(book.getLocation());
-		}
-
+		ArrayList<Board> StudyBoardList = dao.StudyBoardList();
+		ArrayList<Board> NoticeBoardList = dao.NoticeBoardList();
+		ArrayList<Board> MonthlyChampion = dao.MonthlyChampion();
+		ArrayList<Book> MonthlyBookList = dao.MonthlyBookList();
+		//ArrayList<Book> NewBookList = dao.NewBookList();
+		
+		model.addAttribute("studyBoardList", StudyBoardList);
+		model.addAttribute("noticeBoardList", NoticeBoardList);
+		model.addAttribute("monthlyChampion", MonthlyChampion);
+		model.addAttribute("monthlyBookList", MonthlyBookList);
+		//model.addAttribute("newBookList", NewBookList);
+		
+		//System.out.println(MonthlyBookList.get(0).getImage());
+		
 		return "WEB-INF/views/main/Main.jsp";
 	}
-
 }
