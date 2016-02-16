@@ -1,7 +1,8 @@
 package com.nds.library.manager;
 
 public class Message {
-	private int message_id, user_id, is_checked;
+	private int message_id, is_checked;
+	private String user_id;
 	private String title, content, sended_date, checked_date;
 	public int getMessage_id() {
 		return message_id;
@@ -9,10 +10,10 @@ public class Message {
 	public void setMessage_id(int message_id) {
 		this.message_id = message_id;
 	}
-	public int getUser_id() {
+	public String getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 	public int getIs_checked() {

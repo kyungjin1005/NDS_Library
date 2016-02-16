@@ -27,7 +27,7 @@ public interface IManagerDAO {
 	public ArrayList<ReqAndDon> userRequireList(User user);
 	public ArrayList<ReqAndDon> userDonationList(User user);
 	
-	public ArrayList<Message> messageSend(Message m);
+	public int messageSend(Message m);
 	
 	public ReqAndDon getInformation(ReqAndDon book);
 	public int insertInformation(ReqAndDon book);

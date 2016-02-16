@@ -74,7 +74,7 @@
 				<h1 id="mTitle">회원관리</h1>
 				<hr class="title-line" />
 				<div id="box">
-					<form action="managerMemberMsg.nds" method="POST">
+					<form action="sendMessage.nds" method="POST">
 						<table class="table" id="msg-table">
 							<tr>
 								<th>제목</th>
@@ -83,7 +83,8 @@
 							</tr>
 							<tr>
 								<th>받는사람</th>
-								<td>List로 보여주기~~~</td>
+								<td><input type="text" value="${user_id_list}" 
+									class="form-control" name="user_id_list"  required="required"/></td>										
 							</tr>
 							<tr>
 								<th>내용</th>
@@ -107,7 +108,6 @@
 </body>
 <script>
 	$(document).ready(function() {
-
 	});
 </script>
 </html>

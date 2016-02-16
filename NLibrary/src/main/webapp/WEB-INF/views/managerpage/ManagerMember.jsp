@@ -112,8 +112,8 @@
 					action="ManagerMemberMsg.nds">
 					<div id="member-header">
 						Count <span class="badge">${size}</span>
-						<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
-						<button type="button" class="btn btn-sm btn-default" id="btn-clear">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-all" style="margin:0px">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-clear" style="margin:0px">선택해제</button>
 
 					</div>
 					<table class="table table-hover" id="member-table">
@@ -145,7 +145,7 @@
 							<c:forEach var="user" items="${userList}">
 								<tr>
 									<td><input type="checkbox" class="form-control cb"
-										name="uid" value="${user.user_id }"></td>
+										name="user_id" value="${user.user_id }" required="required"></td>
 									<td>${count}</td>
 									<td>${user.nds_number}</td>
 									<td>${user.name}</td>

@@ -284,17 +284,26 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/ManagerMemberMsg.nds", method = RequestMethod.POST)
-	public String managerMemberMsg(Model model, String[] uid, Message m) {
+	public String managerMemberMsg(Model model, String[] user_id) {		
+		StringBuilder str = new StringBuilder();
 		
-		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		
-		System.out.println("size : " + uid.length);
-		for(String user_id : uid){
-			System.out.print(user_id);
-			m.setUser_id(Integer.parseInt(user_id));
-			dao.messageSend(m);
+		for(String u : user_id){
+			str.append(u);
+			str.append("/");
 		}
+		model.addAttribute("user_id_list", str);
 		
 		return "WEB-INF/views/managerpage/ManagerMemberMsg.jsp";
+	}
+	
+	@RequestMapping(value = "/sendMessage.nds", method = RequestMethod.POST)
+	public String sendMessage(String user_id_list, Message m) {
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		String[] uids = user_id_list.split("/");
+		for(String u : uids){
+			m.setUser_id(u);
+			dao.messageSend(m);
+		}
+		return "redirect:MessageList.nds";
 	}
 }
