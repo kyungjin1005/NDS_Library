@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>도서신청</title>
-
+<%@include file="/include/link.jsp"%>
 
 <style type="text/css">
 #list-title {
@@ -67,7 +67,7 @@
 
 
 	<div class="container">
-
+		<header><%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
 			<div class="col-md-2">
 

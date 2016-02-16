@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>기증도서</title>
-
+<%@include file="/include/link.jsp"%>
 <style type="text/css">
 #list-title {
 	text-align: center;
@@ -122,16 +122,14 @@
 <body>
 
 	<div class="container">
-
+		<header><%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
 			<div class="col-md-2">
 
 				<div id="list-title">
 					<img src="pictures/boardpage.png" alt="" />
 				</div>
-				
 				<%@include file="/include/BoardSide.jsp"%>
-
 			</div>
 			<div class="col-md-10">
 				<h1 id="mTitle">기증도서</h1>
