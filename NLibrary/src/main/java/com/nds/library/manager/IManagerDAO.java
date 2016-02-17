@@ -39,4 +39,7 @@ public interface IManagerDAO {
 	public void updateCurrentState(String book_id, String current_state);
 	public Borrowing checkBorrowingDate(String borrowing_id);
 	public void updateCurrentState(Map<String, Object> map);
+	
+	public ArrayList<ReqAndDon> bList(Map<String, Object> map);
+	public int totalCount(Map<String, Object> map);
 }

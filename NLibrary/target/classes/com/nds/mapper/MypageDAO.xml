@@ -5,11 +5,62 @@
 <mapper namespace="com.nds.library.mypage.IMypageDAO">
 	<select id="managerBookAll" resultType="com.nds.library.mypage.Borrowing">
 		SELECT * FROM borrowings
+	</select>	
+
+	<select id="BorrowingList" resultType="com.nds.library.mypage.Borrowing">
+		SELECT * FROM borrowings
+	</select>
+
+	<select id="totalCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(*) from reqanddon
+
+		<if test="kind == 'require'">
+			<if test="filter == 0">  <!-- 전체 -->
+				where (current_state='신청대기'
+				or current_state='신청완료' or
+				current_state='구매완료' or current_state='신청반려')
+			</if>
+			<if test="filter == 1">  <!-- 구매완료 -->
+				where current_state='구매완료'
+			</if>
+			<if test="filter == 2">  <!-- 신청완료 -->
+				where current_state='신청완료'
+			</if>
+			<if test="filter == 3"> <!-- 신청대기 -->
+				where current_state='신청대기'
+			</if>
+			<if test="filter == 4">  <!-- 신청반려 -->
+				where current_state='신청반려'
+			</if>
+		</if>
+		<if test="kind == 'donation'">
+			<if test="filter == 0">  <!-- 전체 -->
+				where (current_state='기증대기'
+				or current_state='기증완료' or
+				current_state='기증반려')
+			</if>
+			<if test="filter == 1"> <!-- 기증대기 -->
+				where current_state='기증대기'
+			</if>
+			<if test="filter == 2">  <!-- 기증완료 -->
+				where current_state='기증완료'
+			</if>
+
+			<if test="filter == 3">  <!-- 기증반려 -->
+				where current_state='기증반려'
+			</if>
+		</if>
+		and user_id=#{sessionId} order by reqanddon.registered_date desc
 	</select>
 
 	<select id="requireBookList" parameterType="java.util.Map"
 		resultType="com.nds.library.mypage.ReqAndDon">
-		select REQ_DON_ID, image, title, author, publisher, TO_CHAR(registered_date,
+
+		select b.* from
+		(select rownum as rnum, a.* from
+		(select REQ_DON_ID,
+		image, title, author, publisher, TO_CHAR(registered_date,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
 		'yyyy-mm-dd') AS finished_date, manager_comment
@@ -32,31 +83,42 @@
 		<if test="filter == 4">  <!-- 신청반려 -->
 			where current_state='신청반려'
 		</if>
-		and user_id=4 order by reqanddon.registered_date desc
+		<![CDATA[
+		and user_id=#{sessionId} order by reqanddon.registered_date desc)a)b
+		where rnum >=#{start} and rnum <= #{end}]]>
 	</select>
 
 	<insert id="requireBookAdd">
 
 		INSERT INTO ReqAndDon(req_don_id,
 		manager_id,
-		user_id, current_state, registered_date, user_comment,
-		manager_comment, finished_date
+		user_id,
+		current_state, registered_date, user_comment,
+		manager_comment,
+		finished_date
 		, isbn, title, author, publisher, image,
-		pubdate, explanation)
+		pubdate,
+		explanation)
 		VALUES((SELECT NVL(MAX(req_don_id)+1, 1) FROM
-		ReqAndDon), 1, 4,
+		ReqAndDon),
+		1, 4,
 		'신청대기', sysdate, #{user_comment}, null, null,
 		#{isbn},
-		#{title}, #{author},
+		#{title},
+		#{author},
 		#{publisher},#{image},
 		#{pubdate},
 		#{explanation})
 	</insert>
-	
-	
+
+
 	<select id="donationBookList" parameterType="java.util.Map"
 		resultType="com.nds.library.mypage.ReqAndDon">
-		select REQ_DON_ID, image, title, author, publisher, TO_CHAR(registered_date,
+
+		select b.* from
+		(select rownum as rnum, a.* from
+		(select REQ_DON_ID,
+		image, title, author, publisher, TO_CHAR(registered_date,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
 		'yyyy-mm-dd') AS finished_date, manager_comment
@@ -64,7 +126,8 @@
 
 		<if test="filter == 0">  <!-- 전체 -->
 			where (current_state='기증대기'
-			or current_state='기증완료' or  current_state='기증반려')
+			or current_state='기증완료' or
+			current_state='기증반려')
 		</if>
 		<if test="filter == 1"> <!-- 기증대기 -->
 			where current_state='기증대기'
@@ -75,22 +138,29 @@
 		<if test="filter == 3">  <!-- 기증반려 -->
 			where current_state='기증반려'
 		</if>
-		and user_id=4 order by reqanddon.registered_date desc
+		<![CDATA[
+		and user_id=#{sessionId} order by reqanddon.registered_date desc)a)b
+		where rnum >=#{start} and rnum <= #{end}]]>
 	</select>
-	
+
 	<insert id="donationBookAdd">
 
 		INSERT INTO ReqAndDon(req_don_id,
 		manager_id,
-		user_id, current_state, registered_date, user_comment,
-		manager_comment, finished_date
+		user_id,
+		current_state, registered_date, user_comment,
+		manager_comment,
+		finished_date
 		, isbn, title, author, publisher, image,
-		pubdate, explanation)
+		pubdate,
+		explanation)
 		VALUES((SELECT NVL(MAX(req_don_id)+1, 1) FROM
-		ReqAndDon), 1, 4,
+		ReqAndDon),
+		1, 4,
 		'기증대기', sysdate, #{user_comment}, null, null,
 		#{isbn},
-		#{title}, #{author},
+		#{title},
+		#{author},
 		#{publisher},#{image},
 		#{pubdate},
 		#{explanation})

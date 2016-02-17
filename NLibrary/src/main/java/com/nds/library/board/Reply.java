@@ -2,7 +2,7 @@ package com.nds.library.board;
 
 public class Reply {
 
-	private int reply_id, user_id, board_id, blind;
+	private int reply_id, user_id, board_id, blind, req_don_id;
 	private String content, replyed_date, name;
 	
 	
@@ -47,6 +47,12 @@ public class Reply {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getReq_don_id() {
+		return req_don_id;
+	}
+	public void setReq_don_id(int req_don_id) {
+		this.req_don_id = req_don_id;
 	}
 	
 	

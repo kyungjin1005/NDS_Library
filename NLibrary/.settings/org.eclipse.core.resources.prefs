@@ -1,7 +1,11 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
+encoding//src/main/webapp/include/BoardSide.jsp=UTF-8
+=======
 encoding//src/main/java/com/nds/library/manager/ManagerController.java=UTF-8
 encoding//src/main/webapp/include/footer.jsp=UTF-8
 encoding//src/main/webapp/include/link.jsp=UTF-8
 encoding//src/main/webapp/include/managerSideMenu.jsp=UTF-8
 encoding//src/main/webapp/include/mypageSideMenu.jsp=UTF-8
 encoding//src/main/webapp/include/topMenu.jsp=UTF-8
+>>>>>>> 8db433eca06185da7277adc8a9166a0c39304eb2

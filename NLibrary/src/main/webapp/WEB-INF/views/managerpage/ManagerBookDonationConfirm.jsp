@@ -51,7 +51,7 @@
 	width: 95%;
 	height: 55px;
 	font-weight: bold;
-	font-size: 30px;
+	font-size: 20px;
 	margin: 4px 0px;
 }
 </style>

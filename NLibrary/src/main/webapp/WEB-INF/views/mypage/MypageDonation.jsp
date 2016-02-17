@@ -26,6 +26,12 @@
 	margin-bottom: 30px;
 }
 
+
+#donation-table tbody tr:HOVER {
+	cursor: pointer;
+}
+
+
 #donation-table th {
 	font-weight: bold;
 	font-size: 16px;
@@ -127,6 +133,10 @@
 #modal-table td li:first-child {
 	font-weight: bold;
 }
+
+#nav1 {
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -178,7 +188,7 @@
 
 						<c:set var="count" value="1"></c:set>
 						<c:forEach var="book" items="${donationList}">
-							<tr>
+							<tr onclick="goBoard(${book.req_don_id})">
 								<td>${count}</td>
 								<td><img src="${book.image}" alt="" /><span>${book.title }</span></td>
 								<td>${book.author}</td>
@@ -196,6 +206,8 @@
 				<div style="text-align: right;">
 					<button class="btn btn-md btn-warning" id="btn-donation">기증하기</button>
 				</div>
+				<!-- 페이징 -->
+				${pagebar}
 			</div>
 
 		</div>
@@ -356,6 +368,14 @@
 									});
 						}, "xml");
 
+	}
+	
+function goBoard(req_don_id){
+		
+		alert(req_don_id);
+		$(location).attr(
+				"href",
+				"ReqAndDonDetail.nds?req_don_id=" + req_don_id + "&type=donation");
 	}
 </script>
 </html>

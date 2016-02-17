@@ -2,7 +2,7 @@ package com.nds.library.board;
 
 public class ReqandDon {
 
-	private int req_don_id, manager_id, user_id;
+	private int req_don_id, manager_id, user_id, board_id;
 	private String current_state, registered_date, user_comment, manager_comment,
 	finished_date, isbn, title, author, publisher, image, pubdate, explanation, name;
 	
@@ -102,4 +102,11 @@ public class ReqandDon {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public int getBoard_id() {
+		return board_id;
+	}
+	public void setBoard_id(int board_id) {
+		this.board_id = board_id;
+	}
+	
 }

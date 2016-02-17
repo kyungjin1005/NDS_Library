@@ -137,6 +137,10 @@
 	font-weight: bold;
 	margin: 10px 0px;
 }
+
+#nav1{
+	text-align: center;
+}
 </style>
 </head>
 <body>
@@ -202,7 +206,7 @@
 								<%-- onclick="goConfirm(${book.req_don_id})"}> --%>
 
 								<%-- ${book.current_state=='신청대기'?"onclick=\"goConfirm(${book.req_don_id})\"":""}> --%>
-								<td>${count}</td>
+								<td>${book.rnum}</td>
 								<td><img src="${book.image}" alt="${book.req_don_id}" /><span>${book.title }</span></td>
 								<td>${book.author}</td>
 								<td>${book.publisher}</td>
@@ -229,6 +233,9 @@
 						</c:forEach>
 					</tbody>
 				</table>
+
+				<!-- 페이징 -->
+				${pagebar}
 			</div>
 		</div>
 
@@ -345,7 +352,6 @@
 															"AjaxBookRegister.nds?req_don_id="
 																	+ req_don_id,
 															function(data) {
-																		
 
 																var rootElement = $(
 																		data)
@@ -356,7 +362,10 @@
 																		.find(
 																				"book");
 
-																alert($(book).find("isbn").text());
+																alert($(book)
+																		.find(
+																				"isbn")
+																		.text());
 																var result = "";
 																result += "<tr> <td>ISBN ID</td>";
 																result += "<td>"
@@ -427,9 +436,20 @@
 																				.text()
 																		+ "id=\"img-book\" />";
 																right += "<button type=\"submit\" class=\"btn btn-warning btn-lg  btn-modal\" value=\"" + req_don_id + "\">도서등록</button>";
-																right += "<input type=\"hidden\" value="+ $(book).find("req_don_id").text()
-																+ " name=\"req_don_id\" />"
-																right += "<input type=\"hidden\" value=\""+ $(book).find("isbn").text()+ "\" name=\"isbn\" />"
+																right += "<input type=\"hidden\" value="
+																		+ $(
+																				book)
+																				.find(
+																						"req_don_id")
+																				.text()
+																		+ " name=\"req_don_id\" />"
+																right += "<input type=\"hidden\" value=\""
+																		+ $(
+																				book)
+																				.find(
+																						"isbn")
+																				.text()
+																		+ "\" name=\"isbn\" />"
 																$("#right-box")
 																		.append(
 																				right);
