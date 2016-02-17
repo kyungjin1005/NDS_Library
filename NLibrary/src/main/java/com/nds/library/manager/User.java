@@ -11,6 +11,7 @@ public class User {
 	private String picture;
 	private String authority;
 	private String registered_date;
+	private String enabled;
 	
 	private String title;
 	private String publisher;
@@ -24,25 +25,14 @@ public class User {
 	private String image;
 	
 	
-	/*--화면 23 : 대여내역
- borrowing_date, returned_date
-	from borrowings natural join books natural join informations
-	where user_id=1
-	order by borrowing_date desc;
 
-	--화면 23 : 신청내역. 
-	select , publisher, pubdate, reqanddon.registered_date, current_state
-	from reqanddon join users using(user_id)
-	where user_id=1 and not (current_state='기증완료' or current_state='기증대기' or current_state='기증반려')
-	order by reqanddon.registered_date desc;
+	public String getEnabled() {
+		return enabled;
+	}
 
-	--화면 23 : 도서 기증 내역. 
-	select name, publisher, pubdate, reqanddon.registered_date, current_state
-	from reqanddon join users using(user_id)
-	where user_id=1 and (current_state='기증완료' or current_state='기증대기')
-	order by reqanddon.registered_date desc;*/
-	
-	
+	public void setEnabled(String enabled) {
+		this.enabled = enabled;
+	}
 
 	public String getUser_id() {
 		return user_id;

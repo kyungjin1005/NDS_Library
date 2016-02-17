@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -457,7 +459,7 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/ManagerMemberInfo.nds", method = RequestMethod.GET)
-	public String managerMemberInfo(Model model, User user) {
+	public String managerMemberInfo(Model model, User user, HttpServletRequest request) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 		User u = dao.getUser(user);

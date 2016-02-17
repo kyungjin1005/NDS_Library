@@ -3,6 +3,8 @@ package com.nds.library.mypage;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.nds.library.manager.User;
+
 public interface IMypageDAO {
 	public ArrayList<Borrowing> BorrowingList();
 	
@@ -15,5 +17,7 @@ public interface IMypageDAO {
 
 
 	public int totalCount(Map<String, Object> map);
+	
+
 
 }

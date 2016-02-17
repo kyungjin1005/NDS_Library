@@ -154,17 +154,17 @@ img {
 			</div>
 
 			<div style="width: 50%; float: left;">
-				<form class="form-4">
+				<form class="form-4"  method="post" action="j_spring_security_check">
 					<h1>
 						<font color="red">N</font>-Library
 					</h1>
 					<p>
-						<label for="login">Username</label> <input type="text"
-							name="login" placeholder="사번" required>
+						<label for="j_username">Username</label> <input type="text"
+							name="j_username" placeholder="사번" required>
 					</p>
 					<p>
-						<label for="password">Password</label> <input type="password"
-							name='password' placeholder="비밀번호" required>
+						<label for="j_password">Password</label> <input type="password"
+							name='j_password' placeholder="비밀번호" required>
 					</p>
 
 					<p>

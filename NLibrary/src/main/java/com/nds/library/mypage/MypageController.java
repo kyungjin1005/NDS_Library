@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,13 +24,15 @@ public class MypageController {
 	private SqlSession sqlSession;
 
 	@RequestMapping(value = "/MypageRequire.nds", method = RequestMethod.GET)
-	public String mypageRequire(Model model, String filter, String page) {
+	public String mypageRequire(Model model, String filter, String page, HttpServletRequest request) {
 
-		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); //
-
+		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
+	
 		System.out.println(filter);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		map.put("sessionId", request.getSession().getAttribute("sessionId"));
+		
 		if (filter == null) {
 			filter = "0";
 		}
@@ -236,12 +240,14 @@ public class MypageController {
 	}
 
 	@RequestMapping(value = "/MypageDonation.nds", method = RequestMethod.GET)
-	public String mypageDonation(Model model, String filter, String page) {
+	public String mypageDonation(Model model, String filter, String page, HttpServletRequest request) {
 
 		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); //
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		System.out.println(filter);
+		
+		map.put("sessionId", request.getSession().getAttribute("sessionId")); // 세션 mapper로 넘기기
 
 		if (filter == null) {
 			filter = "0";

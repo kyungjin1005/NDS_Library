@@ -29,6 +29,11 @@
 	margin-bottom: 30px;
 }
 
+#require-table tbody tr:HOVER {
+	cursor: pointer;
+}
+
+
 #require-table th {
 	font-weight: bold;
 	font-size: 16px;
@@ -179,20 +184,10 @@
 					</thead>
 					<tbody>
 
-						<!-- 	<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>oo출판</td>
-							<td>2016-02-05</td>
-							<td>구매완료</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-						</tr> -->
 
 						<c:set var="count" value="1"></c:set>
 						<c:forEach var="book" items="${requireList}">
-							<tr>
+							<tr onclick="goBoard(${book.req_don_id})">
 								<td>${count}</td>
 								<td><img src="${book.image}" alt="" /><span>${book.title }</span></td>
 								<td>${book.author}</td>
@@ -245,27 +240,6 @@
 								</thead>
 								<tbody>
 
-									<!-- <tr>
-									<td>1</td>
-									<td>
-										<div class="clearfix">
-											<img src="pictures/booksample01.jpg" alt="" class="modal-img" />
-											<ul class="modal-list">
-												<li>프로그래머로 사는 법</li>
-
-												<li>저자 - <span class="mb-title">샘 라이트스톤</span></li>
-												<li>출판사 - <span class="mb-company">한빛미디어</span></li>
-												<li>발행일 - <span class="mb-pubdate">2012.10.04</span></li>
-												<li>ISBN - <span class="mb-isbn"> 9788979149623</span></li>
-											</ul>
-										</div>
-									</td>
-
-									<td>
-										<button class="btn btn-md btn-default">신청하기</button>
-									</td>
-								</tr>
-								 -->
 								</tbody>
 							</table>
 						</div>
@@ -370,6 +344,14 @@
 									});
 						}, "xml");
 
+	}
+	
+	function goBoard(req_don_id){
+		
+		alert(req_don_id);
+		$(location).attr(
+				"href",
+				"ReqAndDonDetail.nds?req_don_id=" + req_don_id + "&type=require");
 	}
 </script>
 </html>

@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 <title>검색결과</title>
 
 <link rel="stylesheet"
@@ -88,9 +88,24 @@ table tbody tr:HOVER {
 }
 </style>
 <script>
-	$(document).ready(function() {
 
-	});
+   $(document).ready(
+         function() {
+            $("#borrow-filter option:eq(${filter})").attr("selected","selected");
+
+            $("#borrow-filter").change(
+                  function() {
+                     $(location).attr(
+                           "href",
+                           "SearchResult.nds?key=" + $("#select").val()+ "&searchWord=" + $("#query").val() +"&filter="
+                                 + $("#borrow-filter").val());
+                  });
+            
+            $('table tr').click(function() {
+               window.location = $(this).attr('href');
+               return false;
+            });
+         });
 </script>
 </head>
 <body>
@@ -98,9 +113,8 @@ table tbody tr:HOVER {
 	<div class="container">
 
 		<header>
-			<%@include file="/include/header.jsp"%>
+			<%@include file="/include/topMenu.jsp"%>
 		</header>
-
 		<div id="result">
 			<div class="mTitle">
 				<span>검색결과</span>
@@ -110,17 +124,21 @@ table tbody tr:HOVER {
 		</div>
 
 		<div id="filter">
-			<span>검색 결과가 총 <span>3</span> 권 있습니다.
+			<span>검색 결과가 총 <span>${totalCount}</span> 권 있습니다.
 			</span>
 
-			<form class="form-inline" role="form" method="post"
+			<form class="form-inline" role="form" method="get"
 				style="display: inline-block; float: right;">
-				<select class="form-control" id="borrow-filter" name="borrow-filter">
+				<input type="hidden" id="select" value="${select}"> <input
+					type="hidden" id="query" value="${query}"> <select
+					class="form-control" id="borrow-filter" name="borrow-filter">
 					<option value="0">전체</option>
 					<option value="1">대출가능</option>
 				</select>
 			</form>
 		</div>
+
+
 
 		<table class="table table-hover text-center" id="result-table">
 			<thead>
@@ -130,56 +148,23 @@ table tbody tr:HOVER {
 					<th>저자</th>
 					<th>출판사</th>
 					<th>발행일</th>
-					<th>평점</th>
 					<th>대출상태</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>1</td>
-					<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-					<td>홍길동</td>
-					<td>한빛미디어</td>
-					<td>2016-02-05</td>
-					<td>☆★★★★</td>
-					<td>대출가능</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-					<td>홍길동</td>
-					<td>한빛미디어</td>
-					<td>2016-02-05</td>
-					<td>☆★★★★</td>
-					<td>대출가능</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-					<td>홍길동</td>
-					<td>한빛미디어</td>
-					<td>2016-02-05</td>
-					<td>☆★★★★</td>
-					<td>대출가능</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-					<td>홍길동</td>
-					<td>한빛미디어</td>
-					<td>2016-02-05</td>
-					<td>☆★★★★</td>
-					<td>대출가능</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-					<td>홍길동</td>
-					<td>한빛미디어</td>
-					<td>2016-02-05</td>
-					<td>☆★★★★</td>
-					<td>대출가능</td>
-				</tr>
+
+
+				<c:forEach var="result" items="${result}">
+					<tr href="BookInfo.nds?isbn=${result.isbn}"
+						style="cursor: pointer;">
+						<td>${result.rownum}</td>
+						<td><img src="${result.image}" alt="" /><span>${result.title}</span></td>
+						<td>${result.author}</td>
+						<td>${result.publisher}</td>
+						<td>${result.pubdate}</td>
+						<td>${result.current_state}</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 		<footer>

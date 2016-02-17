@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@include file="/include/link.jsp"%>
 <title>자료검색</title>
 
 <link rel="stylesheet"
@@ -99,23 +99,41 @@
 }
 </style>
 <script>
-	$(document).ready(function() {
+   $(document).ready(
+         function() {
 
-	});
+            $("#borrow-filter2 option:eq(${filter})").attr("selected",
+                  "selected");
+
+            $("#borrow-filter2").change(
+                  function() {
+                     $(location).attr(
+                           "href",
+                           "SearchPage.nds?category_id="
+                                 + $("#category_id").val()
+                                 + "&filter="
+                                 + $("#borrow-filter2").val());
+                  });
+
+            $('table tr').click(function() {
+               window.location = $(this).attr('href');
+               return false;
+            });
+         });
 </script>
 </head>
 <body>
 
 
 	<%-- 
-	
+   
  --%>
 	<div class="container">
 
-		<header>
-			<%@include file="/include/header.jsp"%>
-		</header>
 
+		<header>
+			<%@include file="/include/topMenu.jsp"%>
+		</header>
 		<div class="row" style="margin-top: 80px;">
 			<div class="col-md-2">
 
@@ -123,25 +141,34 @@
 					<img src="pictures/searchpage.png" alt="" />
 				</div>
 				<ul class="list-group">
-					<li class="list-group-item"><a href="">Java</a></li>
-					<li class="list-group-item"><a href="">Database</a></li>
-					<li class="list-group-item"><a href="">JSP/Servlet</a></li>
-					<li class="list-group-item"><a href="">Cloud</a></li>
+					<li class="list-group-item"><a
+						href="SearchPage.nds?category_id=1">JAVA</a></li>
+					<li class="list-group-item"><a
+						href="SearchPage.nds?category_id=2">웹프로그래밍</a></li>
+					<li class="list-group-item"><a
+						href="SearchPage.nds?category_id=3">데이터베이스</a></li>
+					<li class="list-group-item"><a
+						href="SearchPage.nds?category_id=4">프레임워크</a></li>
+					<li class="list-group-item"><a
+						href="SearchPage.nds?category_id=5">클라우드</a></li>
+					<li class="list-group-item"><a
+						href="SearchPage.nds?category_id=6">기타</a></li>
 				</ul>
 
 			</div>
 			<div class="col-md-10">
-				<h1 id="mTitle">자료검색</h1>
+				<h1 id="mTitle">자료검색 -> ${category}</h1>
 				<hr class="title-line" />
 
 				<div id="filter">
-					<span>검색 결과가 총 <span>3</span> 권 있습니다.
+					<span> 검색 결과가 총 <span>${totalCount}</span> 권 있습니다.
 					</span>
 
-					<form class="form-inline" role="form" method="post"
+					<form class="form-inline" role="form" method="get"
 						style="display: inline-block; float: right;">
-						<select class="form-control" id="borrow-filter"
-							name="borrow-filter">
+						<input type="hidden" id="category_id" value="${category_id}">
+						<select class="form-control" id="borrow-filter2"
+							name="borrow-filter2">
 							<option value="0">전체</option>
 							<option value="1">대출가능</option>
 						</select>
@@ -156,56 +183,22 @@
 							<th>저자</th>
 							<th>출판사</th>
 							<th>발행일</th>
-							<th>평점</th>
 							<th>대출상태</th>
 						</tr>
 					</thead>
+
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>한빛미디어</td>
-							<td>2016-02-05</td>
-							<td>☆★★★★</td>
-							<td>대출가능</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>한빛미디어</td>
-							<td>2016-02-05</td>
-							<td>☆★★★★</td>
-							<td>대출가능</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>한빛미디어</td>
-							<td>2016-02-05</td>
-							<td>☆★★★★</td>
-							<td>대출가능</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>한빛미디어</td>
-							<td>2016-02-05</td>
-							<td>☆★★★★</td>
-							<td>대출가능</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>홍길동</td>
-							<td>한빛미디어</td>
-							<td>2016-02-05</td>
-							<td>☆★★★★</td>
-							<td>대출가능</td>
-						</tr>
+						<c:forEach var="data" items="${data}">
+							<tr href="BookInfo.nds?isbn=${data.isbn}"
+								style="cursor: pointer;">
+								<td>${data.rownum}</td>
+								<td><img src="${data.image}" alt="" /><span>${data.title}</span></td>
+								<td>${data.author}</td>
+								<td>${data.publisher}</td>
+								<td>${data.pubdate}</td>
+								<td>${data.current_state}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>

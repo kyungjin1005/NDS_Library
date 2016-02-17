@@ -3,11 +3,14 @@
    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.mypage.IMypageDAO">
+
+	
+
 	<select id="BorrowingList" resultType="com.nds.library.mypage.Borrowing">
 		SELECT * FROM borrowings
 	</select>
 
-<select id="totalCount" resultType="java.lang.Integer"
+	<select id="totalCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(*) from reqanddon
 
@@ -47,7 +50,7 @@
 				where current_state='기증반려'
 			</if>
 		</if>
-		 and user_id=4 order by reqanddon.registered_date desc
+		and user_id=#{sessionId} order by reqanddon.registered_date desc
 	</select>
 
 	<select id="requireBookList" parameterType="java.util.Map"
@@ -55,7 +58,8 @@
 
 		select b.* from
 		(select rownum as rnum, a.* from
-		(select REQ_DON_ID, image, title, author, publisher, TO_CHAR(registered_date,
+		(select REQ_DON_ID,
+		image, title, author, publisher, TO_CHAR(registered_date,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
 		'yyyy-mm-dd') AS finished_date, manager_comment
@@ -79,7 +83,7 @@
 			where current_state='신청반려'
 		</if>
 		<![CDATA[
-		and user_id=4 order by reqanddon.registered_date desc)a)b
+		and user_id=#{sessionId} order by reqanddon.registered_date desc)a)b
 		where rnum >=#{start} and rnum <= #{end}]]>
 	</select>
 
@@ -109,10 +113,11 @@
 
 	<select id="donationBookList" parameterType="java.util.Map"
 		resultType="com.nds.library.mypage.ReqAndDon">
-		
+
 		select b.* from
 		(select rownum as rnum, a.* from
-		(select REQ_DON_ID, image, title, author, publisher, TO_CHAR(registered_date,
+		(select REQ_DON_ID,
+		image, title, author, publisher, TO_CHAR(registered_date,
 		'yyyy-mm-dd') AS registered_date,
 		current_state, TO_CHAR(finished_date,
 		'yyyy-mm-dd') AS finished_date, manager_comment
@@ -133,7 +138,7 @@
 			where current_state='기증반려'
 		</if>
 		<![CDATA[
-		and user_id=4 order by reqanddon.registered_date desc)a)b
+		and user_id=#{sessionId} order by reqanddon.registered_date desc)a)b
 		where rnum >=#{start} and rnum <= #{end}]]>
 	</select>
 
