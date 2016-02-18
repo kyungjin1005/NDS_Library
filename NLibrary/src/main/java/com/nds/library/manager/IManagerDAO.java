@@ -34,7 +34,7 @@ public interface IManagerDAO {
 	
 	public User findUserByUserId(String user_id);
 	
-	public ArrayList<Borrowing> managerBorrow();
+	public ArrayList<Borrowing> managerBorrow(Map<String, Object> map);
 	public void updateBorrowingDate(String borrowing_id);
 	public void updateCurrentState(String book_id, String current_state);
 	public Borrowing getBorrowingById(String borrowing_id);

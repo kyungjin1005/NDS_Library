@@ -96,20 +96,18 @@
 				<h1 id="mTitle">대출관리</h1>
 				<hr class="title-line" />
 
-				<div id="filter">
-					<form class="form-inline" role="form" method="post"
-						style="display: inline-block; float: right;">
-						<select class="form-control filter" id="borrow-filter"
-							name="borrow-filter">
-							<option value="0">전체</option>
-							<option value="1">예약중</option>
-							<!-- 이미 대출중인 책을 예약한 상태 -->
-							<option value="2">대출대기</option>
-							<!-- 관리자의 승인을 기다리는 상태 -->
-							<option value="3">대출중</option>
-						</select>
-					</form>
-				</div>
+				<form class="form-inline" role="form" method="get"
+					style="display: inline-block; float: right; margin-bottom: 20px;">
+					<select class="form-control" id="borrow-filter"
+						name="borrow-filter">
+						<option value="0">전체</option>
+						<option value="1">예약 도서</option>
+						<!-- 이미 대출중인 책을 예약한 상태 -->
+						<option value="2">대출 신청 도서</option>
+						<!-- 관리자의 승인을 기다리는 상태 -->
+						<option value="3">대출 도서</option>
+					</select>
+				</form>
 
 
 				<table class="table table-hover text-center" id="book-table">
@@ -159,8 +157,10 @@
 								<td>${borrowing.current_state }</td>
 								<td>${borrowing.name }</td>
 								<td>
-									<button class="btn btn-md btn-warning btn-borrow" value="${borrowing.borrowing_id }">대출</button>
-									<button class="btn btn-md btn-danger btn-return" value="${borrowing.borrowing_id }">반납</button>
+									<button class="btn btn-md btn-warning btn-borrow"
+										value="${borrowing.borrowing_id }">대출</button>
+									<button class="btn btn-md btn-danger btn-return"
+										value="${borrowing.borrowing_id }">반납</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -174,15 +174,37 @@
 	</div>
 </body>
 <script>
-	$(document).ready(function() {
-		$(".btn-borrow").on("click", function() {
-			$(location).attr("href", "changeToBorrow.nds?borrowing_id=" + $(this).val());
-			alert("책이 대출되었습니다.");
-		});
-		$(".btn-return").on("click", function() {
-			$(location).attr("href", "changeToReturn.nds?borrowing_id=" + $(this).val());
-			alert("책이 반납되었습니다.");
-		});
-	});
+	$(document).ready(
+			function() {
+				$(".btn-borrow").on(
+						"click",
+						function() {
+							$(location).attr(
+									"href",
+									"changeToBorrow.nds?borrowing_id="
+											+ $(this).val());
+							alert("책이 대출되었습니다.");
+						});
+				$(".btn-return").on(
+						"click",
+						function() {
+							$(location).attr(
+									"href",
+									"changeToReturn.nds?borrowing_id="
+											+ $(this).val());
+							alert("책이 반납되었습니다.");
+						});
+
+				$("#borrow-filter option:eq(${filter})").attr("selected",
+						"selected");
+
+				$("#borrow-filter").change(
+						function() {
+							$(location).attr(
+									"href",
+									"ManagerBorrow.nds?filter="
+											+ $("#borrow-filter").val());
+						});
+			});
 </script>
 </html>

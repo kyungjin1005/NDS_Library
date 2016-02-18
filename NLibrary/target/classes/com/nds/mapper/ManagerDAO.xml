@@ -367,7 +367,18 @@
 		select *
 		from (((books join informations using(information_id)) left outer join
 		borrowings using(book_id))) join users using(user_id)
-		where current_state = '대출' or current_state = '예약'
+		<if test="filter == 0">  <!-- 전체 -->
+			where current_state = '대출' or current_state = '예약' or current_state = '대출대기'
+		</if>
+		<if test="filter == 1">  <!-- 예약 도서 -->
+			where current_state = '예약'
+		</if>
+		<if test="filter == 2">  <!-- 대출 신청 도서 -->
+			where current_state = '대출대기'
+		</if>
+		<if test="filter == 3">  <!-- 대출 도서 -->
+			where current_state = '대출'
+		</if>
 		order by book_id
 	</select>
 	

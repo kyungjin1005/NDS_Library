@@ -514,12 +514,20 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value = "/ManagerBorrow.nds", method = RequestMethod.GET)
-	public String managerBorrow(Model model) {
+	public String managerBorrow(Model model, String filter) {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
 
-		ArrayList<Borrowing> list = dao.managerBorrow();
+		if (filter == null) {
+			filter = "0";
+		}
+		map.put("filter", filter);
+		
+		ArrayList<Borrowing> list = dao.managerBorrow(map);
 		model.addAttribute("borrowingList", list);
+		model.addAttribute("filter", filter);
 
 		return "WEB-INF/views/managerpage/ManagerBorrow.jsp";
 	}
