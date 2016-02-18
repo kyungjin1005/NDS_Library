@@ -13,7 +13,7 @@
 	</select>
 
 	<select id="StudyBoardList" resultType="com.nds.library.board.Board">
-		select rownum as board_num, title, modified_date, board_id
+		select rownum as board_num, title, boarded_date, board_id
 		from boards
 		where <![CDATA[ ROWNUM <= 10 ]]>
 		and
@@ -23,7 +23,7 @@
 	</select>
 
 	<select id="NoticeBoardList" resultType="com.nds.library.board.Board">
-		select ROWNUM as board_num, title, modified_date, board_id
+		select ROWNUM as board_num, title, boarded_date, board_id
 		from boards
 		where <![CDATA[ ROWNUM <= 10 ]]>
 		and

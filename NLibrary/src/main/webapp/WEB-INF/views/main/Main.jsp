@@ -12,11 +12,45 @@
 
 
 <style type="text/css">
+#list-title {
+	text-align: center;
+	padding: 0px;
+}
+
+#list-title img {
+	width: 100%;
+	margin: 0px;
+}
+
+.list-group-item {
+	font-family: "맑은고딕";
+	font-weight: bold;
+	color: #555555;
+	height: 50px;
+	display: list-item;
+	vertical-align: middle;
+}
+
+#mTitle {
+	background-image: url("pictures/title.png");
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	font-family: "맑은고딕";
+	font-weight: bold;
+	font-size: 25px;
+	padding-left: 20px;
+}
+
+.title-line {
+	border: 1px solid red;
+	margin-top: 5px;
+	margin-bottom: 40px;
+}
 #montly_book {
 	margin-top: 100px;
 }
 
-#montly_book li div:HOVER {
+#montly_book li:HOVER {
 	cursor: pointer;
 	text-decoration: underline;
 }
@@ -147,9 +181,9 @@ table td:HOVER {
 
 			<div class="panel-body">
 
-				<ul class="list-inline">
+				<ul class="list-inline" style="text-align: center;">
 					<c:forEach items="${monthlyBookList}" var="item">
-						<li><img src="${item.image}" class="mb_img" />
+						<li style="width: 30%;"><img src="${item.image}" class="mb_img" />
 							<div>${item.title}</div>
 							<div>${item.author}</div>
 							<div>${item.publisher}</div></li>
@@ -199,7 +233,7 @@ table td:HOVER {
 							<tr href="BoardDetail.nds?board_id=${item.board_id}&type=notice"
 								style="cursor: pointer;">
 								<td>${item.title}</td>
-								<td>${item.modified_date}</td>
+								<td>${item.boarded_date}</td>
 							</tr>
 						</c:forEach>
 
@@ -225,7 +259,7 @@ table td:HOVER {
 							<tr href="BoardDetail.nds?board_id=${item.board_id}&type=study"
 								style="cursor: pointer;">
 								<td>${item.title}</td>
-								<td>${item.modified_date}</td>
+								<td>${item.boarded_date}</td>
 							</tr>
 						</c:forEach>
 
@@ -282,7 +316,7 @@ table td:HOVER {
 				<hr class="title-line" />
 				<ul class="list-inline new-book" style="">
 					<c:forEach items="${newRegisteredBookList}" var="item">
-						<li style="width: 150px""height: 205px"><img
+						<li style="width: 150px; height: 205px"><img
 							src="${item.image}" alt="" style="width: 140px" />
 							<div>${item.title}</div>
 							<div>${item.author}</div>
