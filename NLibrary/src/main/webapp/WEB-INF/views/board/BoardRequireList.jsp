@@ -78,6 +78,8 @@
 			</div>
 			<div class="col-md-10">
 				<h1 id="mTitle">도서신청</h1>
+				
+				<hr class="title-line" />
 				<div id="filter">
 					<form class="form-inline" role="form" method="get"
 						style="display: inline-block; float: right; margin-bottom: 15px">
@@ -92,7 +94,7 @@
 
 					</form>
 				</div>
-				<hr class="title-line" />
+				
 				<table class="table table-condensed" id="board">
 					<thead>
 						<tr>
@@ -153,16 +155,14 @@
 						}
 						StringBuffer sb = new StringBuffer();
 				%>
-				<br />
-				<br />
-				<br />
-				<br />
+				<br /> <br /> <br /> <br />
 				<div align="center">
 					<ul class="pagination pagination-style-2">
 						<%
 							if (pageNumTemp > 1) {
 						%>
-						<li><a href="BoardRequireList.nds?pageNum=1&category=${filter }">«</a></li>
+						<li><a
+							href="BoardRequireList.nds?pageNum=1&category=${filter }">«</a></li>
 						<%
 							}
 						%>
@@ -170,7 +170,8 @@
 							if (isPrev) {
 									int goPrevPage = startPage - pagePerBlock;
 						%>
-						<li><a href="BoardRequireList.nds?pageNum=<%=goPrevPage%>&category=${filter }">«</a></li>
+						<li><a
+							href="BoardRequireList.nds?pageNum=<%=goPrevPage%>&category=${filter }">«</a></li>
 						<%
 							} else {
 
@@ -182,14 +183,16 @@
 						<%
 							} else {
 						%>
-						<li><a href="BoardRequireList.nds?pageNum=<%=i%>&category=${filter }"><%=i%></a></li>
+						<li><a
+							href="BoardRequireList.nds?pageNum=<%=i%>&category=${filter }"><%=i%></a></li>
 						<%
 							}
 								}
 								if (isNext) {
 									int goNextPage = startPage + pagePerBlock;
 						%>
-						<li><a href="BoardRequireList.nds?pageNum=<%=goNextPage%>&category=${filter }">»</a></li>
+						<li><a
+							href="BoardRequireList.nds?pageNum=<%=goNextPage%>&category=${filter }">»</a></li>
 						<%
 							} else {
 
@@ -205,9 +208,7 @@
 					
 				</div>
 
-				<br />
-				<br />
-				<br />
+				<br /> <br /> <br />
 
 				<!-- <div style="text-align: right">
 					<form action="#" method="get">
@@ -229,7 +230,10 @@
 			return false;
 		});
 	});
-	
-	$("#borrow-filter").find("option[value='BoardRequireList.nds?type=require&category=${filter}']").attr("selected" , true);
+
+	$("#borrow-filter")
+			.find(
+					"option[value='BoardRequireList.nds?type=require&category=${filter}']")
+			.attr("selected", true);
 </script>
 </html>

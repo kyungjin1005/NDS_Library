@@ -10,13 +10,6 @@
 <%@include file="/include/link.jsp"%>
 <title>자료검색</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 
 <style type="text/css">
 #list-title {
@@ -123,7 +116,11 @@
 </script>
 </head>
 <body>
-
+<c:set var="totalCount" value="${totalCount}" />
+<%
+		int totalCount = (Integer) pageContext.getAttribute("totalCount");
+		int index = totalCount;
+%>
 
 	<%-- 
    
@@ -190,8 +187,14 @@
 
 					<tbody>
 						<c:forEach var="data" items="${data}">
+<<<<<<< HEAD
 							<tr href="BookInfo.nds?isbn=${data.isbn}&book_id=${data.book_id}" style="cursor: pointer;">
 								<td>${data.rownum}</td>
+=======
+							<tr href="BookInfo.nds?isbn=${data.isbn}"
+								style="cursor: pointer;">
+								<td><%= index--%></td>
+>>>>>>> c77c34964ab0e8f8e34b984aae2f6522f5accfa9
 								<td><img src="${data.image}" alt="" /><span>${data.title}</span></td>
 								<td>${data.author}</td>
 								<td>${data.publisher}</td>

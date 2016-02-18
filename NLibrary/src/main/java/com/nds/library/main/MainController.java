@@ -42,6 +42,7 @@ public class MainController {
 		ArrayList<Board> MonthlyChampion = dao.MonthlyChampion();
 		ArrayList<Book> MonthlyBookList = dao.MonthlyBookList();
 		ArrayList<Book> list;
+		ArrayList<Book> bList = new ArrayList<Book>();
 		ArrayList<Book> NewRegisteredBookList = dao.NewRegisteredBookList();
 
 		String apikey = "AFFB7CB6B98788B011E21E57116E7D57F7265DB845C79917A613CD62ADA6CC71";
@@ -56,12 +57,23 @@ public class MainController {
 		}
 		InterparkParse interparkAPI = new InterparkParse();
 		list = interparkAPI.parse(uri);
+		
+		for(int i=0; i<MonthlyBookList.size();i++){
+			Book book = MonthlyBookList.get(i);
+			String title = book.getTitle();
+			if(title.length()>=30){
+				title = title.substring(0, 30);
+			}
+			book.setTitle(title + "...");
+			bList.add(book);
+			System.out.println("title : " + bList.get(i).getTitle());
+		}
 
 		model.addAttribute("bookList", list);
 		model.addAttribute("studyBoardList", StudyBoardList);
 		model.addAttribute("noticeBoardList", NoticeBoardList);
 		model.addAttribute("monthlyChampion", MonthlyChampion);
-		model.addAttribute("monthlyBookList", MonthlyBookList);
+		model.addAttribute("monthlyBookList", bList);
 		model.addAttribute("newRegisteredBookList", NewRegisteredBookList);
 		
 		 return "WEB-INF/views/main/Main.jsp";
@@ -102,7 +114,15 @@ public class MainController {
 	      Information bookInfo = dao.bookInfo(map).get(0);
 	      model.addAttribute("bookInfo", bookInfo);
 
-	      ArrayList<Information> ownInfo = dao.ownInfo(map);
+	      ArrayList<Book> ownInfo = dao.ownInfo(map);
+	      
+	      for (Book book : ownInfo) {
+			if(book.getCurrent_state().equals("대출가능") && book.getScheduled_date()!=null){
+				book.setScheduled_date("");
+				
+			}
+		}
+	      
 	      BorrowN=dao.ownInfo(map).size();
 	      model.addAttribute("ownInfo", ownInfo);
 

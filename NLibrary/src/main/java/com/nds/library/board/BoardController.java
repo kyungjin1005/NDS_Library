@@ -162,7 +162,7 @@ public class BoardController {
     
     /* 게시글 상세보기 */
     @RequestMapping(value = "/BoardDetail.nds", method = RequestMethod.GET)
-    public String boardDetail(Model model, int board_id, String type) {
+    public String boardDetail(Model model, int board_id, String type,  HttpServletRequest request) {
     	
     	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -177,6 +177,8 @@ public class BoardController {
         model.addAttribute("replyCount", dao.replyCount(map));
         // 댓글 리스트 받아오기 
         model.addAttribute("replylist", dao.replyList(map));
+        model.addAttribute("user_id", Integer.parseInt(request.getSession().getAttribute("sessionId").toString()));
+       
         
        if(type.equals("notice"))
     	   return "WEB-INF/views/board/BoardNoticeDetail.jsp";
@@ -186,7 +188,7 @@ public class BoardController {
     
     /* 신청, 기증 상세보기 */
     @RequestMapping(value = "/ReqAndDonDetail.nds", method = RequestMethod.GET)
-    public String reqAndDonDetail(Model model, int req_don_id, String type) {
+    public String reqAndDonDetail(Model model, int req_don_id, String type,  HttpServletRequest request) {
     	
     	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -199,6 +201,7 @@ public class BoardController {
         model.addAttribute("replyCount", dao.replyCount(map));
         // 댓글 리스트 받아오기 
         model.addAttribute("replylist", dao.replyList(map));
+        model.addAttribute("user_id", Integer.parseInt(request.getSession().getAttribute("sessionId").toString()));
         
         if(type.equals("require"))
     	   return "WEB-INF/views/board/BoardRequireDetail.jsp";
@@ -208,7 +211,7 @@ public class BoardController {
     
     /* 댓글 작성 */
     @RequestMapping(value = "/InsertReply.nds", method = RequestMethod.POST)
-    public String insertReply(Model model, Reply reply, String type) {
+    public String insertReply(Model model, Reply reply, String type, HttpServletRequest request) {
     
     	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
     	Map<String, Object> map = new HashMap<String, Object>();
@@ -224,7 +227,9 @@ public class BoardController {
     		map.put("req_don_id", reply.getReq_don_id());
     	}
     
-    	map.put("user_id", reply.getUser_id());
+    	
+    	
+    	map.put("user_id", Integer.parseInt(request.getSession().getAttribute("sessionId").toString()));
     	map.put("content", reply.getContent());
     	  	
     	dao.addReply(map);
@@ -258,22 +263,7 @@ public class BoardController {
     	   return "redirect:ReqAndDonDetail.nds?req_don_id="+reply.getReq_don_id()+"&type=donation";
     }
     
-    /* 댓글 수정 */
-    @RequestMapping(value = "/UpdateReply.nds", method = RequestMethod.GET)
-    public String updateReply(Model model, String board_id, int reply_id, String type) {
-    	
-    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("reply_id", reply_id);
-        dao.deleteReply(map);
-        
-       if(type.equals("notice"))
-    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=notice";
-       
-       else 
-    	   return "redirect:BoardDetail.nds?board_id="+board_id+"&type=study";
-    }
-    
+   
     /* 게시판 글쓰기 jsp로 이동*/
     @RequestMapping(value = "/AddBoard.nds", method = RequestMethod.GET)
     public String addBoard(String type) {	
@@ -285,9 +275,10 @@ public class BoardController {
     
     /* 게시판 글쓰기*/
     @RequestMapping(value = "/WriteBoard.nds", method = RequestMethod.GET)
-    public String writeBoard(Board board) {	
+    public String writeBoard(Board board, HttpServletRequest request) {	
       
     	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
+    	board.setUser_id(Integer.parseInt(request.getSession().getAttribute("sessionId").toString()));
     	dao.addBoard(board);  
     	
     	if(board.getCategory().equals("스터디"))
@@ -296,42 +287,7 @@ public class BoardController {
     		return "redirect:ManagerBoard.nds";
     }
    
-    @RequestMapping(value = "/ReqDonFilterList.nds", method = RequestMethod.GET)
-    public String  reqDonFilterList(Model model, HttpServletRequest request, String type, String category, String filter) {
-
-    	int pageNumTemp = 1;
- 		// 한 페이지에 10개의 글이 보임
- 		int listCount = 10;
- 		// 뷰에서 글번호를 받아옴
- 		String pageNum = request.getParameter("pageNum");
- 		System.out.println("pegeNum : " + pageNum);
- 		if (pageNum != null) {
- 			pageNumTemp = Integer.parseInt(pageNum);
- 		}
- 		// 시작하는 글번호를 계산함
- 		int startNumber = listCount * (pageNumTemp-1)+1;
-   	
-    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
-        Map<String, Object> map = new HashMap<String, Object>();
-       
-        
-        map.put("filter", filter);
-        map.put("startNumber", startNumber);
-       
-        
-        ArrayList<ReqandDon> list = dao.reqaAndDonFilterList(map);
-        model.addAttribute("list", list);
-        model.addAttribute("totalCount", dao.reqaAndDonFilterCount(map));
-        model.addAttribute("indexCount", dao.reQandDonCount(map)-(pageNumTemp-1)*10);
-        model.addAttribute("pageNum", pageNum);
-        model.addAttribute("filter", filter);
-        
-       
-       if(type.equals("require"))
-    	   return "WEB-INF/views/board/BoardRequireList.jsp";
-       else
-    	   return "WEB-INF/views/board/BoardDonationList.jsp";
-    }   
+    
     
     // 관리자 게시글 관리
     @RequestMapping(value = "/ManagerBoard.nds")
@@ -461,61 +417,7 @@ public class BoardController {
    		return "WEB-INF/views/board/AdminBoardBlind.jsp";
    	}
     
-    // 관리자 게시판 필터링처리
-    @RequestMapping(value = "/ManagerBoardFilterList.nds", method = RequestMethod.POST)
-    public String  managerBoardFilterList(Model model, HttpServletRequest request, int category, int date) {
-
-    	int pageNumTemp = 1;
- 		// 한 페이지에 10개의 글이 보임
- 		int listCount = 10;
- 		// 뷰에서 글번호를 받아옴
- 		String pageNum = request.getParameter("pageNum");
- 		System.out.println("pegeNum : " + pageNum);
- 		if (pageNum != null) {
- 			pageNumTemp = Integer.parseInt(pageNum);
- 		}
- 		// 시작하는 글번호를 계산함
- 		int startNumber = listCount * (pageNumTemp-1)+1;
-   	
-    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
-        Map<String, Object> map = new HashMap<String, Object>();
-        
-        int filter=0;
-        
-        if(category==0 && date==0) // 전체, 전체
-        	filter =0;
-        if(category==0 && date==1) // 전체 , 최근 일주일
-        	filter =1;
-        if(category==0 && date==2) // 전체, 한달
-        	filter =2;
-        if(category==1 && date==0) // 공지 , 전체
-        	filter =3;
-        if(category==1 && date==1) // 공지 , 최근 일주일
-        	filter =4;
-        if(category==1 && date==2) // 공지 , 최근 한달
-        	filter =5;
-        if(category==2 && date==0) // 스터디 , 전체
-        	filter =6;
-        if(category==2 && date==1) // 스터디 , 최근 일주일
-        	filter =7;
-        if(category==2 && date==2) // 스터디 , 최근 한달
-        	filter =8;
-        
-        map.put("filter", filter);
-        map.put("startNumber", startNumber);
-        
-        
-        
-        ArrayList<Board> list = dao.boardFilterList(map);
-        model.addAttribute("list", list);
-        model.addAttribute("totalCount", dao.Boardcount(map));
-        model.addAttribute("indexCount", dao.Boardcount(map)-(pageNumTemp-1)*10);
-        model.addAttribute("pageNum", pageNum);
-        model.addAttribute("filter", filter);
-       	
-		return "WEB-INF/views/board/ManagerBoard.jsp";
-    }   
-   
+    
     // 블라인드 처리
     @RequestMapping(value = "/AdminQACommentBlind.nds", method = RequestMethod.GET)
    	public String adminQACommentBlind(Model model, Reply b) {

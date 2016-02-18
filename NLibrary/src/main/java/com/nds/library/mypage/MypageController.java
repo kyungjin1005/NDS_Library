@@ -486,4 +486,5 @@ public class MypageController {
 
 		return "WEB-INF/views/mypage/MypageMessage.jsp";
 	}
+	
 }

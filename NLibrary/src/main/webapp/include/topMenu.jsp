@@ -36,7 +36,7 @@
 			<li><a href="http://www.nsgportal.net/">NDS Portal</a></li>
 			<li class="userName"> 
 				<sec:authorize ifAnyGranted="ROLE_ADMIN">
-					<a href="ManagerMember.nds"><strong>${sessionName}(관리자)<%-- ${pageContext.request.userPrincipal.name} --%></strong>
+					<a href="ManagerMember.nds"><strong>${sessionName}<%-- ${pageContext.request.userPrincipal.name} --%></strong>
 						님</a>
 				</sec:authorize> <sec:authorize ifAnyGranted="ROLE_USER">
 					<a href="mypageBorrow.nds"><strong>${sessionName}<%-- ${pageContext.request.userPrincipal.name} --%></strong>

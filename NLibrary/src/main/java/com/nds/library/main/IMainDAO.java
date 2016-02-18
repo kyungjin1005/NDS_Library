@@ -30,7 +30,7 @@ public interface IMainDAO {
 
 	public int add(Review r);
 
-	public ArrayList<Information> ownInfo(Map<String, Object> map);
+	public ArrayList<Book> ownInfo(Map<String, Object> map);
 
 	public ArrayList<Information> bookInfo(Map<String, Object> map);
 
