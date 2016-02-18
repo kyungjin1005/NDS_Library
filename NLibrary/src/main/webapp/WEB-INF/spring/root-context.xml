@@ -1,8 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
-</beans>
+	<beans:bean id="remoteDataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<beans:property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		<beans:property name="url"
+			value="jdbc:oracle:thin:@172.26.18.83:1521:xe" />
+		<beans:property name="username" value="nds" />
+		<beans:property name="password" value="1234" />
+	</beans:bean>
+
+	<!-- MyBatis 환경 설정 추가 -->
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="remoteDataSource"></beans:property>
+		<beans:property name="mapperLocations" value="classpath:com/nds/mapper/*.xml" />
+	</beans:bean>
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory"></beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="my403"
+		class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+		<beans:property name="errorPage" value="/AccessDenied.nds" />
+	</beans:bean>
+
+	<security:http>
+		<security:access-denied-handler ref="my403" />
+		<security:form-login login-page="/Login.nds"
+			default-target-url="/Main.nds" authentication-failure-url="/LoginFail.nds" />
+		<security:logout logout-success-url="/Logout.nds" />
+		<security:intercept-url pattern="/MypageRequire.nds"
+			access="ROLE_USER, ROLE_ADMIN" />
+		<security:intercept-url pattern="/ManagerBookRequire.nds"
+			access="ROLE_ADMIN" />
+
+	</security:http>
+
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service
+				data-source-ref="remoteDataSource"
+				users-by-username-query="SELECT NDS_NUMBER AS USERID, PASSWORD, ENABLED AS ENABLED FROM USERS WHERE NDS_NUMBER=?"
+				authorities-by-username-query="SELECT id AS USERID, role AS ROLE_NAME FROM LIBRARYROLE WHERE id=?" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+
+
+</beans:beans>

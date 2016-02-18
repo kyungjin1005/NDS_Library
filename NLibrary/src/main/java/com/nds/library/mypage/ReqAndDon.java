@@ -17,8 +17,19 @@ public class ReqAndDon {
 	private String req_don_id;
 	private String category_id;
 	private String information_id;
+	private String rnum;
 	
 	
+	
+	
+
+	public String getRnum() {
+		return rnum;
+	}
+
+	public void setRnum(String rnum) {
+		this.rnum = rnum;
+	}
 
 	public String getInformation_id() {
 		return information_id;

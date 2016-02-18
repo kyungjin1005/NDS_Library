@@ -100,7 +100,9 @@
 </head>
 <body>
 	<div class="container">
-		<%@include file="/include/topMenu.jsp"%>
+		<header>
+			<%@include file="/include/topMenu.jsp"%></header>
+
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/managerSideMenu.jsp"%>
 			<div class="col-md-10">
@@ -110,8 +112,8 @@
 					action="ManagerMemberMsg.nds">
 					<div id="member-header">
 						Count <span class="badge">${size}</span>
-						<button type="button" class="btn btn-sm btn-default" id="btn-all">일괄선택</button>
-						<button type="button" class="btn btn-sm btn-default" id="btn-clear">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-all" style="margin:0px">일괄선택</button>
+						<button type="button" class="btn btn-sm btn-default" id="btn-clear" style="margin:0px">선택해제</button>
 
 					</div>
 					<table class="table table-hover" id="member-table">
@@ -129,21 +131,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- <tr>
-								<td><input type="checkbox" class="form-control"></td>
-								<td>1</td>
-								<td>1510010</td>
-								<td>김혜원</td>
-								<td>개발본부</td>
-								<td>사원</td>
-								<td>2016-02-02</td>
-							</tr> -->
-
 							<c:set var="count" value="1"></c:set>
 							<c:forEach var="user" items="${userList}">
 								<tr>
 									<td><input type="checkbox" class="form-control cb"
-										name="user_id" value="${user.user_id }"></td>
+										name="user_id" value="${user.user_id }" ></td>
 									<td>${count}</td>
 									<td>${user.nds_number}</td>
 									<td>${user.name}</td>

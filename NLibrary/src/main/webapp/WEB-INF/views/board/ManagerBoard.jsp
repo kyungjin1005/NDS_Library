@@ -209,7 +209,10 @@
 			</div>
 
 		</div>
-	
+	<form action="AddBoard.nds" method="get" align="right">
+						<input type="hidden" name="type" value="notice" />
+						<label><input type="submit" value="새글 작성"  class="btn btn-md btn-warning btn-msg"/></label>
+					</form>
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
@@ -219,10 +222,7 @@
 				
 				<div id="member-footer">
 					<hr />
-					<form action="AddBoard.nds" method="get">
-						<input type="hidden" name="type" value="notice" />
-						<label><input type="submit" value="새글 작성"  class="btn btn-md btn-warning btn-msg"/></label>
-					</form>
+					
 					<!-- <button class="btn btn-md btn-warning btn-msg">새글 작성</button> -->
 				</div>
 			</div>
