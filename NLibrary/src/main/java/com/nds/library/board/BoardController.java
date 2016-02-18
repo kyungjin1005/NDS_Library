@@ -287,42 +287,7 @@ public class BoardController {
     		return "redirect:ManagerBoard.nds";
     }
    
-    @RequestMapping(value = "/ReqDonFilterList.nds", method = RequestMethod.GET)
-    public String  reqDonFilterList(Model model, HttpServletRequest request, String type, String category, String filter) {
-
-    	int pageNumTemp = 1;
- 		// 한 페이지에 10개의 글이 보임
- 		int listCount = 10;
- 		// 뷰에서 글번호를 받아옴
- 		String pageNum = request.getParameter("pageNum");
- 		System.out.println("pegeNum : " + pageNum);
- 		if (pageNum != null) {
- 			pageNumTemp = Integer.parseInt(pageNum);
- 		}
- 		// 시작하는 글번호를 계산함
- 		int startNumber = listCount * (pageNumTemp-1)+1;
-   	
-    	IBoardDAO dao = sqlSession.getMapper(IBoardDAO.class);
-        Map<String, Object> map = new HashMap<String, Object>();
-       
-        
-        map.put("filter", filter);
-        map.put("startNumber", startNumber);
-       
-        
-        ArrayList<ReqandDon> list = dao.reqaAndDonFilterList(map);
-        model.addAttribute("list", list);
-        model.addAttribute("totalCount", dao.reqaAndDonFilterCount(map));
-        model.addAttribute("indexCount", dao.reQandDonCount(map)-(pageNumTemp-1)*10);
-        model.addAttribute("pageNum", pageNum);
-        model.addAttribute("filter", filter);
-        
-       
-       if(type.equals("require"))
-    	   return "WEB-INF/views/board/BoardRequireList.jsp";
-       else
-    	   return "WEB-INF/views/board/BoardDonationList.jsp";
-    }   
+    
     
     // 관리자 게시글 관리
     @RequestMapping(value = "/ManagerBoard.nds")

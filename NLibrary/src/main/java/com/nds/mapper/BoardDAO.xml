@@ -68,13 +68,13 @@
 
 	<select id="reqaAndDonList" parameterType="java.util.HashMap"
 		resultType="com.nds.library.board.ReqandDon">
-		select *
+		select title, current_state, name, TO_CHAR(registered_date, 'yyyy-mm-dd') as registered_date, req_don_id
 		from
 		(
 		select rownum rn, aa.*
 		from
 		(select * from ReqandDon join
-		users using(user_id)
+		(select name, user_id from users) using(user_id)
 		WHERE
 		<if test="filter==0">
 			current_state = '신청대기' or current_state = '신청완료'
@@ -541,87 +541,7 @@
 		req_don_id = #{req_don_id}
 	</select>
 
-	<select id="reqaAndDonFilterList" parameterType="java.util.HashMap"
-		resultType="com.nds.library.board.ReqandDon">
-		select *
-		from
-		(
-		select rownum rn, aa.*
-		from
-		(select * from ReqandDon join
-		users using(user_id)
-		<if test="filter==1">
-			WHERE current_state = '구매완료'
-			order by req_don_id desc)aa)
-			where rn between
-			#{startNumber} and #{startNumber}+9
-		</if>
-		<if test="filter==2">
-			WHERE current_state = '신청완료'
-			order by req_don_id desc)aa)
-			where rn between
-			#{startNumber} and #{startNumber}+9
-		</if>
-		<if test="filter==3">
-			WHERE current_state = '신청대기'
-			order by req_don_id desc)aa)
-			where rn between
-			#{startNumber} and #{startNumber}+9
-		</if>
-		<if test="filter==4">
-			WHERE current_state = '신청반려'
-			order by req_don_id desc)aa)
-			where rn between
-			#{startNumber} and #{startNumber}+9
-		</if>
-
-		<if test="filter==5">
-			WHERE current_state = '기증대기'
-			order by req_don_id desc)aa)
-			where rn between
-			#{startNumber} and #{startNumber}+9
-		</if>
-		<if test="filter==6">
-			WHERE current_state = '기증완료'
-			order by req_don_id desc)aa)
-			where rn between
-			#{startNumber} and #{startNumber}+9
-		</if>
-		<if test="filter==7">
-			WHERE current_state = '기증반려'
-			order by req_don_id desc)aa)
-			where rn between
-			#{startNumber} and #{startNumber}+9
-		</if>
-
-	</select>
-
-	<select id="reqaAndDonFilterCount" parameterType="java.util.HashMap"
-		resultType="Integer">
-		SELECT count(*)
-		FROM ReqandDon join users using(user_id)
-		<if test="filter==1">
-			WHERE current_state = '구매완료'
-		</if>
-		<if test="filter==2">
-			WHERE current_state = '신청완료'
-		</if>
-		<if test="filter==3">
-			WHERE current_state = '신청대기'
-		</if>
-		<if test="filter==4">
-			WHERE current_state = '신청반려'
-		</if>
-		<if test="filter==5">
-			WHERE current_state = '기증대기'
-		</if>
-		<if test="filter==6">
-			WHERE current_state = '기증완료'
-		</if>
-		<if test="filter==7">
-			WHERE current_state = '기증반려'
-		</if>
-	</select>
+	
 
 	<update id="boardBlind">
 		UPDATE boards SET blind=#{blind} WHERE
