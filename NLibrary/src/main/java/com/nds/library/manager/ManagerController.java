@@ -494,8 +494,6 @@ public class ManagerController {
 			str.append(u);
 			str.append("/");
 		}
-		
-		System.out.println(user_name_list);
 		model.addAttribute("user_id_list", str);
 		model.addAttribute("user_name_list", user_name_list);
 		

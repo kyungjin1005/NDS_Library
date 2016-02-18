@@ -135,11 +135,7 @@
 							<c:forEach var="user" items="${userList}">
 								<tr>
 									<td><input type="checkbox" class="form-control cb"
-<<<<<<< HEAD
 										name="user_id" value="${user.user_id }" ></td>
-=======
-										name="user_id" value="${user.user_id }"></td>
->>>>>>> dab562e6af02ee236572f95f57e651adf9cfe538
 									<td>${count}</td>
 									<td>${user.nds_number}</td>
 									<td>${user.name}</td>

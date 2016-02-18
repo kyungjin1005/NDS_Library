@@ -30,9 +30,9 @@ public class MainController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		HttpSession session = request.getSession();
-		map.put("nds_number", Util.getId()); // spring-security의 세션을 이용해서
-												// nds_number 얻기
-		User user = dao.getSessionId(map); // nds_number 통해서 user_id 얻기
+		map.put("nds_number", Util.getId()); // spring-security�쓽 �꽭�뀡�쓣 �씠�슜�빐�꽌
+												// nds_number �뼸湲�
+		User user = dao.getSessionId(map); // nds_number �넻�빐�꽌 user_id �뼸湲�
 		session.setAttribute("sessionId", user.getUser_id());
 		System.out.println(session.getAttribute("sessionId"));
 
@@ -66,7 +66,7 @@ public class MainController {
 		 return "WEB-INF/views/main/Main.jsp";
 	}
 
-	 // 3번 검색결과 (SearchResult)
+	 // 3踰� 寃��깋寃곌낵 (SearchResult)
 	   @RequestMapping(value = "/SearchResult.nds", method = RequestMethod.GET)
 	   public String searchResult(Model model, String key, String searchWord, String filter) {
 
@@ -85,12 +85,12 @@ public class MainController {
 	      model.addAttribute("result", Result);
 	      model.addAttribute("select", key);
 	      model.addAttribute("query", searchWord);
-	      model.addAttribute("filter", filter); // 대출중 필터
+	      model.addAttribute("filter", filter); // ��異쒖쨷 �븘�꽣
 
 	      return "WEB-INF/views/main/SearchResult.jsp";
 	   }
 
-	   // 4번 도서 상세정보(BookInfo) - (5)리뷰 작성 포함
+	   // 4踰� �룄�꽌 �긽�꽭�젙蹂�(BookInfo) - (5)由щ럭 �옉�꽦 �룷�븿
 	   @RequestMapping(value = "/BookInfo.nds", method = RequestMethod.GET)
 	   public String bookInfo(Model model, String isbn) {
 	      IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
@@ -112,15 +112,15 @@ public class MainController {
 	         Review info = bookReview.get(i);
 	         String star = info.getStar();
 	         if (star.equals("1")) {
-	            info.setStar("☆☆☆☆★");
+	            info.setStar("�쁿�쁿�쁿�쁿�쁾");
 	         } else if (star.equals("2")) {
-	            info.setStar("☆☆☆★★");
+	            info.setStar("�쁿�쁿�쁿�쁾�쁾");
 	         } else if (star.equals("3")) {
-	            info.setStar("☆☆★★★");
+	            info.setStar("�쁿�쁿�쁾�쁾�쁾");
 	         } else if (star.equals("4")) {
-	            info.setStar("☆★★★★");
+	            info.setStar("�쁿�쁾�쁾�쁾�쁾");
 	         } else if (star.equals("5")) {
-	            info.setStar("★★★★★");
+	            info.setStar("�쁾�쁾�쁾�쁾�쁾");
 	         }
 	      }
 	      model.addAttribute("bookReview", bookReview);
@@ -152,7 +152,7 @@ public class MainController {
 	      return url;
 	   }
 
-	   // 6번 자료검색 (SearchPage)
+	   // 6踰� �옄猷뚭��깋 (SearchPage)
 	   @RequestMapping(value = "/SearchPage.nds", method = RequestMethod.GET)
 	   public String SearchPage(Model model, String category_id, String filter) {
 	      if (filter == null)
@@ -173,21 +173,21 @@ public class MainController {
 	      if(category_id.equals("1")){
 	    	  category ="JAVA";
 	      }else if(category_id.equals("2")){
-	    	  category ="웹프로그래밍";
+	    	  category ="�쎒�봽濡쒓렇�옒諛�";
 	      }else if(category_id.equals("3")){
-	    	  category ="데이터베이스";
+	    	  category ="�뜲�씠�꽣踰좎씠�뒪";
 	      }else if(category_id.equals("4")){
-	    	  category ="프레임워크";
+	    	  category ="�봽�젅�엫�썙�겕";
 	      }else if(category_id.equals("5")){
-	    	  category ="클라우드";
+	    	  category ="�겢�씪�슦�뱶";
 	      }else if(category_id.equals("6")){
-	    	  category ="기타";
+	    	  category ="湲고�";
 	      }
 	      
 	      model.addAttribute("category", category);
 	      
 	      model.addAttribute("totalCount", dao.totalCount(map));
-	      model.addAttribute("filter", filter); // 대출 중 필터
+	      model.addAttribute("filter", filter); // ��異� 以� �븘�꽣
 	      model.addAttribute("category_id", category_id);
 	      model.addAttribute("data", data);
 
@@ -229,5 +229,36 @@ public class MainController {
 		 */
 		return "WEB-INF/views/main/AccessDenied.jsp";
 	}
+	
+	@RequestMapping(value = "/borrowBook.nds", method = RequestMethod.GET)
+	public String borrowBook(Model m, String book_id) {
+		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
+		
+		Book book = dao.findBookById(book_id);
+		String information_id = book.getInformation_id();
+		Information info = dao.findInfoById(information_id);
+		String isbn = info.getIsbn();
+		
+		// book의 상태를 대출대기로
+		book.setCurrent_state("대출대기");
+		
+		// borrowing table에 insert (날짜는 다 null로)
+		dao.borrowBook();
 
+		return "redirect:BookInfo.nds?isbn=" + isbn;
+	}
+	
+	@RequestMapping(value = "/reserveBook.nds", method = RequestMethod.GET)
+	public String reserveBook(Model m, String book_id) {
+		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
+		String isbn;
+		
+		// 이미 예약한 사람이 있으면 예약하기 버튼이 보이지 않도록 & alert띄우기?
+		// 예약한 사람이 없다면 book상태를 예약으로 바꿈
+		// reservation table에 저장
+		
+		
+
+		return "redirect:BookInfo.nds?isbn=111";
+	}
 }

@@ -10,14 +10,6 @@
 <%@include file="/include/link.jsp"%>
 <title>도서상세정보</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
 <style type="text/css">
 #result {
 	margin-top: 120px;
@@ -113,25 +105,6 @@
 	font-size: 15px;
 }
 </style>
-<script>
-   $(document).ready(function() {
-
-   });
-
-   function borrow() {
-      var r = confirm("대여하시겠습니가?");
-      if (r == true) {
-      } else {
-      }
-   }
-
-   function reserve() {
-      var r = confirm("예약하시겠습니까?");
-      if (r == true) {
-      } else {
-      }
-   }
-</script>
 </head>
 <body>
 
@@ -215,7 +188,7 @@
 						<th>청구기호</th>
 						<th>도서상태</th>
 						<th>반납예정일</th>
-						<th>예약/대여하기</th>
+						<th>예약/대여</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -228,9 +201,9 @@
 							<td>${own.scheduled_date}</td>
 							<td>
 								<button class="btn btn-md btn-default btn-reserve"
-									onclick="reserve()">예약하기</button>
+									onclick="reserve()" value="${own.book_id }">예약</button>
 								<button class="btn btn-md btn-warning btn-borrow"
-									onclick="borrow()">대여하기</button>
+									onclick="borrow()">대여</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -303,4 +276,20 @@
 	</div>
 
 </body>
+
+<script>
+   $(document).ready(function() {
+
+   });
+
+   function borrow() {
+	   alert("책이 대여되었습니다.");
+   }
+
+   function reserve() {
+	   alert("책이 예약되었습니다.");
+	   //alert($(".btn-reserve").val());
+	  $(location).attr("href", "reserveBook.nds?book_id=" + $(".btn-reserve").val());
+   }
+</script>
 </html>

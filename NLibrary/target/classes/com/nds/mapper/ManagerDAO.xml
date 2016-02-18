@@ -297,7 +297,7 @@
 		content, sended_date, is_checked)
 		VALUES ((SELECT
 		NVL(MAX(message_id),0)+1 FROM messages), #{user_id}, #{title},
-		#{content}, SYSDATE, 0);
+		#{content}, SYSDATE, 0)
 	</insert>
 
 	<select id="getInformation" resultType="com.nds.library.mypage.ReqAndDon">

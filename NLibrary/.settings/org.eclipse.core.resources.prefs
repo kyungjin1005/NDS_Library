@@ -2,6 +2,7 @@
 <<<<<<<=HEAD
 >>>>>>>=8db433eca06185da7277adc8a9166a0c39304eb2
 eclipse.preferences.version=1
+encoding//src/main/java/com/nds/library/main/MainController.java=UTF-8
 encoding//src/main/java/com/nds/library/manager/ManagerController.java=UTF-8
 encoding//src/main/java/com/nds/library/mypage/MypageController.java=UTF-8
 encoding//src/main/webapp/include/BoardSide.jsp=UTF-8
