@@ -569,4 +569,68 @@ public class ManagerController {
 		return "redirect:ManagerBorrow.nds";
 	}
 	
+	
+	// 테스트
+	@RequestMapping(value = "/Test.nds", method = RequestMethod.GET)
+	public String bookInsert() {
+
+		IManagerDAO magenerDao = sqlSession.getMapper(IManagerDAO.class);
+
+		String apiKey = "c1b406b32dbbbbeee5f2a36ddc14067f ";
+		String searchQuery = "자바";
+		String category_id = "1";
+
+		String uri = "";
+
+		try {
+			uri = "http://openapi.naver.com/search?key=" + apiKey + "&display=10&target=book" + "&d_titl="
+					+ URLEncoder.encode(searchQuery, "UTF-8") + "&query=" + URLEncoder.encode(searchQuery, "UTF-8");
+
+			System.out.println("URI : " + uri);
+
+		} catch (UnsupportedEncodingException e) {
+			System.out.println(e);
+		}
+
+		NaverParse naverAPI = new NaverParse();
+		ArrayList<ReqAndDon> list = naverAPI.parse(uri);
+
+		System.out.println("list Size : " + list.size());
+
+		for (int i = 0; i < list.size(); i++) {
+			ReqAndDon book = list.get(i);
+
+			ReqAndDon info = magenerDao.getInformation(book);
+			//System.out.println("info : " + info);
+			
+			book.setCategory_id(category_id);
+			
+			System.out.println("들어가?");
+			if (info == null) { // �뾾�뒗梨낆씠硫�
+				System.out.println("정보가 없으므로 인포메이션 테이블 추가한 후, 북 테이블에 추가");
+
+				System.out.println(book.getCategory_id());
+				System.out.println(book.getIsbn());
+				System.out.println(book.getTitle());
+				System.out.println(book.getAuthor());
+				System.out.println(book.getPublisher());
+				System.out.println(book.getImage());
+				System.out.println(book.getPubdate());
+				System.out.println(book.getExplanation());
+				System.out.println("--------------------------");
+
+				magenerDao.insertInformation(book);
+
+				ReqAndDon result = magenerDao.getInformation(book);
+
+				System.out.println(result.getInformation_id());
+
+				magenerDao.insertBook(book);
+			} else {
+				magenerDao.insertBook(info);
+			}
+		}
+		return "WEB-INF/views/mypage/BookInsert.jsp";
+	}
+	
 }
