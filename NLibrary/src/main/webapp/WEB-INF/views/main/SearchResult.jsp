@@ -103,6 +103,14 @@ table tbody tr:HOVER {
 </head>
 <body>
 
+
+
+<c:set var="totalCount" value="${totalCount}" />
+<%
+		int totalCount = (Integer) pageContext.getAttribute("totalCount");
+		int index = totalCount;
+%>
+
 	<div class="container">
 
 		<header>
@@ -150,7 +158,7 @@ table tbody tr:HOVER {
 				<c:forEach var="result" items="${result}">
 					<tr href="BookInfo.nds?isbn=${result.isbn}"
 						style="cursor: pointer;">
-						<td>${result.rownum}</td>
+						<td><%=index-- %></td>
 						<td><img src="${result.image}" alt="" /><span>${result.title}</span></td>
 						<td>${result.author}</td>
 						<td>${result.publisher}</td>

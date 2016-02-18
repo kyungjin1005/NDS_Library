@@ -103,9 +103,11 @@
 
    <select id="totalCount2" parameterType="java.util.Map"
       resultType="java.lang.Integer">
-      SELECT count(*) as search_count
-      FROM books join informations
-      using(information_id)
+      SELECT count(*) as 
+         FROM(
+         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
+         'yyyy-mm-dd') AS pubdate, current_state, ISBN
+         FROM books join informations using(information_id)
       <if test="filter==0">
       <if test="key==1">
          WHERE title like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
@@ -128,6 +130,7 @@
          WHERE publisher like '%' || #{searchWord} || '%' and current_state='대출가능'
       </if>
       </if>
+      )
    </select>
 
    <select id="bookList" resultType="com.nds.library.main.Book">
@@ -167,7 +170,7 @@
       resultType="com.nds.library.main.Information">
              SELECT ROWNUM, image, title, author, publisher, pubdate, current_state, ISBN
          FROM(
-         SELECT image, title, author, publisher, TO_CHAR(pubdate,
+         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
          'yyyy-mm-dd') AS pubdate, current_state, ISBN
          FROM books join informations using(information_id)
 
@@ -194,7 +197,7 @@
             WHERE publisher like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
          </if>
       </if>
-      ORDER BY registered_date desc)
+      ) order by pubdate desc
    </select>
    
 
