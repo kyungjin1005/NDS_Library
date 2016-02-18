@@ -77,7 +77,7 @@
 		users using(user_id)
 		WHERE
 		<if test="filter==0">
-			current_state = '승인대기' or current_state = '신청완료'
+			current_state = '신청대기' or current_state = '신청완료'
 			or
 			current_state = '구매완료' or current_state = '신청반려'
 
@@ -451,10 +451,10 @@
 
 	<insert id="addBoard">
 		INSERT INTO boards (board_id, user_id, category,
-		title, content)
+		title, content, blind)
 		VALUES ((SELECT NVL(MAX(board_id)+1, 1) FROM boards),
 		#{user_id} ,
-		#{category} , #{title} , #{content} )
+		#{category} , #{title} , #{content}, 0 )
 	</insert>
 
 	<select id="Boardcount" parameterType="java.util.HashMap"
@@ -502,7 +502,7 @@
 		FROM ReqandDon join users using(user_id)
 		WHERE
 		<if test="filter==0">
-			current_state = '승인대기' or current_state = '신청완료'
+			current_state = '신청대기' or current_state = '신청완료'
 			or
 			current_state = '구매완료' or current_state = '신청반려'
 		</if>
