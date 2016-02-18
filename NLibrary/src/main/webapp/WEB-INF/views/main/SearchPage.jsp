@@ -184,13 +184,13 @@
 							<th>출판사</th>
 							<th>발행일</th>
 							<th>대출상태</th>
+							<td></td>
 						</tr>
 					</thead>
 
 					<tbody>
 						<c:forEach var="data" items="${data}">
-							<tr href="BookInfo.nds?isbn=${data.isbn}"
-								style="cursor: pointer;">
+							<tr href="BookInfo.nds?isbn=${data.isbn}&book_id=${data.book_id}" style="cursor: pointer;">
 								<td>${data.rownum}</td>
 								<td><img src="${data.image}" alt="" /><span>${data.title}</span></td>
 								<td>${data.author}</td>

@@ -54,4 +54,6 @@ public interface IMainDAO {
 
 	public int getBorrowingCount(String user_id);
 
+	public int isBorrowing(String book_id);
+
 }

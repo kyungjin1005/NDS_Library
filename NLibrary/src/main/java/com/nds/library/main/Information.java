@@ -2,7 +2,7 @@ package com.nds.library.main;
 
 public class Information {
 	private int information_id, category_id, rownum;
-	private String isbn, title, author, publisher, image, pubdate, explanation, current_state;
+	private String isbn, title, author, publisher, image, pubdate, explanation, current_state, book_id;
 
 	public int getRownum() {
 		return rownum;
@@ -90,6 +90,14 @@ public class Information {
 
 	public void setExplanation(String explanation) {
 		this.explanation = explanation;
+	}
+
+	public String getBook_id() {
+		return book_id;
+	}
+
+	public void setBook_id(String book_id) {
+		this.book_id = book_id;
 	}
 
 }

@@ -93,7 +93,7 @@ public class MainController {
 
 	   // 4踰� �룄�꽌 �긽�꽭�젙蹂�(BookInfo) - (5)由щ럭 �옉�꽦 �룷�븿
 	   @RequestMapping(value = "/BookInfo.nds", method = RequestMethod.GET)
-	   public String bookInfo(Model model, String isbn, HttpServletRequest request) {
+	   public String bookInfo(Model model, String isbn, HttpServletRequest request, String book_id) {
 	      IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
 	      int BorrowN, ReviewN;
 	      HashMap<String, Object> map = new HashMap<String, Object>();
@@ -130,6 +130,8 @@ public class MainController {
 	      
 	      String user_id = request.getSession().getAttribute("sessionId").toString();
 	      model.addAttribute("borrowing_count", dao.getBorrowingCount(user_id));
+	      
+	      model.addAttribute("is_borrowing", dao.isBorrowing(book_id));
 	      
 	      return "WEB-INF/views/main/BookInfo.jsp";
 	   }
@@ -172,7 +174,6 @@ public class MainController {
 	      map.put("filter", filter);
 	      
 	      ArrayList<Information> data = dao.data(map);
-	      
 	      
 	      String category ="";
 	      if(category_id.equals("1")){

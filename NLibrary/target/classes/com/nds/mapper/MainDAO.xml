@@ -197,21 +197,15 @@
    
 
    <select id="data" resultType="com.nds.library.main.Information"  parameterType="java.util.Map">
-      SELECT ROWNUM, image, title, ISBN,
-      author, publisher, pubdate, current_state
-      from (SELECT image, title, ISBN,
-      author, publisher, TO_CHAR(pubdate,
-      'yyyy-mm-dd') AS pubdate,
-      current_state
-      FROM books join informations
-      using(information_id)
+      SELECT ROWNUM, image, title, ISBN, author, publisher, TO_CHAR(pubdate, 'yyyy-mm-dd') AS pubdate, current_state, book_id
+      FROM books join informations using(information_id)
       <if test="filter==0">
          WHERE category_id=#{category_id} and (current_state='대출가능' or current_state='대출')
       </if>
       <if test="filter==1">
          WHERE category_id=#{category_id} and current_state='대출가능'
       </if>
-      ORDER BY registered_date desc)
+      ORDER BY registered_date desc
    </select>
    
    <select id="findBookById" resultType="com.nds.library.main.Book">
@@ -233,5 +227,10 @@
    
    <select id="getBorrowingCount" resultType="java.lang.Integer">
 		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null and returned_date is null
+	</select>
+	
+	<select id="isBorrowing" resultType="java.lang.Integer">
+		select count(*)
+		from borrowings
 	</select>
 </mapper>   
