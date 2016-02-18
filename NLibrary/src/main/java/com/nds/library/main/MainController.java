@@ -232,7 +232,12 @@ public class MainController {
 		return "WEB-INF/views/main/AccessDenied.jsp";
 	}
 	
-	@SuppressWarnings("null")
+	@RequestMapping(value = "/UseInformation.nds", method = RequestMethod.GET)
+	public String userInformation() {
+		
+		return "WEB-INF/views/main/UseInformation.jsp";
+	}
+	
 	@RequestMapping(value = "/borrowBook.nds", method = RequestMethod.GET)
 	public String borrowBook(Model m, String book_id, HttpServletRequest request) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
