@@ -9,9 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="/include/link.jsp"%>
 <title>메세지함</title>
-
-
-
 <style type="text/css">
 #mTitle {
 	background-image: url("pictures/title.png");
@@ -83,50 +80,19 @@
 						<tr>
 							<th>번호</th>
 							<th>제목</th>
-							<th>내용</th>
 							<th>보낸사람</th>
 							<th>받은날짜</th>
 						</tr>
 					</thead>
 					<tbody>
-
-						<tr>
-							<td>1</td>
-							<td>안녕하세요. 홍길동님 반납해야할 도서...</td>
-							<td>내용입니다. 내용입니다.내용입니다.내용입니다.내.....</td>
-							<td>관리자</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>안녕하세요. 홍길동님 반납해야할 도서...</td>
-							<td>내용입니다. 내용입니다.내용입니다.내용입니다.내.....</td>
-							<td>관리자</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>안녕하세요. 홍길동님 반납해야할 도서...</td>
-							<td>내용입니다. 내용입니다.내용입니다.내용입니다.내.....</td>
-							<td>관리자</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>안녕하세요. 홍길동님 반납해야할 도서...</td>
-							<td>내용입니다. 내용입니다.내용입니다.내용입니다.내.....</td>
-							<td>관리자</td>
-							<td>2016-02-05</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>안녕하세요. 홍길동님 반납해야할 도서...</td>
-							<td>내용입니다. 내용입니다.내용입니다.내용입니다.내.....</td>
-							<td>관리자</td>
-							<td>2016-02-05</td>
-						</tr>
-
-
+						<c:forEach var="msg" items="${msgList}">
+							<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}">
+								<td>${msg.message_id}</td>
+								<td>${msg.title}</td>
+								<td>관리자</td>
+								<td>${msg.sended_date}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
@@ -139,7 +105,9 @@
 </body>
 <script>
 	$(document).ready(function() {
-
+		$("table tr").click(function() {
+			window.document.location = $(this).data("url");
+		});
 	});
 </script>
 </html>

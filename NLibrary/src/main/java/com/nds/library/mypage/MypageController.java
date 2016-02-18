@@ -18,6 +18,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.nds.library.mypage.IMypageDAO;
+import com.nds.library.mypage.Message;
+
 @Controller
 public class MypageController {
 
@@ -437,5 +440,31 @@ public class MypageController {
 		model.addAttribute("reserveList", reserveList);
 		
 		return "WEB-INF/views/mypage/MypageReserve.jsp";
+	}
+	
+	@RequestMapping(value = "/mypageMessage.nds", method = RequestMethod.GET)
+	public String mypageMessage(Model model, HttpServletRequest request) {
+		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
+		Map<String, Object> map = new HashMap<String, Object>();
+		String user_id = request.getSession().getAttribute("sessionId").toString();
+		
+		map.put("user_id", user_id);
+		ArrayList<Message> msgList = dao.getMessageList(map);
+		model.addAttribute("msgList", msgList);
+		
+		return "WEB-INF/views/mypage/MypageMessageBox.jsp";
+	}
+	
+	@RequestMapping(value = "/MypageMemberMsg.nds", method = RequestMethod.GET)
+	public String mypageMemberMsg(Model model, int msg_id) {
+		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class);
+		
+		Message msg = dao.messageDetail(msg_id);
+		String name = dao.findUserByUserId(msg.getUser_id()).getName();
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("name", name);
+
+		return "WEB-INF/views/mypage/MypageMessage.jsp";
 	}
 }

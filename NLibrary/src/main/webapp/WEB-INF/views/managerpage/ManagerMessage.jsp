@@ -101,7 +101,7 @@
 				</table>
 
 				<div style="text-align: center;">
-					<button class="btn btn-md btn-warning" id="btn-back">목록으로</button>
+					<button class="btn btn-md btn-warning" id="btn-back" data-url="ManagerMember.nds">목록으로</button>
 				</div>
 			</div>
 		</div>
@@ -114,6 +114,10 @@
 	$(document).ready(function() {
 		$(".btn-register").on("click", function() {
 			$("#modal-dam-los").modal();
+		});
+		
+		$("#btn-back").click(function() {
+			window.document.location = $(this).data("url");
 		});
 	});
 </script>

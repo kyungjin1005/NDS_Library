@@ -170,4 +170,23 @@
 		#{pubdate},
 		#{explanation})
 	</insert>
+	
+	<select id="getMessageList" parameterType="java.util.Map"
+	resultType="com.nds.library.mypage.Message">
+		SELECT * FROM messages WHERE user_id = #{user_id}
+	</select>
+	
+	<select id="messageDetail" resultType="com.nds.library.mypage.Message">
+		SELECT message_id,
+		user_id, is_checked, title, content, sended_date, checked_date
+		FROM
+		messages
+		WHERE message_id = #{msg_id}
+	</select>
+	
+	<select id="findUserByUserId" resultType="com.nds.library.mypage.User">
+		SELECT *
+		FROM users
+		WHERE user_id = #{user_id}
+	</select>
 </mapper>   

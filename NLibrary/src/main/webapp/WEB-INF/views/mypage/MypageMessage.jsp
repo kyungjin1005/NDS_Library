@@ -57,10 +57,7 @@
 
 </head>
 <body>
-
-
 	<div class="container">
-
 		<header>
 			<%@include file="/include/topMenu.jsp"%></header>
 		<div class="row" style="margin-top: 80px;">
@@ -68,19 +65,16 @@
 			<div class="col-md-10">
 				<h1 id="mTitle">메세지</h1>
 				<hr class="title-line" />
-
-
 				<table class="table" id="msg-table">
 
 					<tbody>
-
 						<tr>
 							<td>번호</td>
-							<td>1</td>
+							<td>${msg.message_id }</td>
 						</tr>
 						<tr>
 							<td>날짜</td>
-							<td>2016-02-05</td>
+							<td>${msg.sended_date }</td>
 						</tr>
 
 						<tr>
@@ -90,21 +84,18 @@
 
 						<tr>
 							<td>제목</td>
-							<td>안녕하세요. 홍길동님 반납해야할 도서입니다.</td>
+							<td>${msg.title }</td>
 						</tr>
 
 						<tr>
 							<td>내용</td>
-							<td>내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다.
-								내용입니다.내용입니다.내용입니다.내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다.
-								내용입니다.내용입니다.내용입니다.내용입니다. 내용입니다.내용입니다.내용입니다.내용입니다.
-								내용입니다.내용입니다.내용입니다.</td>
+							<td>${msg.content }</td>
 						</tr>
 					</tbody>
 				</table>
 
 				<div style="text-align: center;">
-					<button class="btn btn-lg btn-warning" id="btn-back">목록으로</button>
+					<button class="btn btn-lg btn-warning" id="btn-back"  data-url="mypageMessage.nds">목록으로</button>
 				</div>
 
 			</div>
@@ -116,7 +107,9 @@
 </body>
 <script>
 	$(document).ready(function() {
-
+		$("#btn-back").click(function() {
+			window.document.location = $(this).data("url");
+		});
 	});
 </script>
 </html>
