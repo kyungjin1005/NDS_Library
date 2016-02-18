@@ -128,7 +128,7 @@
 						<c:forEach var="borrowing" items="${borrowingList}">
 							<tr>
 								<td>${borrowing.borrowing_id }</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>${borrowing.title}</span></td>
+								<td><img src="${borrowing.image }" alt="" /><span>${borrowing.title}</span></td>
 								<td>${borrowing.book_id}</td>
 								<td>${empty borrowing.borrowing_date?"-":borrowing.borrowing_date}</td>
 								<td>${empty borrowing.scheduled_date?"-":borrowing.scheduled_date}</td>

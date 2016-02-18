@@ -422,14 +422,18 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value = "/mypageBorrow.nds", method = RequestMethod.GET)
-	public String mypageBorrow(Model model, HttpServletRequest request) {
+	public String mypageBorrow(Model model, HttpServletRequest request, String filter) {
 		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
 		Map<String, Object> map = new HashMap<String, Object>();
 		String user_id = request.getSession().getAttribute("sessionId").toString();
 		
 		map.put("user_id", user_id);
+		
+		// filter 적용
+		map.put("filter", filter);
 		ArrayList<Borrowing> borrowList = dao.mypageBorrow(map);
 		model.addAttribute("borrowList", borrowList);
+		model.addAttribute("filter", filter);
 		
 		return "WEB-INF/views/mypage/MypageBorrow.jsp";
 	}

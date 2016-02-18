@@ -144,7 +144,7 @@
 			function() {
 				$(location).attr(
 						"href",
-						"ManagerBorrow.nds?filter="
+						"mypageBorrow.nds?filter="
 								+ $("#borrow-filter").val());
 			});
 	});
