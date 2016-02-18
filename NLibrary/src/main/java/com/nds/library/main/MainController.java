@@ -230,22 +230,26 @@ public class MainController {
 		return "WEB-INF/views/main/AccessDenied.jsp";
 	}
 	
+	@SuppressWarnings("null")
 	@RequestMapping(value = "/borrowBook.nds", method = RequestMethod.GET)
-	public String borrowBook(Model m, String book_id) {
+	public String borrowBook(Model m, String book_id, HttpServletRequest request) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
 		
-		Book book = dao.findBookById(book_id);
-		String information_id = book.getInformation_id();
-		Information info = dao.findInfoById(information_id);
-		String isbn = info.getIsbn();
+		String user_id = request.getSession().getAttribute("sessionId").toString();
 		
 		// book의 상태를 대출대기로
-		book.setCurrent_state("대출대기");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("book_id", book_id);
+		map.put("current_state", "대출대기");
+		dao.updateCurrentState(map);
 		
 		// borrowing table에 insert (날짜는 다 null로)
-		dao.borrowBook();
+		Borrowing borrowing = new Borrowing();
+		borrowing.setBook_id(book_id);
+		borrowing.setUser_id(user_id);
+		dao.borrowBook(borrowing);
 
-		return "redirect:BookInfo.nds?isbn=" + isbn;
+		return "redirect:mypageBorrow.nds";
 	}
 	
 	@RequestMapping(value = "/reserveBook.nds", method = RequestMethod.GET)

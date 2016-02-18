@@ -214,7 +214,15 @@
       ORDER BY registered_date desc)
    </select>
    
-   <select id="findBookById">
-   	SELECT 
+   <select id="findBookById" resultType="com.nds.library.main.Book">
+   	SELECT * FROM books WHERE book_id = #{book_id}
    </select>
+   
+   <insert id="borrowBook" parameterType="com.nds.library.main.Borrowing">
+   	INSERT INTO borrowings(borrowing_id, book_id, user_id, borrowing_date) VALUES((SELECT NVL(MAX(borrowing_id),0)+1 FROM borrowings), #{book_id}, #{user_id}, NULL)
+   </insert>
+   
+   <update id="updateCurrentState" parameterType="java.util.Map">
+   	UPDATE books SET current_state = #{current_state} WHERE book_id = #{book_id}
+   </update>
 </mapper>   

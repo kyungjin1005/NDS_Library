@@ -44,6 +44,10 @@ public interface IMainDAO {
 
 	public Information findInfoById(String information_id);
 
-	public void borrowBook();
+	public void borrowBook(String book_id, String user_id);
+
+	public void borrowBook(Borrowing borrowing);
+
+	public void updateCurrentState(Map<String, Object> map);
 
 }

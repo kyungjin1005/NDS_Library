@@ -203,7 +203,7 @@
 								<button class="btn btn-md btn-default btn-reserve"
 									onclick="reserve()" value="${own.book_id }">예약</button>
 								<button class="btn btn-md btn-warning btn-borrow"
-									onclick="borrow()">대여</button>
+									onclick="borrow()" value = "${own.book_id }">대여</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -284,6 +284,7 @@
 
    function borrow() {
 	   alert("책이 대여되었습니다.");
+		  $(location).attr("href", "borrowBook.nds?book_id=" + $(".btn-borrow").val());
    }
 
    function reserve() {
