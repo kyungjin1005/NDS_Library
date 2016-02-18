@@ -213,8 +213,7 @@ public class MypageController {
 		String uri = "";
 
 		try {
-
-			uri = "http://openapi.naver.com/search?key=" + apiKey + "&target=book" + "&d_titl="
+			uri = "http://openapi.naver.com/search?key=" + apiKey + "&display=100&target=book" + "&d_titl="
 					+ URLEncoder.encode(searchQuery, "UTF-8") + "&query=" + URLEncoder.encode(searchQuery, "UTF-8");
 
 			System.out.println("URI : " + uri);
@@ -367,7 +366,7 @@ public class MypageController {
 		try {
 			// http://openapi.naver.com/search?key=c1b406b32dbbbbeee5f2a36ddc14067f
 			// &query=?&target=book_adv&d_isbn=8996094021+9788996094029
-			uri = "http://openapi.naver.com/search?key=" + apiKey + "&query=?&target=book_adv" + "&d_isbn="
+			uri = "http://openapi.naver.com/search?key=" + apiKey + "&display=100&query=?&target=book_adv" + "&d_isbn="
 					+ URLEncoder.encode(isbn, "UTF-8");
 
 			// System.out.println("URI : " + uri);

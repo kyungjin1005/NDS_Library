@@ -229,5 +229,11 @@ public class MainController {
 		 */
 		return "WEB-INF/views/main/AccessDenied.jsp";
 	}
+	
+	@RequestMapping(value = "/UseInformation.nds", method = RequestMethod.GET)
+	public String userInformation() {
+		
+		return "WEB-INF/views/main/UseInformation.jsp";
+	}
 
 }
