@@ -18,11 +18,6 @@ public class ManagerController {
 	@Autowired
 	private SqlSession sqlSession;
 
-	@RequestMapping(value = "/ManagerBoard.nds", method = RequestMethod.GET)
-	public String managerBoard(Model model) {
-		return "WEB-INF/views/managerpage/ManagerBoard.jsp";
-	}
-
 	@RequestMapping(value = "/MessageList.nds", method = RequestMethod.GET)
 	public String messageList(Model model, String filter) {
 

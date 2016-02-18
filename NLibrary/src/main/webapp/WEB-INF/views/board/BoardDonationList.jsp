@@ -83,10 +83,10 @@
 						style="display: inline-block; float: right; margin-bottom: 15px">
 						<select class="form-control filter" id="borrow-filter"
 							name="borrow-filter" onchange="location.href=this.value;">
-							<option value="BoardDonationList.nds" >전체</option>
-							<option value="ReqDonFilterList.nds?type=donation&filter=5">기증대기</option>
-							<option value="ReqDonFilterList.nds?type=donation&filter=6">기증완료</option>
-							<option value="ReqDonFilterList.nds?type=donation&filter=7">기증반려</option>
+							<option value="BoardDonationList.nds?category=5" >전체</option>
+							<option value="BoardDonationList.nds?type=donation&category=6">기증대기</option>
+							<option value="BoardDonationList.nds?type=donation&category=7">기증완료</option>
+							<option value="BoardDonationList.nds?type=donation&category=8">기증반려</option>
 						</select>
 
 					</form>
@@ -161,7 +161,7 @@
 						<%
 							if (pageNumTemp > 1) {
 						%>
-						<li><a href="BoardDonationList.nds?pageNum=1">«</a></li>
+						<li><a href="BoardDonationList.nds?pageNum=1&category=${filter }">«</a></li>
 						<%
 							}
 						%>
@@ -169,7 +169,7 @@
 							if (isPrev) {
 									int goPrevPage = startPage - pagePerBlock;
 						%>
-						<li><a href="BoardDonationList.nds?pageNum="<%=goPrevPage%>">«</a></li>
+						<li><a href="BoardDonationList.nds?pageNum=<%=goPrevPage%>&category=${filter }">«</a></li>
 						<%
 							} else {
 
@@ -181,14 +181,14 @@
 						<%
 							} else {
 						%>
-						<li><a href="BoardDonationList.nds?pageNum=<%=i%>"><%=i%></a></li>
+						<li><a href="BoardDonationList.nds?pageNum=<%=i%>&category=${filter }"><%=i%></a></li>
 						<%
 							}
 								}
 								if (isNext) {
 									int goNextPage = startPage + pagePerBlock;
 						%>
-						<li><a href="BoardDonationList.nds?ageNum=<%=goNextPage%>">»</a></li>
+						<li><a href="BoardDonationList.nds?pageNum=<%=goNextPage%>&category=${filter }">»</a></li>
 						<%
 							} else {
 
@@ -196,7 +196,7 @@
 								if (totalNumOfPage > pageNumTemp) {
 						%>
 						<li><a
-							href="BoardDonationList.nds?pageNum=<%=totalNumOfPage%>">»</a></li>
+							href="BoardDonationList.nds?pageNum=<%=totalNumOfPage%>&category=${filter }">»</a></li>
 						<%
 							}
 							}
@@ -229,7 +229,7 @@
 		});
 		
 		
-	$("#borrow-filter").find("option[value='ReqDonFilterList.nds?type=donation&filter=${filter}']").attr("selected" , true);
+	$("#borrow-filter").find("option[value='BoardDonationList.nds?type=donation&category=${filter}']").attr("selected" , true);
 		
 	});
 </script>

@@ -3,7 +3,7 @@ package com.nds.library.board;
 public class Reply {
 
 	private int reply_id, user_id, board_id, blind, req_don_id;
-	private String content, replyed_date, name;
+	private String content, replyed_date, name, boarded_date, title, category;
 	
 	
 	public int getReply_id() {
@@ -53,6 +53,24 @@ public class Reply {
 	}
 	public void setReq_don_id(int req_don_id) {
 		this.req_don_id = req_don_id;
+	}
+	public String getBoarded_date() {
+		return boarded_date;
+	}
+	public void setBoarded_date(String boarded_date) {
+		this.boarded_date = boarded_date;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	
