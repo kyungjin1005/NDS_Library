@@ -78,6 +78,8 @@
 			</div>
 			<div class="col-md-10">
 				<h1 id="mTitle">도서신청</h1>
+				
+				<hr class="title-line" />
 				<div id="filter">
 					<form class="form-inline" role="form" method="get"
 						style="display: inline-block; float: right; margin-bottom: 15px">
@@ -92,7 +94,7 @@
 
 					</form>
 				</div>
-				<hr class="title-line" />
+				
 				<table class="table table-condensed" id="board">
 					<thead>
 						<tr>

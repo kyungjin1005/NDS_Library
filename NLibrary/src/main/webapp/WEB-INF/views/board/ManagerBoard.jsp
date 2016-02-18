@@ -69,7 +69,7 @@
 							<option value="1">최근일주일</option>
 							<option value="2">최근한달</option>
 						</select>
-						<button class="btn btn-large btn-default">일괄선택</button>
+						<button class="btn btn-large btn-default">조회</button>
 					</form>
 				</div>
 				<br />
