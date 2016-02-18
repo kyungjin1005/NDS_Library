@@ -108,7 +108,14 @@
 					</thead>
 					<tbody>
 						<c:forEach var="msg" items="${messageList}">
-							<tr data-url="ManagerMemberMsg.nds?msg_id=${msg.message_id}">
+							<c:choose>
+								<c:when test="${empty msg.checked_date}">
+									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}" style="font-weight: bold;" >
+								</c:when>
+								<c:otherwise>									
+									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}"  style="background-color:#f5f5f5;">
+								</c:otherwise>
+							</c:choose>
 								<td>${msg.message_id}</td>
 								<td>${msg.title}</td>
 								<td>${msg.content}</td>
