@@ -45,4 +45,6 @@ public interface IManagerDAO {
 	public int totalCount(Map<String, Object> map);
 	public void updateReturnedDate(String borrowing_id);
 	public ArrayList<Borrowing> bookList();
+	public Borrowing getDamAndLosBook(Borrowing borrow);
+	public void changeToDamOrLos(Map<String, Object> map);
 }

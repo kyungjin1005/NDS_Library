@@ -135,7 +135,7 @@
 							<th>제목</th>
 							<th>저자</th>
 							<th>출판사</th>
-<!-- 							<th>BOOK ISBN</th>
+							<!-- 							<th>BOOK ISBN</th>
 							<th>입고일</th> -->
 							<th>상태</th>
 							<th>대출회원</th>
@@ -150,7 +150,7 @@
 								<td>${book.title }</td>
 								<td>${book.author }</td>
 								<td>${book.publisher }</td>
-<%-- 								<td>${book.ISBN }</td>
+								<%-- 								<td>${book.ISBN }</td>
 								<td>${book.registered_date }</td> --%>
 								<td>${book.current_state }</td>
 								<td><c:choose>
@@ -162,7 +162,7 @@
 										</c:otherwise>
 									</c:choose></td>
 								<td>
-									<button class="btn btn-md btn-danger btn-register">파손
+									<button class="btn btn-md btn-danger btn-register" value="${book.book_id }">파손
 										및 분실 등록</button>
 								</td>
 							</tr>
@@ -185,47 +185,16 @@
 					<div class="modal-body text-center">
 
 						<div class="row" style="margin: 20px 0px;">
+							<div class="col-md-4" id="left-box">
+							</div>
 							<div class="col-md-7">
 								<table class="table text-center" id="modal-table">
-									<tbody>
-										<tr>
-											<td>제목</td>
-											<td>이것이 자바다</td>
-										</tr>
-
-										<tr>
-											<td>저자</td>
-											<td>홍길동</td>
-										</tr>
-										<tr>
-											<td>출판사</td>
-											<td>oo출판</td>
-										</tr>
-										<tr>
-											<td>발행일</td>
-											<td>2016-01-03</td>
-										</tr>
-										<tr>
-											<td>입고일</td>
-											<td>2016-01-03</td>
-										</tr>
-										<tr>
-											<td>BOOK ID</td>
-											<td>32432432</td>
-										</tr>
+									<tbody id="modal-tbody">
 									</tbody>
 								</table>
 							</div>
-							<div class="col-md-5" id="right-box">
-								<img src="pictures/booksample01.jpg" alt="" id="img-book" />
-							</div>
-
 						</div>
-						<div class="row" style="margin-bottom: 10px;">
-							<button type="button" class="btn btn-primary btn-lg btn-dmg-log"
-								data-dismiss="modal">분실등록</button>
-							<button type="button" class="btn btn-danger btn-lg btn-dmg-log"
-								data-dismiss="modal">파손등록</button>
+						<div class="row" style="margin-bottom: 10px;" id="bottom-btn">
 						</div>
 
 					</div>
@@ -238,11 +207,64 @@
 	</div>
 </body>
 <script>
-	$(document).ready(function() {
+	$(document)
+			.ready(
+					function() {
+						$(".btn-register").on("click", function() {
+							$("#modal-dam-los").modal();
+						});
 
-		$(".btn-register").on("click", function() {
-			$("#modal-dam-los").modal();
-		});
-	});
+						$(".btn-register").on("click", function() {
+							$('#modal-tbody').text("");
+							$('#bottom-btn').text("");
+							$('#left-box').text("");
+							var book_id = $(this).val();
+							
+							$.get("AjaxDamAndLosRegister.nds?book_id=" + book_id, function(data) {
+								var rootElement = $(data).find(":root");
+								var book = $(rootElement).find("book");
+								
+								var result = "";
+								result += "<tr> <td>제목</td>";
+								result += "<td>"+ $(book).find("title").text()+ "</td></tr>";
+								result += "<tr><td>저자</td>";
+								result += "<td>"+$(book).find("author").text()+ "</tr>";
+								result += "<tr><td>출판사</td>";
+								result += "<td>"+$(book).find("publisher").text()+ "</tr>";
+								result += "<tr><td>발행일</td>";
+								result += "<td>"+$(book).find("pubdate").text()+ "</tr>";
+								result += "<tr><td>입고일</td>";
+								result += "<td>"+$(book).find("registered_date").text()+ "</tr>";
+								result += "<tr><td>BOOK ID</td>";
+								result += "<td>"+$(book).find("book_id").text()+ "</tr>";
+								
+								$("#modal-table").find("tbody").append(result);
+
+								var left = "";
+								left += "<img src="+ $(book).find("image").text()+ "id=\"img-book\" style=\"width: 100%; height: 100%;\"/>";
+								$("#left-box").append(left);
+								
+								var btn = "";
+								btn += "<button type=\"submit\" class=\"btn btn-primary btn-lg btn-dmg-log btn-loss\" value=\"" + book_id + "\">분실등록</button>";
+								btn += "<button type=\"submit\" class=\"btn btn-danger btn-lg btn-dmg-log btn-damage\" value=\"" + book_id + "\">파손등록</button>";
+								//right += "<input type=\"hidden\" value="+ $(book).find("req_don_id").text()+ " name=\"req_don_id\" />";
+								//right += "<input type=\"hidden\" value=\""+ $(book).find("isbn").text()+ "\" name=\"isbn\" />"
+								
+								$("#bottom-btn").append(btn);
+								
+								$("#modal-register").modal();
+								
+								$(".btn-loss").click(function() {
+		 							alert("선택하신 책이 분실 처리되었습니다.");
+		 							$(location).attr("href", "changeToDamOrLos.nds?book_id=" + $(this).val() + "&state=분실");
+		 						});
+								
+								$(".btn-damage").click(function() {
+		 							alert("선택하신 책이 파손 처리되었습니다.");
+		 							$(location).attr("href", "changeToDamOrLos.nds?book_id=" + $(this).val() + "&state=파손");
+		 						});
+							});
+						});
+					});
 </script>
 </html>

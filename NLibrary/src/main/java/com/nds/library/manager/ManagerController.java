@@ -584,4 +584,23 @@ public class ManagerController {
 		
 		return "WEB-INF/views/managerpage/ManagerBookAll.jsp";
 	}
+	
+	@RequestMapping(value = "/AjaxDamAndLosRegister.nds", method = RequestMethod.GET)
+	public String ajaxDamAndLosRegister(Model model, Borrowing borrow) {
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Borrowing b = dao.getDamAndLosBook(borrow);
+		model.addAttribute("book", b);
+		return "WEB-INF/views/managerpage/AjaxDamAndLosRegister.jsp";
+	}
+	
+	@RequestMapping(value = "/changeToDamOrLos.nds", method = RequestMethod.GET)
+	public String changeToDamOrLos(Model model, String book_id, String state) {
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("book_id", book_id);
+		map.put("state", state);
+		dao.changeToDamOrLos(map);
+		
+		return "redirect:ManagerBookAll.nds";
+	}
 }
