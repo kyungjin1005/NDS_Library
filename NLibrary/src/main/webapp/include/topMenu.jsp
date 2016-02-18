@@ -34,11 +34,12 @@
 	<div class="col-md-4">
 		<ul class="list-inline">
 			<li><a href="http://www.nsgportal.net/">NDS Portal</a></li>
-			<li class="userName"><sec:authorize ifAnyGranted="ROLE_ADMIN">
-					<a href="ManagerBookRequire.nds"><strong>${pageContext.request.userPrincipal.name}</strong>
+			<li class="userName"> 
+				<sec:authorize ifAnyGranted="ROLE_ADMIN">
+					<a href="ManagerMember.nds"><strong>${sessionName}(관리자)<%-- ${pageContext.request.userPrincipal.name} --%></strong>
 						님</a>
 				</sec:authorize> <sec:authorize ifAnyGranted="ROLE_USER">
-					<a href="MypageRequire.nds"><strong>${pageContext.request.userPrincipal.name}</strong>
+					<a href="mypageBorrow.nds"><strong>${sessionName}<%-- ${pageContext.request.userPrincipal.name} --%></strong>
 						님</a>
 				</sec:authorize>
 			<li class="logout"><a href="j_spring_security_logout">로그아웃</a></li>

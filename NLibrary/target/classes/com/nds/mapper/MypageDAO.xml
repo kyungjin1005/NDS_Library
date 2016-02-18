@@ -99,7 +99,7 @@
 		explanation)
 		VALUES((SELECT NVL(MAX(req_don_id)+1, 1) FROM
 		ReqAndDon),
-		1, 4,
+		1, #{user_id},
 		'신청대기', sysdate, #{user_comment}, null, null,
 		#{isbn},
 		#{title},
@@ -154,7 +154,7 @@
 		explanation)
 		VALUES((SELECT NVL(MAX(req_don_id)+1, 1) FROM
 		ReqAndDon),
-		1, 4,
+		1, #{user_id},
 		'기증대기', sysdate, #{user_comment}, null, null,
 		#{isbn},
 		#{title},
