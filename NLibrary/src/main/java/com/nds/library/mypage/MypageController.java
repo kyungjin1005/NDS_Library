@@ -435,6 +435,9 @@ public class MypageController {
 		model.addAttribute("borrowList", borrowList);
 		model.addAttribute("filter", filter);
 		
+		// 대출권수 출력
+		model.addAttribute("borrowing_count", dao.getBorrowingCount(user_id));
+		
 		return "WEB-INF/views/mypage/MypageBorrow.jsp";
 	}
 	

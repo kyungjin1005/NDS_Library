@@ -424,5 +424,5 @@
 	
 	<update id="changeToDamOrLos">
 		UPDATE books SET current_state = #{state} WHERE book_id = #{book_id}
-	</update>
+	</update>	
 </mapper>   

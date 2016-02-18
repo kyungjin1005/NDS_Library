@@ -104,23 +104,18 @@
 					<thead>
 						<tr>
 							<th>번호</th>
+							<td></td>
 							<th>제목</th>
-							<th>예약한 날짜</th>
+							<th>예약날짜</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="reservation" items="${reserveList}">
 							<tr>
 								<td>${reservation.reservation_id }</td>
-								<td><img src="${reservation.image }" alt="" /><span>${reservation.title }</span></td>
-								<td><c:choose>
-											<c:when test="${reservation.reservated_date != null}">
-												${reservation.reservated_date}
-											</c:when>
-											<c:otherwise>
-												-
-											</c:otherwise>
-										</c:choose></td>
+								<td><img src="${reservation.image }" alt="" /></td>
+								<td>${reservation.title}</td>
+								<td>${empty reservation.reservated_date?"-":reservation.reservated_date}</td>
 							</tr>
 						</c:forEach>
 					</tbody>

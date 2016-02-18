@@ -223,4 +223,8 @@
 		UPDATE messages SET is_checked = 1, checked_date = SYSDATE
 		WHERE message_id = #{msg_id}
 	</update>
+		
+	<select id="getBorrowingCount" resultType="java.lang.Integer">
+		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null
+	</select>
 </mapper>   

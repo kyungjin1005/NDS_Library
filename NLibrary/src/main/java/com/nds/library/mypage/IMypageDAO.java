@@ -27,4 +27,6 @@ public interface IMypageDAO {
 	public User findUserByUserId(String user_id);
 
 	public void updateMsgToCheck(int msg_id);
+
+	public int getBorrowingCount(String user_id);
 }

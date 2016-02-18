@@ -114,22 +114,22 @@
 					<thead>
 						<tr>
 							<th>번호</th>
+							<th></th>
 							<th>제목</th>
-							<th>BOOK ID</th>
 							<th>대출일</th>
 							<th>반납예정일</th>
 							<th>반납일</th>
-							<th>대출상태</th>
-							<th>대출회원</th>
-							<th>대출 및 반납</th>
+							<th>상태</th>
+							<th>User</th>
+							<th>대출/반납</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="borrowing" items="${borrowingList}">
 							<tr>
 								<td>${borrowing.borrowing_id }</td>
-								<td><img src="${borrowing.image }" alt="" /><span>${borrowing.title}</span></td>
-								<td>${borrowing.book_id}</td>
+								<td><img src="${borrowing.image }" alt="" /></td>
+								<td>${borrowing.title}</td>
 								<td>${empty borrowing.borrowing_date?"-":borrowing.borrowing_date}</td>
 								<td>${empty borrowing.scheduled_date?"-":borrowing.scheduled_date}</td>
 								<td>${empty borrowing.returned_date?"-":borrowing.returned_date}</td>

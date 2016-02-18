@@ -83,7 +83,7 @@
 				<hr class="title-line" />
 
 				<div id="possible-book">
-					<span>＊현재 대출가능권수 : </span><span>2</span><span>/3권</span>
+					<span>＊현재 대출가능권수 : </span><span>${borrowing_count }</span><span> / 3권</span>
 
 					<form class="form-inline" role="form" method="post"
 						style="display: inline-block; float: right;">
@@ -115,7 +115,8 @@
 						<c:forEach var="borrowing" items="${borrowList}">
 							<tr>
 								<td>${borrowing.borrowing_id }</td>
-								<td><img src="${borrowing.image }" alt="" /><span>${borrowing.title }</span></td>
+								<td><img src="${borrowing.image }" alt="" /></td>
+								<td>${borrowing.title}</td>
 								<td>${empty borrowing.borrowing_date?"-":borrowing.borrowing_date}</td>
 								<td>${empty borrowing.scheduled_date?"-":borrowing.scheduled_date}</td>
 								<td>${empty borrowing.returned_date?"-":borrowing.returned_date}</td>
