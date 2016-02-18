@@ -70,13 +70,6 @@ header .list-inline {
 }
 
 
-
-
-
-
-
-
-
 footer {
 	margin: 30px 0px;
 	vertical-align: middle;

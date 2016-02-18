@@ -301,8 +301,9 @@
 	</insert>
 
 	<select id="getInformation" resultType="com.nds.library.mypage.ReqAndDon">
-		select * from
+		select INFORMATION_ID,CATEGORY_ID,ISBN,TITLE,AUTHOR,PUBLISHER,IMAGE,PUBDATE,EXPLANATION from
 		Informations where isbn = #{isbn}
+		
 	</select>
 
 	<insert id="insertBook" parameterType="com.nds.library.mypage.ReqAndDon">
