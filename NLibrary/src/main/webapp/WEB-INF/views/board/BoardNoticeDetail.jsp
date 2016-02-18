@@ -20,6 +20,7 @@
 #list-title img {
 	width: 100%;
 	margin: 0px;
+	
 }
 
 .list-group-item {
@@ -73,18 +74,17 @@
 				<hr class="title-line" />
 
 				<!-- 타이틀 -->
-				<div class="title">
-					<div style="width: 50%; float: left">
+				<div class="title" style="padding: 20px;">
+					<div style="width: 50%; float: left; font-size: 15px;">
 						<p>${board.title}</p>
 					</div>
-					<div style="width: 50%; float: left">
-						<p style="font-size: 11px; text-align: right">${board.boarded_date}</p>
+					<div style="width: 50%; float: left; ">
+						<p style="font-size: 15px; text-align: right">${board.boarded_date}</p>
 					</div>
 				</div>
-
 				<!-- 내용	 -->
-				<div class="content" style="height: 400px">
-					<p>${board.content}</p>
+				<div class="content" style="min-height: 400px; padding: 30px;">
+					<p style=" font-size: 15px;">${board.content}</p>
 
 				</div>
 				<hr class="content-line" />

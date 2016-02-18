@@ -71,7 +71,7 @@ public class MainController {
 			System.out.println("title : " + bList.get(i).getTitle());
 		}
 
-		model.addAttribute("bookList", bList);
+		model.addAttribute("bookList", list);
 		model.addAttribute("studyBoardList", StudyBoardList);
 		model.addAttribute("noticeBoardList", NoticeBoardList);
 		model.addAttribute("monthlyChampion", MonthlyChampion);

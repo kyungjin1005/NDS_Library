@@ -96,7 +96,7 @@
 				</div>
 
 				<!-- 내용	 -->
-				<div class="content" style="height: 400px" id="study_content">
+				<div class="content" style="min-height: 400px;" id="study_content">
 					<p>${board.content}</p>
 
 				</div>
