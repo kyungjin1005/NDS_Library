@@ -421,9 +421,22 @@ public class MypageController {
 		String user_id = request.getSession().getAttribute("sessionId").toString();
 		
 		map.put("user_id", user_id);
-		ArrayList<Borrowing> list = dao.mypageBorrow(map);
-		model.addAttribute("list", list);
-
+		ArrayList<Borrowing> borrowList = dao.mypageBorrow(map);
+		model.addAttribute("borrowList", borrowList);
+		
 		return "WEB-INF/views/mypage/MypageBorrow.jsp";
+	}
+	
+	@RequestMapping(value = "/mypageReserve.nds", method = RequestMethod.GET)
+	public String mypageReserve(Model model, HttpServletRequest request) {
+		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
+		Map<String, Object> map = new HashMap<String, Object>();
+		String user_id = request.getSession().getAttribute("sessionId").toString();
+		
+		map.put("user_id", user_id);
+		ArrayList<Borrowing> reserveList = dao.mypageReserveList(map);
+		model.addAttribute("reserveList", reserveList);
+		
+		return "WEB-INF/views/mypage/MypageReserve.jsp";
 	}
 }

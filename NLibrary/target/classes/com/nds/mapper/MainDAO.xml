@@ -227,6 +227,7 @@
    </update>
    
    <insert id="reserveBook" parameterType="com.nds.library.main.Borrowing">
-   	INSERT INTO reservations(reservation_id, book_id, user_id) VALUES((SELECT NVL(MAX(reservation_id),0)+1 FROM reservations), #{book_id}, #{user_id})
+   	INSERT INTO reservations(reservation_id, book_id, user_id) 
+   	VALUES((SELECT NVL(MAX(reservation_id),0)+1 FROM reservations), #{book_id}, #{user_id})
    </insert>
 </mapper>   
