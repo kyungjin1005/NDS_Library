@@ -209,13 +209,13 @@
 				<br />
 				<br />
 
-				<div style="text-align: right">
+				<!-- <div style="text-align: right">
 					<form action="#" method="get">
 						<input type="hidden" name="type" value="study" /> <label><input
 							type="submit" value=신청하기 class="btn btn-default" /></label>
 					</form>
 				</div>
-
+ -->
 
 				<footer>
 					<%@include file="/include/footer.jsp"%>
