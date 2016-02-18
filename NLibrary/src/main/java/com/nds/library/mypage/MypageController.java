@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -38,11 +39,11 @@ public class MypageController {
 		}
 		map.put("filter", filter);
 
-		// 페이징 처리
-		int nowpage = 0; // 현재 페이지 번호
-		int totalCount = 0; // 총 게시물 수
-		int totalPage = 0; // 총 페이지 수
-		int pageSize = 10; // 한페이지당 게시물 수
+		// �럹�씠吏� 泥섎━
+		int nowpage = 0; // �쁽�옱 �럹�씠吏� 踰덊샇
+		int totalCount = 0; // 珥� 寃뚯떆臾� �닔
+		int totalPage = 0; // 珥� �럹�씠吏� �닔
+		int pageSize = 10; // �븳�럹�씠吏��떦 寃뚯떆臾� �닔
 		int n = 0, loop = 0;
 		int start = 0, end = 0;
 		int blockSize = 10;
@@ -56,7 +57,7 @@ public class MypageController {
 		start = ((nowpage - 1) * pageSize) + 1;
 		end = start + pageSize - 1;
 
-		// 페이징
+		// �럹�씠吏�
 		map.put("start", start + "");
 		map.put("end", end + "");
 		
@@ -66,15 +67,15 @@ public class MypageController {
 
 		ArrayList<ReqAndDon> list = dao.requireBookList(map);
 
-		// 페이징
-		// 총 페이지 수?
-		totalCount = dao.totalCount(map); // 124건
+		// �럹�씠吏�
+		// 珥� �럹�씠吏� �닔?
+		totalCount = dao.totalCount(map); // 124嫄�
 		System.out.println("totalCOunt : " + totalCount);
-		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 무조건
-																		// 올림(3.1
+		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 臾댁“嫄�
+																		// �삱由�(3.1
 																		// -> 4)
 
-		// 페이지 바 생성
+		// �럹�씠吏� 諛� �깮�꽦
 		String pagebar = "";
 
 		pagebar += "<nav id='nav1'><ul class='pagination'>";
@@ -84,19 +85,19 @@ public class MypageController {
 		 * "<li><a href='#'>%d</a></li>", i); }
 		 */
 
-		// blockSize : 한번에 보여질 페이지 최대 갯수
+		// blockSize : �븳踰덉뿉 蹂댁뿬吏� �럹�씠吏� 理쒕� 媛��닔
 
-		// 페이지 번호를 만들기 위한 루프 변수
+		// �럹�씠吏� 踰덊샇瑜� 留뚮뱾湲� �쐞�븳 猷⑦봽 蹂��닔
 		loop = 1;
 
-		// 페이지 출력 번호 변수(페이지 번호)
-		// 5페이지 -> 1
-		// 8페이지 -> 1
-		// 10페이지 -> 1
-		// 15페이지 -> 11
+		// �럹�씠吏� 異쒕젰 踰덊샇 蹂��닔(�럹�씠吏� 踰덊샇)
+		// 5�럹�씠吏� -> 1
+		// 8�럹�씠吏� -> 1
+		// 10�럹�씠吏� -> 1
+		// 15�럹�씠吏� -> 11
 		n = ((nowpage - 1) / blockSize) * blockSize + 1;
 
-		// 이전 10페이지
+		// �씠�쟾 10�럹�씠吏�
 		if (n == 1) {
 			pagebar += String.format(
 					"<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
@@ -106,10 +107,10 @@ public class MypageController {
 					n - 1, filter);
 		}
 
-		// 페이지 번호 출력
+		// �럹�씠吏� 踰덊샇 異쒕젰
 		while (!(loop > blockSize || n > totalPage)) {
 
-			// 현재 페이지
+			// �쁽�옱 �럹�씠吏�
 			if (n == nowpage) {
 				pagebar += String.format("<li class='active'><a href='#'>%d</a></li>", n);
 			} else {
@@ -121,7 +122,7 @@ public class MypageController {
 			n++;
 		}
 
-		// 다음 10페이지
+		// �떎�쓬 10�럹�씠吏�
 		if (n > totalPage) {
 			pagebar += String.format(
 					"<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
@@ -247,18 +248,18 @@ public class MypageController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		System.out.println(filter);
 		
-		map.put("sessionId", request.getSession().getAttribute("sessionId")); // 세션 mapper로 넘기기
+		map.put("sessionId", request.getSession().getAttribute("sessionId")); // �꽭�뀡 mapper濡� �꽆湲곌린
 
 		if (filter == null) {
 			filter = "0";
 		}
 		map.put("filter", filter);
 
-		// 페이징 처리
-		int nowpage = 0; // 현재 페이지 번호
-		int totalCount = 0; // 총 게시물 수
-		int totalPage = 0; // 총 페이지 수
-		int pageSize = 10; // 한페이지당 게시물 수
+		// �럹�씠吏� 泥섎━
+		int nowpage = 0; // �쁽�옱 �럹�씠吏� 踰덊샇
+		int totalCount = 0; // 珥� 寃뚯떆臾� �닔
+		int totalPage = 0; // 珥� �럹�씠吏� �닔
+		int pageSize = 10; // �븳�럹�씠吏��떦 寃뚯떆臾� �닔
 		int n = 0, loop = 0;
 		int start = 0, end = 0;
 		int blockSize = 10;
@@ -272,7 +273,7 @@ public class MypageController {
 		start = ((nowpage - 1) * pageSize) + 1;
 		end = start + pageSize - 1;
 
-		// 페이징
+		// �럹�씠吏�
 		map.put("start", start + "");
 		map.put("end", end + "");
 		
@@ -282,15 +283,15 @@ public class MypageController {
 
 		ArrayList<ReqAndDon> list = dao.donationBookList(map);
 
-		// 페이징
-		// 총 페이지 수?
-		totalCount = dao.totalCount(map); // 124건
+		// �럹�씠吏�
+		// 珥� �럹�씠吏� �닔?
+		totalCount = dao.totalCount(map); // 124嫄�
 		System.out.println("totalCOunt : " + totalCount);
-		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 무조건
-																		// 올림(3.1
+		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 臾댁“嫄�
+																		// �삱由�(3.1
 																		// -> 4)
 
-		// 페이지 바 생성
+		// �럹�씠吏� 諛� �깮�꽦
 		String pagebar = "";
 
 		pagebar += "<nav id='nav1'><ul class='pagination'>";
@@ -300,19 +301,19 @@ public class MypageController {
 		 * "<li><a href='#'>%d</a></li>", i); }
 		 */
 
-		// blockSize : 한번에 보여질 페이지 최대 갯수
+		// blockSize : �븳踰덉뿉 蹂댁뿬吏� �럹�씠吏� 理쒕� 媛��닔
 
-		// 페이지 번호를 만들기 위한 루프 변수
+		// �럹�씠吏� 踰덊샇瑜� 留뚮뱾湲� �쐞�븳 猷⑦봽 蹂��닔
 		loop = 1;
 
-		// 페이지 출력 번호 변수(페이지 번호)
-		// 5페이지 -> 1
-		// 8페이지 -> 1
-		// 10페이지 -> 1
-		// 15페이지 -> 11
+		// �럹�씠吏� 異쒕젰 踰덊샇 蹂��닔(�럹�씠吏� 踰덊샇)
+		// 5�럹�씠吏� -> 1
+		// 8�럹�씠吏� -> 1
+		// 10�럹�씠吏� -> 1
+		// 15�럹�씠吏� -> 11
 		n = ((nowpage - 1) / blockSize) * blockSize + 1;
 
-		// 이전 10페이지
+		// �씠�쟾 10�럹�씠吏�
 		if (n == 1) {
 			pagebar += String.format(
 					"<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
@@ -322,10 +323,10 @@ public class MypageController {
 					n - 1, filter);
 		}
 
-		// 페이지 번호 출력
+		// �럹�씠吏� 踰덊샇 異쒕젰
 		while (!(loop > blockSize || n > totalPage)) {
 
-			// 현재 페이지
+			// �쁽�옱 �럹�씠吏�
 			if (n == nowpage) {
 				pagebar += String.format("<li class='active'><a href='#'>%d</a></li>", n);
 			} else {
@@ -337,7 +338,7 @@ public class MypageController {
 			n++;
 		}
 
-		// 다음 10페이지
+		// �떎�쓬 10�럹�씠吏�
 		if (n > totalPage) {
 			pagebar += String.format(
 					"<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
@@ -413,13 +414,16 @@ public class MypageController {
 		return "redirect:MypageDonation.nds";
 	}
 	
-//	@RequestMapping(value = "/MypageBorrow.nds", method = RequestMethod.GET)
-//	public String mypageBorrow(Model model) {
-//		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
-//
-//		ArrayList<Borrowing> list = dao.mypageBorrow();
-//		model.addAttribute("borrowingList", list);
-//
-//		return "WEB-INF/views/mypage/MypageBorrow.jsp";
-//	}
+	@RequestMapping(value = "/mypageBorrow.nds", method = RequestMethod.GET)
+	public String mypageBorrow(Model model, HttpServletRequest request) {
+		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
+		Map<String, Object> map = new HashMap<String, Object>();
+		String user_id = request.getSession().getAttribute("sessionId").toString();
+		
+		map.put("user_id", user_id);
+		ArrayList<Borrowing> list = dao.mypageBorrow(map);
+		model.addAttribute("list", list);
+
+		return "WEB-INF/views/mypage/MypageBorrow.jsp";
+	}
 }
