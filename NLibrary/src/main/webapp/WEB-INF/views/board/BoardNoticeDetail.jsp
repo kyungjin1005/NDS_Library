@@ -116,9 +116,20 @@
 										<%-- <a id="modify" href="UpdateReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice">
 								          <span class="glyphicon glyphicon-pencil"></span>
 								        </a> --%>
+								         <c:set var="session_user_id" value="${user_id}" />
+										<c:set var="reply_user_id" value="${reply.user_id}" />	
+										<%	
+										
+											int session_user_id = (Integer)pageContext.getAttribute("session_user_id");
+											int reply_user_id = (Integer)pageContext.getAttribute("reply_user_id");
+											
+											if(session_user_id == reply_user_id)
+											{
+										%>
 								        <a href="DeleteReply.nds?reply_id=${reply.reply_id}&board_id=${board.board_id}&type=notice"> 
         								  <span class="glyphicon glyphicon-minus"></span>
       									</a>
+      									<%} %>
 							        </td>
 								</tr>
 						</c:forEach>
