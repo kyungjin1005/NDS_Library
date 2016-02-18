@@ -42,4 +42,5 @@ public interface IManagerDAO {
 	
 	public ArrayList<ReqAndDon> bList(Map<String, Object> map);
 	public int totalCount(Map<String, Object> map);
+	public void updateReturnedDate(String borrowing_id);
 }

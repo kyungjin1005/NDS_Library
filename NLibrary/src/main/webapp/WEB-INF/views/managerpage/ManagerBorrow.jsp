@@ -124,7 +124,6 @@
 							<th>대출상태</th>
 							<th>대출회원</th>
 							<th>대출 및 반납</th>
-							<th>result</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -161,9 +160,8 @@
 								<td>${borrowing.name }</td>
 								<td>
 									<button class="btn btn-md btn-warning btn-borrow" value="${borrowing.borrowing_id }">대출</button>
-									<button class="btn btn-md btn-danger btn-return">반납</button>
+									<button class="btn btn-md btn-danger btn-return" value="${borrowing.borrowing_id }">반납</button>
 								</td>
-								<td>${result }<td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -178,8 +176,12 @@
 <script>
 	$(document).ready(function() {
 		$(".btn-borrow").on("click", function() {
-			alert($(this).val());
 			$(location).attr("href", "changeToBorrow.nds?borrowing_id=" + $(this).val());
+			alert("책이 대출되었습니다.");
+		});
+		$(".btn-return").on("click", function() {
+			$(location).attr("href", "changeToReturn.nds?borrowing_id=" + $(this).val());
+			alert("책이 반납되었습니다.");
 		});
 	});
 </script>

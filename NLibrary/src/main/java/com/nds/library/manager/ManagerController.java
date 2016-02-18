@@ -542,8 +542,25 @@ public class ManagerController {
 			dao.updateBorrowingDate(borrowing_id);
 			dao.updateCurrentState(map);
 		}else {
-//			model.addAttribute("result", "이미 대출중인 도서입니다.");
+//			대출 버튼에 마우스 오버 막거나 alret 창 띄워주기
 		}
+		return "redirect:ManagerBorrow.nds";
+	}
+	
+	@RequestMapping(value = "/changeToReturn.nds", method = RequestMethod.GET)
+	public String changeToReturn(Model model, String borrowing_id) {
+		// 대출 중 --> 반납
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String book_id = dao.getBorrowingById(borrowing_id).getBook_id();
+
+		map.put("current_state", "대출가능");
+		map.put("book_id", book_id);
+		
+		dao.updateReturnedDate(borrowing_id);
+		dao.updateCurrentState(map);
+			
 		return "redirect:ManagerBorrow.nds";
 	}
 }

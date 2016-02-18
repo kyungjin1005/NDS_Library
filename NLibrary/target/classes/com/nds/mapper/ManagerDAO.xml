@@ -367,6 +367,7 @@
 		select *
 		from (((books join informations using(information_id)) left outer join
 		borrowings using(book_id))) join users using(user_id)
+		where current_state = '대출' or current_state = '예약'
 		order by book_id
 	</select>
 	
@@ -387,4 +388,10 @@
 		from borrowings
 		where borrowing_id = #{borrowing_id}
 	</select>
+	
+	<update id="updateReturnedDate" >
+		update borrowings
+		set returned_date = SYSDATE
+		where borrowing_id = #{borrowing_id}
+	</update>
 </mapper>   
