@@ -6,8 +6,8 @@
 
 	<select id="MessageList" resultType="com.nds.library.manager.Message">
 		SELECT message_id, user_id, is_checked, title, content, sended_date,
-		checked_date
-		FROM messages
+		checked_date, name
+		FROM messages JOIN users USING(user_id)
 		<if test="filter == 0">  <!-- 전체 -->
 			where sended_date is not null
 		</if>
@@ -297,7 +297,7 @@
 		content, sended_date, is_checked)
 		VALUES ((SELECT
 		NVL(MAX(message_id),0)+1 FROM messages), #{user_id}, #{title},
-		#{content}, SYSDATE, 0);
+		#{content}, SYSDATE, 0)
 	</insert>
 
 	<select id="getInformation" resultType="com.nds.library.mypage.ReqAndDon">
@@ -356,4 +356,53 @@
 		#{pubdate},
 		#{explanation})
 	</insert>
+
+	<select id="findUserByUserId" resultType="com.nds.library.manager.User">
+		SELECT name
+		FROM users
+		WHERE user_id = #{user_id}
+	</select>
+
+	<select id="managerBorrow" resultType="com.nds.library.manager.Borrowing">
+		select *
+		from (((books join informations using(information_id)) left outer join
+		borrowings using(book_id))) join users using(user_id)
+		<if test="filter == 0">  <!-- 전체 -->
+			where current_state = '대출' or current_state = '예약' or current_state = '대출대기'
+		</if>
+		<if test="filter == 1">  <!-- 예약 도서 -->
+			where current_state = '예약'
+		</if>
+		<if test="filter == 2">  <!-- 대출 신청 도서 -->
+			where current_state = '대출대기'
+		</if>
+		<if test="filter == 3">  <!-- 대출 도서 -->
+			where current_state = '대출'
+		</if>
+		order by book_id
+	</select>
+	
+	<update id="updateBorrowingDate">
+		update borrowings
+		set borrowing_date = SYSDATE, scheduled_date = SYSDATE + 14
+		where borrowing_id = #{borrowing_id}
+	</update>
+	
+	<update id="updateCurrentState"  parameterType="java.util.Map">
+		update books
+		set current_state = #{current_state}
+		where book_id = #{book_id}
+	</update>
+	
+	<select id="getBorrowingById" resultType="com.nds.library.manager.Borrowing">
+		select *
+		from borrowings
+		where borrowing_id = #{borrowing_id}
+	</select>
+	
+	<update id="updateReturnedDate" >
+		update borrowings
+		set returned_date = SYSDATE
+		where borrowing_id = #{borrowing_id}
+	</update>
 </mapper>   

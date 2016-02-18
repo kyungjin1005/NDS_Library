@@ -213,4 +213,8 @@
       </if>
       ORDER BY registered_date desc)
    </select>
+   
+   <select id="findBookById">
+   	SELECT 
+   </select>
 </mapper>   

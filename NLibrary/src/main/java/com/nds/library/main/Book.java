@@ -1,7 +1,8 @@
 package com.nds.library.main;
 
 public class Book {
-	private int book_id, information_id, read_count, rownum;
+	private String book_id, information_id;
+	int read_count, rownum;
 	private String current_state, registered_date, location;
 
 	private String sbn, title, publisher, author, image, scheduled_date;
@@ -70,22 +71,6 @@ public class Book {
 		this.author = author;
 	}
 
-	public int getBook_id() {
-		return book_id;
-	}
-
-	public void setBook_id(int book_id) {
-		this.book_id = book_id;
-	}
-
-	public int getInformation_id() {
-		return information_id;
-	}
-
-	public void setInformation_id(int information_id) {
-		this.information_id = information_id;
-	}
-
 	public String getCurrent_state() {
 		return current_state;
 	}
@@ -108,6 +93,22 @@ public class Book {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String getBook_id() {
+		return book_id;
+	}
+
+	public void setBook_id(String book_id) {
+		this.book_id = book_id;
+	}
+
+	public String getInformation_id() {
+		return information_id;
+	}
+
+	public void setInformation_id(String information_id) {
+		this.information_id = information_id;
 	}
 
 }

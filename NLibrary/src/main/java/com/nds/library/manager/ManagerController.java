@@ -48,8 +48,11 @@ public class ManagerController {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		ArrayList<Message> msg = dao.messageDetail(msg_id);
+		Message msg = dao.messageDetail(msg_id);
+		String name = dao.findUserByUserId(msg.getUser_id()).getName();
+		
 		model.addAttribute("msg", msg);
+		model.addAttribute("name", name);
 
 		return "WEB-INF/views/managerpage/ManagerMessage.jsp";
 	}
@@ -479,17 +482,91 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/ManagerMemberMsg.nds", method = RequestMethod.POST)
-	public String managerMemberMsg(Model model, String[] uid, Message m) {
-
+	public String managerMemberMsg(Model model, String[] user_id) {
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-
-		System.out.println("size : " + uid.length);
-		for (String user_id : uid) {
-			System.out.print(user_id);
-			m.setUser_id(Integer.parseInt(user_id));
+		StringBuilder str = new StringBuilder();
+		StringBuilder user_name_list = new StringBuilder();
+		
+		for(String u : user_id){
+			user_name_list.append(dao.findUserByUserId(u).getName());
+			user_name_list.append(" ");
+			
+			str.append(u);
+			str.append("/");
+		}
+		model.addAttribute("user_id_list", str);
+		model.addAttribute("user_name_list", user_name_list);
+		
+		return "WEB-INF/views/managerpage/ManagerMemberMsg.jsp";
+	}
+	
+	@RequestMapping(value = "/sendMessage.nds", method = RequestMethod.POST)
+	public String sendMessage(String user_id_list, Message m) {
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		String[] uids = user_id_list.split("/");
+		for(String u : uids){
+			m.setUser_id(u);
 			dao.messageSend(m);
 		}
+		return "redirect:MessageList.nds";
+	}
+	
+	@RequestMapping(value = "/ManagerBorrow.nds", method = RequestMethod.GET)
+	public String managerBorrow(Model model, String filter) {
 
-		return "WEB-INF/views/managerpage/ManagerMemberMsg.jsp";
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (filter == null) {
+			filter = "0";
+		}
+		map.put("filter", filter);
+		
+		ArrayList<Borrowing> list = dao.managerBorrow(map);
+		model.addAttribute("borrowingList", list);
+		model.addAttribute("filter", filter);
+
+		return "WEB-INF/views/managerpage/ManagerBorrow.jsp";
+	}
+	
+	@RequestMapping(value = "/changeToBorrow.nds", method = RequestMethod.GET)
+	public String changeToBorrow(Model model, String borrowing_id) {
+		// 예약 또는 대출 신청이 되어있는 상태에서 대출 상태로 변경
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String book_id = dao.getBorrowingById(borrowing_id).getBook_id();
+
+		// 이미 대출일이 있는  애들은 update되면 안됨
+		String borrowing_date = dao.getBorrowingById(borrowing_id).getBorrowing_date();
+		
+		map.put("current_state", "대출");
+		map.put("book_id", book_id);
+		
+		if(borrowing_date == null) {			
+			dao.updateBorrowingDate(borrowing_id);
+			dao.updateCurrentState(map);
+		}else {
+//			대출 버튼에 마우스 오버 막거나 alret 창 띄워주기
+		}
+		return "redirect:ManagerBorrow.nds";
+	}
+	
+	@RequestMapping(value = "/changeToReturn.nds", method = RequestMethod.GET)
+	public String changeToReturn(Model model, String borrowing_id) {
+		// 대출 중 --> 반납
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String book_id = dao.getBorrowingById(borrowing_id).getBook_id();
+
+		map.put("current_state", "대출가능");
+		map.put("book_id", book_id);
+		
+		dao.updateReturnedDate(borrowing_id);
+		dao.updateCurrentState(map);
+			
+		return "redirect:ManagerBorrow.nds";
 	}
 }

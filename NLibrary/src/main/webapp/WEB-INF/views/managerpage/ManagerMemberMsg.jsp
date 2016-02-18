@@ -74,7 +74,11 @@
 				<h1 id="mTitle">회원관리</h1>
 				<hr class="title-line" />
 				<div id="box">
-					<form action="managerMemberMsg.nds" method="POST">
+					<form action="sendMessage.nds" method="POST">
+
+						<input type="hidden" value="${user_id_list}" class="form-control"
+							name="user_id_list" />
+
 						<table class="table" id="msg-table">
 							<tr>
 								<th>제목</th>
@@ -83,7 +87,9 @@
 							</tr>
 							<tr>
 								<th>받는사람</th>
-								<td>List로 보여주기~~~</td>
+								<td>
+									${user_name_list }
+								</td>
 							</tr>
 							<tr>
 								<th>내용</th>
@@ -93,8 +99,8 @@
 						</table>
 						<div id="btn-msg">
 							<input class="btn btn-default" type="button" value="돌아가기"
-								onclick="history.back();"  /> 
-								<input type="submit" value="메세지 보내기" class="btn btn-warning" />
+								onclick="history.back();" /> <input type="submit"
+								value="메세지 보내기" class="btn btn-warning" />
 						</div>
 					</form>
 				</div>
@@ -107,7 +113,6 @@
 </body>
 <script>
 	$(document).ready(function() {
-
 	});
 </script>
 </html>

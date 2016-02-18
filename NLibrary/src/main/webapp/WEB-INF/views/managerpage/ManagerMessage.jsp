@@ -74,31 +74,29 @@
 				<table class="table" id="msg-table">
 
 					<tbody>
-						<c:forEach var="msg" items="${msg}">
-							<tr>
-								<td>번호</td>
-								<td>${msg.message_id}</td>
-							</tr>
-							<tr>
-								<td>보낸날짜</td>
-								<td>${msg.sended_date}</td>
-							</tr>
+						<tr>
+							<td>번호</td>
+							<td>${msg.message_id}</td>
+						</tr>
+						<tr>
+							<td>보낸날짜</td>
+							<td>${msg.sended_date}</td>
+						</tr>
 
-							<tr>
-								<td>받는사람___(일단id만)</td>
-								<td>${msg.user_id}</td>
-							</tr>
+						<tr>
+							<td>받는사람</td>
+							<td>${name}</td>
+						</tr>
 
-							<tr>
-								<td>제목</td>
-								<td>${msg.title}</td>
-							</tr>
+						<tr>
+							<td>제목</td>
+							<td>${msg.title}</td>
+						</tr>
 
-							<tr>
-								<td>내용</td>
-								<td>${msg.content}</td>
-							</tr>
-						</c:forEach>
+						<tr>
+							<td>내용</td>
+							<td>${msg.content}</td>
+						</tr>
 					</tbody>
 				</table>
 

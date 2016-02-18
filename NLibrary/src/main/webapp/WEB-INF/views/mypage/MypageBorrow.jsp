@@ -114,93 +114,27 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>대출대기</td>
-							<td>0/1</td>
-							<td>
-								<button class="btn btn-md btn-warning disabled">연장하기</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
-							<td>예약중</td>
-							<td>0/1</td>
-							<td>
-								<button class="btn btn-md btn-warning disabled">연장하기</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>2016-01-22</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-							<td>대출중</td>
-							<td>0/1</td>
-							<td>
-								<button class="btn btn-md btn-warning">연장하기</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>2016-01-22</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-							<td>대출중</td>
-							<td>0/1</td>
-							<td>
-								<button class="btn btn-md btn-warning">연장하기</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>2016-01-22</td>
-							<td>2016-02-05</td>
-							<td>-</td>
-							<td>대출중</td>
-							<td>1/1</td>
-							<td>
-								<button class="btn btn-md btn-warning disabled">연장하기</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>2016-01-22</td>
-							<td>2016-02-05</td>
-							<td>2016-02-05</td>
-							<td>반납완료</td>
-							<td>1/1</td>
-							<td>
-								<button class="btn btn-md btn-warning disabled">연장하기</button>
-							</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-							<td>2016-01-22</td>
-							<td>2016-02-05</td>
-							<td>2016-02-05</td>
-							<td>반납완료</td>
-							<td>1/1</td>
-							<td>
-								<button class="btn btn-md btn-warning disabled">연장하기</button>
-							</td>
-						</tr>
-
-
-
+						<c:forEach var="borrowing" items="${list}">
+							<tr>
+								<td>${borrowing.borrowing_id }</td>
+								<td><img src="${borrowing.image }" alt="" /><span>${borrowing.title }</span></td>
+								<td>${borrowing.borrowing_date}</td>
+								<td>${borrowing.scheduled_date}</td>
+								<td><c:choose>
+											<c:when test="${borrowing.returned_date != null}">
+												${borrowing.returned_date}
+											</c:when>
+											<c:otherwise>
+												-
+											</c:otherwise>
+										</c:choose></td>
+								<td>${borrowing.current_state}</td>
+								<td>${borrowing.delay_count}</td>
+								<td>
+									<button class="btn btn-md btn-warning disabled">연장하기</button>
+								</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
