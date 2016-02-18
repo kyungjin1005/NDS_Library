@@ -225,6 +225,6 @@
 	</update>
 		
 	<select id="getBorrowingCount" resultType="java.lang.Integer">
-		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null
+		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null and returned_date is null
 	</select>
 </mapper>   

@@ -83,7 +83,7 @@
 				<hr class="title-line" />
 
 				<div id="possible-book">
-					<span>＊현재 대출가능권수 : </span><span>${borrowing_count }</span><span> / 3권</span>
+					<span>＊현재 대출가능권수 : </span><span>${3-borrowing_count }</span><span> / 3권</span>
 
 					<form class="form-inline" role="form" method="post"
 						style="display: inline-block; float: right;">

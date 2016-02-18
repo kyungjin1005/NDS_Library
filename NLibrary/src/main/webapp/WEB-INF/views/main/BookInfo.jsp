@@ -279,12 +279,16 @@
 
 <script>
    $(document).ready(function() {
-
    });
 
    function borrow() {
-	   alert("대출이 신청되었습니다. 관리자의 승락을 기다리세요.");
-		  $(location).attr("href", "borrowBook.nds?book_id=" + $(".btn-borrow").val());
+	   var count = "${borrowing_count}";
+	   if(count >= 3) {
+		   alert("대출 가능한 권수 3권을 초과! 대출중인 책들을 반납해주세요.")
+	   }else {
+		   alert("대출이 신청되었습니다. 관리자의 승락을 기다리세요.");
+		   $(location).attr("href", "borrowBook.nds?book_id=" + $(".btn-borrow").val());
+	   }
    }
 
    function reserve() {

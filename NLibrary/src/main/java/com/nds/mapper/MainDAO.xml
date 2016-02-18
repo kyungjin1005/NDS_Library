@@ -230,4 +230,8 @@
    	INSERT INTO reservations(reservation_id, book_id, user_id) 
    	VALUES((SELECT NVL(MAX(reservation_id),0)+1 FROM reservations), #{book_id}, #{user_id})
    </insert>
+   
+   <select id="getBorrowingCount" resultType="java.lang.Integer">
+		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null and returned_date is null
+	</select>
 </mapper>   

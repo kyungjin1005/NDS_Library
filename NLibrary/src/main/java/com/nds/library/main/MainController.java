@@ -9,10 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -95,7 +93,7 @@ public class MainController {
 
 	   // 4踰� �룄�꽌 �긽�꽭�젙蹂�(BookInfo) - (5)由щ럭 �옉�꽦 �룷�븿
 	   @RequestMapping(value = "/BookInfo.nds", method = RequestMethod.GET)
-	   public String bookInfo(Model model, String isbn) {
+	   public String bookInfo(Model model, String isbn, HttpServletRequest request) {
 	      IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
 	      int BorrowN, ReviewN;
 	      HashMap<String, Object> map = new HashMap<String, Object>();
@@ -129,6 +127,10 @@ public class MainController {
 	      model.addAttribute("bookReview", bookReview);
 	      model.addAttribute("BorrowN", BorrowN);
 	      model.addAttribute("ReviewN", ReviewN);
+	      
+	      String user_id = request.getSession().getAttribute("sessionId").toString();
+	      model.addAttribute("borrowing_count", dao.getBorrowingCount(user_id));
+	      
 	      return "WEB-INF/views/main/BookInfo.jsp";
 	   }
 
@@ -239,7 +241,7 @@ public class MainController {
 		return "WEB-INF/views/main/UseInformation.jsp";
 	}
 	@RequestMapping(value = "/borrowBook.nds", method = RequestMethod.GET)
-	public String borrowBook(Model m, String book_id, HttpServletRequest request) {
+	public String borrowBook(Model model, String book_id, HttpServletRequest request) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
 		
 		String user_id = request.getSession().getAttribute("sessionId").toString();
@@ -255,7 +257,7 @@ public class MainController {
 		borrowing.setBook_id(book_id);
 		borrowing.setUser_id(user_id);
 		dao.borrowBook(borrowing);
-
+		
 		return "redirect:mypageBorrow.nds";
 	}
 	

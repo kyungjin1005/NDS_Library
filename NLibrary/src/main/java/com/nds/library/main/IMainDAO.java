@@ -52,4 +52,6 @@ public interface IMainDAO {
 
 	public void reserveBook(Map<String, Object> map);
 
+	public int getBorrowingCount(String user_id);
+
 }
