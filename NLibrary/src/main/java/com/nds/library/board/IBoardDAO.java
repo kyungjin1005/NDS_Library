@@ -33,4 +33,12 @@ public interface IBoardDAO {
 	public ArrayList<ReqandDon> reqaAndDonFilterList(Map<String, Object> map);
 	// 신청, 기증 상태별로 갯수 받아오기
 	public Object reqaAndDonFilterCount(Map<String, Object> map);
+	// 게시글 블라인드 처리
+	public void boardBlind(Board b);
+	// 게시글 필터링 처리
+	public ArrayList<Board> boardFilterList(Map<String, Object> map);
+	// 댓글 전체 목록 받아오기
+	public ArrayList<Reply> adminBoardReplyList(Map<String, Object> map);
+	// 댓글 블라인드 처리
+	public void commentBlind(Reply b);
 }

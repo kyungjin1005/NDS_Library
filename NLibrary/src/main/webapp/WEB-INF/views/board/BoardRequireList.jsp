@@ -83,11 +83,11 @@
 						style="display: inline-block; float: right; margin-bottom: 15px">
 						<select class="form-control filter" id="borrow-filter"
 							name="borrow-filter" onchange="location.href=this.value;">
-							<option value="BoardRequireList.nds">전체</option>
-							<option value="ReqDonFilterList.nds?type=require&filter=1">구매완료</option>
-							<option value="ReqDonFilterList.nds?type=require&filter=2">신청완료</option>
-							<option value="ReqDonFilterList.nds?type=require&filter=3">신청대기</option>
-							<option value="ReqDonFilterList.nds?type=require&filter=4">신청반려</option>
+							<option value="BoardRequireList.nds?category=0">전체</option>
+							<option value="BoardRequireList.nds?type=require&category=1">구매완료</option>
+							<option value="BoardRequireList.nds?type=require&category=2">신청완료</option>
+							<option value="BoardRequireList.nds?type=require&category=3">신청대기</option>
+							<option value="BoardRequireList.nds?type=require&category=4">신청반려</option>
 						</select>
 
 					</form>
@@ -162,7 +162,7 @@
 						<%
 							if (pageNumTemp > 1) {
 						%>
-						<li><a href="BoardRequireList.nds?pageNum=1">«</a></li>
+						<li><a href="BoardRequireList.nds?pageNum=1&category=${filter }">«</a></li>
 						<%
 							}
 						%>
@@ -170,7 +170,7 @@
 							if (isPrev) {
 									int goPrevPage = startPage - pagePerBlock;
 						%>
-						<li><a href="BoardRequireList.nds?pageNum="<%=goPrevPage%>">«</a></li>
+						<li><a href="BoardRequireList.nds?pageNum=<%=goPrevPage%>&category=${filter }">«</a></li>
 						<%
 							} else {
 
@@ -182,14 +182,14 @@
 						<%
 							} else {
 						%>
-						<li><a href="BoardRequireList.nds?pageNum=<%=i%>"><%=i%></a></li>
+						<li><a href="BoardRequireList.nds?pageNum=<%=i%>&category=${filter }"><%=i%></a></li>
 						<%
 							}
 								}
 								if (isNext) {
 									int goNextPage = startPage + pagePerBlock;
 						%>
-						<li><a href="BoardRequireList.nds?ageNum=<%=goNextPage%>">»</a></li>
+						<li><a href="BoardRequireList.nds?pageNum=<%=goNextPage%>&category=${filter }">»</a></li>
 						<%
 							} else {
 
@@ -197,7 +197,7 @@
 								if (totalNumOfPage > pageNumTemp) {
 						%>
 						<li><a
-							href="BoardRequireList.nds?pageNum=<%=totalNumOfPage%>">»</a></li>
+							href="BoardRequireList.nds?pageNum=<%=totalNumOfPage%>&category=${filter }">»</a></li>
 						<%
 							}
 							}
@@ -230,6 +230,6 @@
 		});
 	});
 	
-	$("#borrow-filter").find("option[value='ReqDonFilterList.nds?type=require&filter=${filter}']").attr("selected" , true);
+	$("#borrow-filter").find("option[value='BoardRequireList.nds?type=require&category=${filter}']").attr("selected" , true);
 </script>
 </html>

@@ -6,10 +6,11 @@
 
 	<select id="boardList" parameterType="java.util.HashMap"
 		resultType="com.nds.library.board.Board">
-		select board_id, user_id, category, title, content, 
+		select board_id, user_id, category, title, content,
 		TO_CHAR(boarded_date,'yyyy-mm-dd') AS boarded_date,
 		TO_CHAR(modified_date,'yyyy-mm-dd') AS modified_date,
-		read_count, blind, name
+		read_count,
+		blind, name
 		from
 		(
 		select rownum rn, aa.*
@@ -18,17 +19,49 @@
 		users using(user_id)
 		<if test="type == 'notice'">
       		<![CDATA[
-			WHERE category = '공지' 
+			WHERE category = '공지' and blind=0
 			order by board_id desc)aa)
 			where rn between #{startNumber} and #{startNumber}+9
 			]]>
 		</if>
 		<if test="type == 'study'">
       		<![CDATA[
-			WHERE category = '스터디' 
-			order by board_id desc)aa)
+			WHERE category = '스터디' and blind=0
+			order by board_id desc)aa) 
 			where rn between #{startNumber} and #{startNumber}+9
 			]]>
+		</if>
+		<if test="type == 'all'">
+			<if test="filter==1">
+			<![CDATA[WHERE (sysdate-BOARDED_DATE)<=7]]>
+			</if>
+			<if test="filter==2">
+				WHERE TO_CHAR(sysdate,'YY-MM') =
+				TO_CHAR(BOARDED_DATE,'YY-MM')
+			</if>
+			<if test="filter==3">
+				WHERE category='공지'
+			</if>
+			<if test="filter==4">
+				WHERE category='공지' and TO_CHAR(sysdate,'YY-MM') =
+				TO_CHAR(BOARDED_DATE,'YY-MM')
+			</if>
+			<if test="filter==5">
+				WHERE category='공지' and <![CDATA[(sysdate-BOARDED_DATE)<=7]]>
+			</if>
+			<if test="filter==6">
+				WHERE category='스터디'
+			</if>
+			<if test="filter==7">
+				WHERE category='스터디' and TO_CHAR(sysdate,'YY-MM') =
+				TO_CHAR(BOARDED_DATE,'YY-MM')
+			</if>
+			<if test="filter==8">
+				WHERE category='스터디' and <![CDATA[(sysdate-BOARDED_DATE)<=7]]>
+			</if>
+			order by board_id desc)aa)
+			where rn between #{startNumber} and #{startNumber}+9
+
 		</if>
 
 	</select>
@@ -42,31 +75,55 @@
 		from
 		(select * from ReqandDon join
 		users using(user_id)
-		<if test="type == 'require'">
-			WHERE current_state = '승인대기' or current_state = '신청완료'
+		WHERE
+		<if test="filter==0">
+			current_state = '승인대기' or current_state = '신청완료'
 			or
 			current_state = '구매완료' or current_state = '신청반려'
-			order by req_don_id
-			desc)aa)
-			where rn between #{startNumber} and #{startNumber}+9
+
 		</if>
-		<if test="type == 'donation'">
-			WHERE current_state LIKE '기증%'
-			order by req_don_id desc)aa)
-			where rn between #{startNumber} and
-			#{startNumber}+9
+		<if test="filter==1">
+			current_state='구매완료'
 		</if>
+		<if test="filter==2">
+			current_state='신청완료'
+		</if>
+		<if test="filter==3">
+			current_state='신청대기'
+		</if>
+		<if test="filter==4">
+			current_state='신청반려'
+		</if>
+		<if test="filter == 5">
+			current_state LIKE '기증%'
+		</if>
+		<if test="filter==6">
+			current_state='기증대기'
+		</if>
+		<if test="filter==7">
+			current_state='기증완료'
+		</if>
+		<if test="filter==8">
+			current_state='기증반려'
+		</if>
+
+		order by req_don_id
+		desc)aa)
+		where rn between #{startNumber} and #{startNumber}+9
+
 	</select>
 
 	<select id="detailBoard" parameterType="java.util.HashMap"
 		resultType="com.nds.library.board.Board">
-		SELECT board_id, user_id, category, title, content, 
+		SELECT board_id, user_id, category, title, content,
 		TO_CHAR(boarded_date,'yyyy-mm-dd') AS boarded_date,
 		TO_CHAR(modified_date,'yyyy-mm-dd') AS modified_date,
-		read_count, blind, name
+		read_count,
+		blind, name
 		FROM boards join users using(user_id)
 		WHERE board_id
-		= #{board_id}
+		=
+		#{board_id}
 	</select>
 
 	<update id="readCount" parameterType="java.util.HashMap">
@@ -80,14 +137,169 @@
 
 	<select id="replyCount" parameterType="java.util.HashMap"
 		resultType="Integer">
+
 		SELECT count(*)
-		FROM replys
+		FROM 
 		<if test="type == 'board'">
-			where board_id=#{board_id}
+			replys
+			where board_id=#{board_id} and blind=0
 		</if>
 		<if test="type == 'reqanddon'">
-			where req_don_id=#{req_don_id}
+			replys
+			where req_don_id=#{req_don_id} and blind=0
 		</if>
+		<if test="filter==0">
+			replys
+		</if>
+		
+		<if test="filter==1">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			<![CDATA[where (sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==2">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			where TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==3">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			where category='공지'
+		</if>
+		<if test="filter==4">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			where category='공지' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==5">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			where category='공지' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==6">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			where category='스터디'
+		</if>
+		<if test="filter==7">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			where category='스터디' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==8">
+		(select distinct replys.REPLY_ID
+			as reply_id,
+			replys.content as content , replys.BLIND as blind ,
+			replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+			as name, boards.category category
+			from boards join users using(user_id) join replys
+			using(board_id)
+			union
+			select distinct replys.REPLY_ID as reply_id,
+			replys.content as content ,
+			replys.BLIND as blind , replys.REPLYED_DATE
+			as REPLYED_DATE,
+			REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+			from
+			REQANDDON join users using(user_id) join replys using(req_don_id))
+			where category='스터디' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+
 
 	</select>
 
@@ -96,13 +308,124 @@
 		SELECT *
 		FROM replys join users using(user_id)
 		<if test="type == 'board'">
-			where board_id=#{board_id}
-			ORDER BY reply_id desc
+			where board_id=#{board_id} and blind=0
 		</if>
 		<if test="type == 'reqanddon'">
-			where req_don_id=#{req_don_id}
-			ORDER BY reply_id desc
+			where req_don_id=#{req_don_id} and blind=0
 		</if>
+
+		ORDER BY reply_id desc
+	</select>
+
+	<select id="adminBoardReplyList" parameterType="java.util.HashMap"
+		resultType="com.nds.library.board.Reply">
+		select *
+		from
+		(
+		select
+		rownum rn, aa.*
+		from
+		(select distinct replys.REPLY_ID
+		as reply_id,
+		replys.content as content , replys.BLIND as blind ,
+		replys.REPLYED_DATE as REPLYED_DATE, boards.title as title, users.name
+		as name, boards.category category
+		from boards join users using(user_id) join replys using(board_id)
+		<if test="filter==1">
+			<![CDATA[where (sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==2">
+			where TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==3">
+			where category='공지'
+		</if>
+		<if test="filter==4">
+			where category='공지' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==5">
+			where category='공지' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==6">
+			where category='스터디'
+		</if>
+		<if test="filter==7">
+			where category='스터디' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==8">
+			where category='스터디' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+	
+		union
+		select distinct replys.REPLY_ID as reply_id,
+		replys.content as content ,
+		replys.BLIND as blind , replys.REPLYED_DATE
+		as REPLYED_DATE,
+		REQANDDON.title as title, users.name as name, REQANDDON.CURRENT_STATE as category
+		from
+		REQANDDON join users using(user_id) join replys using(req_don_id)
+		<if test="filter==1">
+			<![CDATA[where (sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==2">
+			where TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==3">
+			where REQANDDON.CURRENT_STATE='공지'
+		</if>
+		<if test="filter==4">
+			where REQANDDON.CURRENT_STATE='공지' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==5">
+			where REQANDDON.CURRENT_STATE='공지' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==6">
+			where REQANDDON.CURRENT_STATE='스터디'
+		</if>
+		<if test="filter==7">
+			where REQANDDON.CURRENT_STATE='스터디' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==8">
+			where REQANDDON.CURRENT_STATE='스터디' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		order by reply_id desc)aa)
+		where rn between #{startNumber} and
+		#{startNumber}+9 
+
+		<if test="filter==1">
+			<![CDATA[and (sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==2">
+			and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==3">
+			and category='공지'
+		</if>
+		<if test="filter==4">
+			and category='공지' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==5">
+			and category='공지' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+		<if test="filter==6">
+			and category='스터디'
+		</if>
+		<if test="filter==7">
+			and category='스터디' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(REPLYED_DATE,'YY-MM')
+		</if>
+		<if test="filter==8">
+			and category='스터디' and <![CDATA[(sysdate-REPLYED_DATE)<=7]]>
+		</if>
+ 
 	</select>
 
 	<insert id="addReply" parameterType="java.util.HashMap">
@@ -144,20 +467,70 @@
 		<if test="type == 'study'">
 			WHERE category = '스터디'
 		</if>
+		<if test="filter==1">
+			<![CDATA[WHERE (sysdate-BOARDED_DATE)<=7]]>
+		</if>
+		<if test="filter==2">
+			WHERE TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(BOARDED_DATE,'YY-MM')
+		</if>
+		<if test="filter==3">
+			WHERE category='공지'
+		</if>
+		<if test="filter==4">
+			WHERE category='공지' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(BOARDED_DATE,'YY-MM')
+		</if>
+		<if test="filter==5">
+			WHERE category='공지' and <![CDATA[(sysdate-BOARDED_DATE)<=7]]>
+		</if>
+		<if test="filter==6">
+			WHERE category='스터디'
+		</if>
+		<if test="filter==7">
+			WHERE category='스터디' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(BOARDED_DATE,'YY-MM')
+		</if>
+		<if test="filter==8">
+			WHERE category='스터디' and <![CDATA[(sysdate-BOARDED_DATE)<=7]]>
+		</if>
 	</select>
 
 	<select id="reQandDonCount" parameterType="java.util.HashMap"
 		resultType="Integer">
 		SELECT count(*)
 		FROM ReqandDon join users using(user_id)
-		<if test="type == 'require'">
-			WHERE current_state = '승인대기' or current_state = '신청완료'
+		WHERE
+		<if test="filter==0">
+			current_state = '승인대기' or current_state = '신청완료'
 			or
 			current_state = '구매완료' or current_state = '신청반려'
 		</if>
-		<if test="type == 'donation'">
-			WHERE current_state LIKE '기증%'
+		<if test="filter==1">
+			current_state='구매완료'
 		</if>
+		<if test="filter==2">
+			current_state='신청완료'
+		</if>
+		<if test="filter==3">
+			current_state='신청대기'
+		</if>
+		<if test="filter==4">
+			current_state='신청반려'
+		</if>
+		<if test="filter==5">
+			current_state LIKE '기증%'
+		</if>
+		<if test="filter==6">
+			current_state='기증대기'
+		</if>
+		<if test="filter==7">
+			current_state='기증완료'
+		</if>
+		<if test="filter==8">
+			current_state='기증반려'
+		</if>
+
 	</select>
 
 	<select id="detailReQandDon" parameterType="java.util.HashMap"
@@ -205,22 +578,22 @@
 		<if test="filter==5">
 			WHERE current_state = '기증대기'
 			order by req_don_id desc)aa)
-			where rn between 
+			where rn between
 			#{startNumber} and #{startNumber}+9
 		</if>
 		<if test="filter==6">
 			WHERE current_state = '기증완료'
 			order by req_don_id desc)aa)
-			where rn between 
+			where rn between
 			#{startNumber} and #{startNumber}+9
 		</if>
 		<if test="filter==7">
 			WHERE current_state = '기증반려'
 			order by req_don_id desc)aa)
-			where rn between 
+			where rn between
 			#{startNumber} and #{startNumber}+9
 		</if>
-		
+
 	</select>
 
 	<select id="reqaAndDonFilterCount" parameterType="java.util.HashMap"
@@ -249,5 +622,50 @@
 			WHERE current_state = '기증반려'
 		</if>
 	</select>
+
+	<update id="boardBlind">
+		UPDATE boards SET blind=#{blind} WHERE
+		board_id=#{board_id}
+	</update>
+
+	<select id="boardFilterList" parameterType="java.util.HashMap"
+		resultType="com.nds.library.board.Board">
+		SELECT *
+		FROM boards join users using(user_id)
+		<if test="filter==1">
+			<![CDATA[WHERE (sysdate-BOARDED_DATE)<=7]]>
+		</if>
+		<if test="filter==2">
+			WHERE TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(BOARDED_DATE,'YY-MM')
+		</if>
+		<if test="filter==3">
+			WHERE category='공지'
+		</if>
+		<if test="filter==4">
+			WHERE category='공지' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(BOARDED_DATE,'YY-MM')
+		</if>
+		<if test="filter==5">
+			WHERE category='공지' and <![CDATA[(sysdate-BOARDED_DATE)<=7]]>
+		</if>
+		<if test="filter==6">
+			WHERE category='스터디'
+		</if>
+		<if test="filter==7">
+			WHERE category='스터디' and TO_CHAR(sysdate,'YY-MM') =
+			TO_CHAR(BOARDED_DATE,'YY-MM')
+		</if>
+		<if test="filter==8">
+			WHERE category='스터디' and <![CDATA[(sysdate-BOARDED_DATE)<=7]]>
+		</if>
+
+
+	</select>
+
+	<update id="commentBlind">
+		UPDATE replys SET blind=#{blind} WHERE
+		reply_id=#{reply_id}
+	</update>
 
 </mapper>   

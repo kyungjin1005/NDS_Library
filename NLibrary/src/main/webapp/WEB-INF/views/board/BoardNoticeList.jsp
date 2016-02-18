@@ -195,13 +195,13 @@
 	%>
 			</div>	
 				<br/><br/><br/>
-				
+			<!-- 	
 				<div style="text-align: right">
 					<form action="AddBoard.nds" method="get">
 						<input type="hidden" name="type" value="notice" />
 						<label><input type="submit" value="글쓰기"  class="btn btn-default"/></label>
 					</form>
-				</div>
+				</div> -->
 			</div>
 
 		</div>
