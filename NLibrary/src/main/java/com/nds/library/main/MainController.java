@@ -116,7 +116,15 @@ public class MainController {
 	      Information bookInfo = dao.bookInfo(map).get(0);
 	      model.addAttribute("bookInfo", bookInfo);
 
-	      ArrayList<Information> ownInfo = dao.ownInfo(map);
+	      ArrayList<Book> ownInfo = dao.ownInfo(map);
+	      
+	      for (Book book : ownInfo) {
+			if(book.getCurrent_state().equals("대출가능") && book.getScheduled_date()!=null){
+				book.setScheduled_date("");
+				
+			}
+		}
+	      
 	      BorrowN=dao.ownInfo(map).size();
 	      model.addAttribute("ownInfo", ownInfo);
 
