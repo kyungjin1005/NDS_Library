@@ -372,7 +372,7 @@
 	
 	<update id="updateBorrowingDate">
 		update borrowings
-		set borrowing_date = SYSDATE, scheduled_date = to_date(borrowing_date, 'YYYY-MM-DD') + 14
+		set borrowing_date = SYSDATE, scheduled_date = SYSDATE + 14
 		where borrowing_id = #{borrowing_id}
 	</update>
 	
@@ -382,7 +382,7 @@
 		where book_id = #{book_id}
 	</update>
 	
-	<select id="checkBorrowingDate" resultType="com.nds.library.manager.Borrowing">
+	<select id="getBorrowingById" resultType="com.nds.library.manager.Borrowing">
 		select *
 		from borrowings
 		where borrowing_id = #{borrowing_id}
