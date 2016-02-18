@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.nds.library.board.Board;
-import com.nds.library.manager.User;
+import com.nds.library.main.User;
 
 public interface IMainDAO {
 

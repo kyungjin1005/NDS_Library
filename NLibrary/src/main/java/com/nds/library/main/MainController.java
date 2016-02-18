@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.nds.library.board.Board;
-import com.nds.library.manager.User;
+import com.nds.library.main.User;
 
 @Controller
 public class MainController {
@@ -279,6 +279,6 @@ public class MainController {
 		map.put("user_id", user_id);
 		dao.reserveBook(map);
 
-		return "redirect:mypageBorrow.nds";
+		return "redirect:mypageReserve.nds";
 	}
 }

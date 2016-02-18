@@ -4,7 +4,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.main.IMainDAO">
 
-	<select id="getSessionId" resultType="com.nds.library.manager.User"
+	<select id="getSessionId" resultType="com.nds.library.main.User"
 		parameterType="java.util.Map">
 		select user_id, nds_number, password, name, position,
 		department, picture,

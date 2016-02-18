@@ -62,12 +62,10 @@
 				<h1 id="mTitle">메세지함</h1>
 				<hr class="title-line" />
 
-
-
 				<form class="form-inline" role="form" method="post"
 					style="display: inline-block; float: right; margin-bottom: 20px;">
-					<select class="form-control" id="borrow-filter"
-						name="borrow-filter">
+					<select class="form-control" id="msg-filter"
+						name="msg-filter">
 						<option value="0">전체</option>
 						<option value="1">읽은 메세지</option>
 						<option value="2">안읽은 메세지</option>
@@ -82,15 +80,24 @@
 							<th>제목</th>
 							<th>보낸사람</th>
 							<th>받은날짜</th>
+							<th>읽은날짜</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="msg" items="${msgList}">
-							<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}">
+							<c:choose>
+								<c:when test="${empty msg.checked_date}">
+									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}" style="font-weight: bold;" >
+								</c:when>
+								<c:otherwise>									
+									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}"  style="background-color:#f5f5f5;">
+								</c:otherwise>
+							</c:choose>
 								<td>${msg.message_id}</td>
 								<td>${msg.title}</td>
 								<td>관리자</td>
 								<td>${msg.sended_date}</td>
+								<td>${empty msg.checked_date?"-":msg.checked_date}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -108,6 +115,17 @@
 		$("table tr").click(function() {
 			window.document.location = $(this).data("url");
 		});
+		
+		$("#msg-filter option:eq(${filter})").attr("selected",
+		"selected");
+		
+		$("#msg-filter").change(
+				function() {
+					$(location).attr(
+							"href",
+							"mypageMessage.nds?filter="
+									+ $("#msg-filter").val());
+				});
 	});
 </script>
 </html>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.nds.library.main.Borrowing;
+import com.nds.library.main.User;
 import com.nds.library.mypage.ReqAndDon;
 
 public interface IManagerDAO {

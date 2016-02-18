@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.nds.library.main.Borrowing;
+import com.nds.library.main.User;
 import com.nds.library.mypage.ReqAndDon;
 
 @Controller

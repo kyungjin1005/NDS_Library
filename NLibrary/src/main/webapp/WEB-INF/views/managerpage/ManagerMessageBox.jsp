@@ -114,7 +114,7 @@
 								<td>${msg.content}</td>
 								<td>${msg.name }</td>
 								<td>${msg.sended_date}</td>
-								<td>${msg.checked_date}</td>
+								<td>${empty msg.checked_date?"-":msg.checked_date}</td>
 							</tr>
 						</c:forEach>
 					</tbody>

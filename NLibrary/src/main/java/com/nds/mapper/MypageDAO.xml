@@ -5,7 +5,11 @@
 <mapper namespace="com.nds.library.mypage.IMypageDAO">
 	<select id="mypageBorrow" parameterType="java.util.Map"
 	resultType="com.nds.library.main.Borrowing">
-		select * from (borrowings join books using(book_id)) join informations using(information_id)
+		select borrowing_id, image, title, current_state, delay_count,
+		to_char(borrowing_date, 'yyyy-dd-mm') as  borrowing_date,
+		to_char(scheduled_date, 'yyyy-dd-mm') as  scheduled_date,
+		to_char(returned_date, 'yyyy-dd-mm') as  returned_date
+		from (borrowings join books using(book_id)) join informations using(information_id)
 		where user_id = #{user_id}
 		<if test="filter == 0">  <!-- 전체 -->
 			and (current_state in ('대출', '대출대기') or returned_date is not null)
@@ -24,7 +28,8 @@
 	
 	<select id="mypageReserveList" parameterType="java.util.Map"
 	resultType="com.nds.library.main.Borrowing">
-		select *
+		select reservation_id, title, image,
+		to_char(reservated_date, 'yyyy-dd-mm') as  reservated_date
 		from ((books join informations using(information_id)) join reservations using(book_id)) join users using(user_id)
    		 where current_state = '예약' and user_id = #{user_id}
 	</select>
@@ -186,7 +191,18 @@
 	
 	<select id="getMessageList" parameterType="java.util.Map"
 	resultType="com.nds.library.manager.Message">
-		SELECT * FROM messages WHERE user_id = #{user_id}
+		SELECT * FROM messages 
+		WHERE user_id = #{user_id}
+		<if test="filter == 0">  <!-- 전체 -->
+			and (is_checked = 1 or is_checked = 0)
+		</if>
+		<if test="filter == 1">  <!-- 읽은 메시지 -->
+			and is_checked = 1
+		</if>
+		<if test="filter == 2">  <!-- 안읽은 메시지 -->
+			and is_checked = 0
+		</if>
+		ORDER BY sended_date desc
 	</select>
 	
 	<select id="messageDetail" resultType="com.nds.library.manager.Message">
@@ -202,4 +218,9 @@
 		FROM users
 		WHERE user_id = #{user_id}
 	</select>
+	
+	<update id="updateMsgToCheck">
+		UPDATE messages SET is_checked = 1, checked_date = SYSDATE
+		WHERE message_id = #{msg_id}
+	</update>
 </mapper>   

@@ -448,14 +448,18 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value = "/mypageMessage.nds", method = RequestMethod.GET)
-	public String mypageMessage(Model model, HttpServletRequest request) {
+	public String mypageMessage(Model model, HttpServletRequest request, String filter) {
 		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class); 
 		Map<String, Object> map = new HashMap<String, Object>();
 		String user_id = request.getSession().getAttribute("sessionId").toString();
+
+		// filter 처리
+		map.put("filter", filter);
 		
 		map.put("user_id", user_id);
 		ArrayList<Message> msgList = dao.getMessageList(map);
 		model.addAttribute("msgList", msgList);
+		model.addAttribute("filter", filter);
 		
 		return "WEB-INF/views/mypage/MypageMessageBox.jsp";
 	}
@@ -464,8 +468,11 @@ public class MypageController {
 	public String mypageMemberMsg(Model model, int msg_id) {
 		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class);
 		
-		com.nds.library.manager.Message msg = dao.messageDetail(msg_id);
+		Message msg = dao.messageDetail(msg_id);
 		String name = dao.findUserByUserId(msg.getUser_id()).getName();
+		
+		// 메시지 읽음 처리
+		dao.updateMsgToCheck(msg_id);
 		
 		model.addAttribute("msg", msg);
 		model.addAttribute("name", name);

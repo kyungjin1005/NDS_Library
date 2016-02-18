@@ -134,7 +134,7 @@
 								<td>${empty borrowing.scheduled_date?"-":borrowing.scheduled_date}</td>
 								<td>${empty borrowing.returned_date?"-":borrowing.returned_date}</td>
 								<td>${borrowing.current_state }</td>
-								<td>${borrowing.name }</td>
+								<td>${empty borrowing.name?"-":borrowing.name}</td>
 								<td>
 									<button class="btn btn-md btn-warning btn-borrow"
 										value="${borrowing.borrowing_id }">대출</button>

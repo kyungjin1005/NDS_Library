@@ -25,4 +25,6 @@ public interface IMypageDAO {
 	public Message messageDetail(int msg_id);
 
 	public User findUserByUserId(String user_id);
+
+	public void updateMsgToCheck(int msg_id);
 }
