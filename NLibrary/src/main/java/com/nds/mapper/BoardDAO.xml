@@ -451,10 +451,10 @@
 
 	<insert id="addBoard">
 		INSERT INTO boards (board_id, user_id, category,
-		title, content, blind)
+		title, content, blind, read_count)
 		VALUES ((SELECT NVL(MAX(board_id)+1, 1) FROM boards),
 		#{user_id} ,
-		#{category} , #{title} , #{content}, 0 )
+		#{category} , #{title} , #{content}, 0, 0 )
 	</insert>
 
 	<select id="Boardcount" parameterType="java.util.HashMap"

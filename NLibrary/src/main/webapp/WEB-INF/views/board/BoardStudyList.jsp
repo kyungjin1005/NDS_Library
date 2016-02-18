@@ -187,9 +187,9 @@
 	}
 	%>
 			</div>	
-				<br/><br/><br/>
+				<br/>
 				
-				<div style="text-align: right">
+				<div style="text-align: right; margin-bottom:30px;">
 					<form action="AddBoard.nds" method="get">
 						<input type="hidden" name="type" value="study" />
 						<label><input type="submit" value="글쓰기" class="btn btn-default"/></label>
@@ -198,7 +198,7 @@
 			</div>
 
 		</div>
-	
+		
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
