@@ -123,7 +123,11 @@
 </script>
 </head>
 <body>
-
+<c:set var="totalCount" value="${totalCount}" />
+<%
+		int totalCount = (Integer) pageContext.getAttribute("totalCount");
+		int index = totalCount;
+%>
 
 	<%-- 
    
@@ -191,7 +195,7 @@
 						<c:forEach var="data" items="${data}">
 							<tr href="BookInfo.nds?isbn=${data.isbn}"
 								style="cursor: pointer;">
-								<td>${data.rownum}</td>
+								<td><%= index--%></td>
 								<td><img src="${data.image}" alt="" /><span>${data.title}</span></td>
 								<td>${data.author}</td>
 								<td>${data.publisher}</td>

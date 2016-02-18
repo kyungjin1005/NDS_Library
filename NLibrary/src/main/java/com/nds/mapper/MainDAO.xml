@@ -90,15 +90,18 @@
 
    <select id="totalCount" parameterType="java.util.Map"
       resultType="java.lang.Integer">
-      SELECT count(*) as search_count
-      FROM books join informations
-      using(information_id)
+       SELECT count(*) as 
+         FROM(
+         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
+         'yyyy-mm-dd') AS pubdate, current_state, ISBN
+         FROM books join informations using(information_id)
       <if test="filter==0">
          WHERE category_id=#{category_id} and (current_state='대출가능' or current_state='대출')
       </if>
       <if test="filter==1">
           WHERE category_id=#{category_id} and current_state='대출가능'
       </if>
+      )
    </select>
 
    <select id="totalCount2" parameterType="java.util.Map"
@@ -148,9 +151,10 @@
    </select>
 
    <select id="ownInfo" parameterType="java.util.Map" resultType="com.nds.library.main.Book">
-      select rownum, book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date
+      select distinct book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date
       from books join informations using(information_id) full outer join borrowings using(book_id)
-      where (current_state='대출가능' or current_state='대출' or current_state='예약')  and ISBN=#{isbn}
+      where (current_state='대출가능' or current_state='대출' or current_state='예약' or current_state='대출대기')  
+      and ISBN=#{isbn} and RETURNED_DATE is null 
    </select>
    
    <select id="bookReview" parameterType="java.util.Map" resultType="com.nds.library.main.Review">
@@ -204,7 +208,7 @@
    <select id="data" resultType="com.nds.library.main.Information"  parameterType="java.util.Map">
       SELECT ROWNUM, image, title, ISBN,
       author, publisher, pubdate, current_state
-      from (SELECT image, title, ISBN,
+      from (SELECT distinct image, title, ISBN,
       author, publisher, TO_CHAR(pubdate,
       'yyyy-mm-dd') AS pubdate,
       current_state
@@ -216,7 +220,7 @@
       <if test="filter==1">
          WHERE category_id=#{category_id} and current_state='대출가능'
       </if>
-      ORDER BY registered_date desc)
+     ) order by pubdate desc
    </select>
    
    <select id="findBookById" resultType="com.nds.library.main.Book">

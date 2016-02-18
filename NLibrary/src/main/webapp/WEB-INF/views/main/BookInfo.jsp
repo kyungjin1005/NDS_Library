@@ -169,6 +169,13 @@
 			</div>
 		</section>
 
+	
+		<c:set var="totalCount" value="${BorrowN}" />
+<%
+		int totalCount = (Integer) pageContext.getAttribute("totalCount");
+		int index = totalCount;
+%>
+
 		<div class="sub-title">
 			<span class="glyphicon glyphicon-list-alt icon"></span> <span>소장정보</span>
 			<span
@@ -194,7 +201,7 @@
 				<tbody>
 					<c:forEach var="own" items="${ownInfo}">
 						<tr>
-							<td>${own.rownum}</td>
+							<td><%=index-- %></td>
 							<td>${own.book_id}</td>
 							<td>${own.location}</td>
 							<td>${own.current_state}</td>
