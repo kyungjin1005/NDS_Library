@@ -8,6 +8,13 @@
 		select * from (borrowings join books using(book_id)) join informations using(information_id)
 		where user_id = #{user_id}
 	</select>
+	
+	<select id="mypageReserveList" parameterType="java.util.Map"
+	resultType="com.nds.library.mypage.Borrowing">
+		select *
+		from ((books join informations using(information_id)) join reservations using(book_id)) join users using(user_id)
+   		 where current_state = '예약' and user_id = #{user_id}
+	</select>
 
 	<select id="totalCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">

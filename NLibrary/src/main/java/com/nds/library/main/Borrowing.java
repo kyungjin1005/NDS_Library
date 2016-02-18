@@ -1,4 +1,4 @@
-package com.nds.library.mypage;
+package com.nds.library.main;
 
 public class Borrowing {
 	// borrowings table
@@ -11,8 +11,6 @@ public class Borrowing {
 	private String category_id, ISBN, title, author, publisher, image, pubdate, explanation;
 	// users
 	private String NDS_nubmer, password, name, position, department, picture, authority;
-	// reservation
-	private String reservation_id, reservated_date;
 	
 	public String getBorrowing_id() {
 		return borrowing_id;
@@ -169,18 +167,6 @@ public class Borrowing {
 	}
 	public void setAuthority(String authority) {
 		this.authority = authority;
-	}
-	public String getReservation_id() {
-		return reservation_id;
-	}
-	public void setReservation_id(String reservation_id) {
-		this.reservation_id = reservation_id;
-	}
-	public String getReservated_date() {
-		return reservated_date;
-	}
-	public void setReservated_date(String reservated_date) {
-		this.reservated_date = reservated_date;
 	}
 	
 }

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="/include/link.jsp"%>
-<title>대출현황조회</title>
+<title>예약현황조회</title>
 
 
 <style type="text/css">
@@ -79,10 +79,10 @@
 		<div class="row" style="margin-top: 80px;">
 			<%@include file="/include/mypageSideMenu.jsp"%>
 			<div class="col-md-10">
-				<h1 id="mTitle">대출현황조회</h1>
+				<h1 id="mTitle">예약현황조회</h1>
 				<hr class="title-line" />
 
-				<div id="possible-book">
+<!-- 				<div id="possible-book">
 					<span>＊현재 대출가능권수 : </span><span>2</span><span>/3권</span>
 
 					<form class="form-inline" role="form" method="post"
@@ -90,12 +90,14 @@
 						<select class="form-control" id="borrow-filter"
 							name="borrow-filter">
 							<option value="0">전체</option>
-							<option value="1">대출승인대기</option>
-							<option value="2">대출중</option>
-							<option value="3">반납완료</option>
+
+							<option value="1">예약중</option>
+							<option value="2">대출대기</option>
+							<option value="3">대출중</option>
+							<option value="4">반납완료</option>
 						</select>
 					</form>
-				</div>
+				</div> -->
 
 
 				<table class="table table-hover text-center" id="borrow-table">
@@ -103,48 +105,22 @@
 						<tr>
 							<th>번호</th>
 							<th>제목</th>
-							<th>대출일</th>
-							<th>반납예정일</th>
-							<th>반납일</th>
-							<th>대출상태</th>
-							<th>연장횟수</th>
-							<th>연장하기</th>
+							<th>예약한 날짜</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="borrowing" items="${borrowList}">
+						<c:forEach var="reservation" items="${reserveList}">
 							<tr>
-								<td>${borrowing.borrowing_id }</td>
-								<td><img src="${borrowing.image }" alt="" /><span>${borrowing.title }</span></td>
+								<td>${reservation.reservation_id }</td>
+								<td><img src="${reservation.image }" alt="" /><span>${reservation.title }</span></td>
 								<td><c:choose>
-											<c:when test="${borrowing.borrowing_date != null}">
-												${borrowing.borrowing_date}
+											<c:when test="${reservation.reservated_date != null}">
+												${reservation.reservated_date}
 											</c:when>
 											<c:otherwise>
 												-
 											</c:otherwise>
 										</c:choose></td>
-								<td><c:choose>
-											<c:when test="${borrowing.scheduled_date != null}">
-												${borrowing.scheduled_date}
-											</c:when>
-											<c:otherwise>
-												-
-											</c:otherwise>
-										</c:choose></td>
-								<td><c:choose>
-											<c:when test="${borrowing.returned_date != null}">
-												${borrowing.returned_date}
-											</c:when>
-											<c:otherwise>
-												-
-											</c:otherwise>
-										</c:choose></td>
-								<td>${borrowing.current_state}</td>
-								<td>${borrowing.delay_count}</td>
-								<td>
-									<button class="btn btn-md btn-warning disabled">연장하기</button>
-								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -155,7 +131,10 @@
 			<%@include file="/include/footer.jsp"%>
 		</footer>
 	</div>
+
 </body>
+
+
 <script>
 	$(document).ready(function() {
 

@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -237,34 +239,46 @@ public class MainController {
 		return "WEB-INF/views/main/UseInformation.jsp";
 	}
 	@RequestMapping(value = "/borrowBook.nds", method = RequestMethod.GET)
-	public String borrowBook(Model m, String book_id) {
+	public String borrowBook(Model m, String book_id, HttpServletRequest request) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
 		
-		Book book = dao.findBookById(book_id);
-		String information_id = book.getInformation_id();
-		Information info = dao.findInfoById(information_id);
-		String isbn = info.getIsbn();
+		String user_id = request.getSession().getAttribute("sessionId").toString();
 		
 		// book의 상태를 대출대기로
-		book.setCurrent_state("대출대기");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("book_id", book_id);
+		map.put("current_state", "대출대기");
+		dao.updateCurrentState(map);
 		
 		// borrowing table에 insert (날짜는 다 null로)
-		dao.borrowBook();
+		Borrowing borrowing = new Borrowing();
+		borrowing.setBook_id(book_id);
+		borrowing.setUser_id(user_id);
+		dao.borrowBook(borrowing);
 
-		return "redirect:BookInfo.nds?isbn=" + isbn;
+		return "redirect:mypageBorrow.nds";
 	}
 	
 	@RequestMapping(value = "/reserveBook.nds", method = RequestMethod.GET)
-	public String reserveBook(Model m, String book_id) {
-		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
-		String isbn;
-		
+	public String reserveBook(Model m, String book_id, HttpServletRequest request) {		
 		// 이미 예약한 사람이 있으면 예약하기 버튼이 보이지 않도록 & alert띄우기?
 		// 예약한 사람이 없다면 book상태를 예약으로 바꿈
 		// reservation table에 저장
 		
+		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
 		
+		String user_id = request.getSession().getAttribute("sessionId").toString();
+		
+		// 예약한 사람이 없다면 book상태를 예약으로 바꿈
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("book_id", book_id);
+		map.put("current_state", "예약");
+		dao.updateCurrentState(map);
+		
+		// reservation table에 insert
+		map.put("user_id", user_id);
+		dao.reserveBook(map);
 
-		return "redirect:BookInfo.nds?isbn=111";
+		return "redirect:mypageBorrow.nds";
 	}
 }
