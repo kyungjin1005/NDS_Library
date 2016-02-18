@@ -199,7 +199,7 @@ table td:HOVER {
 							<tr href="BoardDetail.nds?board_id=${item.board_id}&type=notice"
 								style="cursor: pointer;">
 								<td>${item.title}</td>
-								<td>${item.modified_date}</td>
+								<td>${item.boarded_date}</td>
 							</tr>
 						</c:forEach>
 
@@ -225,7 +225,7 @@ table td:HOVER {
 							<tr href="BoardDetail.nds?board_id=${item.board_id}&type=study"
 								style="cursor: pointer;">
 								<td>${item.title}</td>
-								<td>${item.modified_date}</td>
+								<td>${item.boarded_date}</td>
 							</tr>
 						</c:forEach>
 
