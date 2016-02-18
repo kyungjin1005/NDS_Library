@@ -1,5 +1,7 @@
 package com.nds.library.manager;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.nds.library.mypage.NaverParse;
 import com.nds.library.mypage.ReqAndDon;
 
 @Controller
@@ -565,4 +568,5 @@ public class ManagerController {
 			
 		return "redirect:ManagerBorrow.nds";
 	}
+	
 }

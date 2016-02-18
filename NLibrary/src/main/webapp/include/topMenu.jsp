@@ -54,12 +54,12 @@
 					<li class="lnb1"><a href="SearchPage.nds" class="tmOff"
 						title="자료검색"><span><strong class="el">자료검색</strong></span></a></li>
 					<sec:authorize ifAnyGranted="ROLE_ADMIN">
-						<li class="lnb5"><a href="ManagerBookRequire.nds"
+						<li class="lnb5"><a href="ManagerMember.nds"
 							class="tmOff" title="관리자페이지"><span><strong class="el">
 										관리자페이지 </strong></span></a></li>
 					</sec:authorize>
 					<sec:authorize ifAnyGranted="ROLE_USER">
-						<li class="lnb5"><a href="MypageRequire.nds" class="tmOff"
+						<li class="lnb5"><a href="mypageBorrow.nds" class="tmOff"
 							title="마이페이지"><span><strong class="el"> 마이페이지
 								</strong></span></a></li>
 					</sec:authorize>
