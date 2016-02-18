@@ -116,31 +116,10 @@
 							<tr>
 								<td>${borrowing.borrowing_id }</td>
 								<td><img src="${borrowing.image }" alt="" /><span>${borrowing.title }</span></td>
-								<td><c:choose>
-											<c:when test="${borrowing.borrowing_date != null}">
-												${borrowing.borrowing_date}
-											</c:when>
-											<c:otherwise>
-												-
-											</c:otherwise>
-										</c:choose></td>
-								<td><c:choose>
-											<c:when test="${borrowing.scheduled_date != null}">
-												${borrowing.scheduled_date}
-											</c:when>
-											<c:otherwise>
-												-
-											</c:otherwise>
-										</c:choose></td>
-								<td><c:choose>
-											<c:when test="${borrowing.returned_date != null}">
-												${borrowing.returned_date}
-											</c:when>
-											<c:otherwise>
-												-
-											</c:otherwise>
-										</c:choose></td>
-								<td>${borrowing.current_state}</td>
+								<td>${empty borrowing.borrowing_date?"-":borrowing.borrowing_date}</td>
+								<td>${empty borrowing.scheduled_date?"-":borrowing.scheduled_date}</td>
+								<td>${empty borrowing.returned_date?"-":borrowing.returned_date}</td>
+								<td>${!empty borrowing.returned_date?"반납완료":borrowing.current_state}</td>
 								<td>${borrowing.delay_count}</td>
 								<td>
 									<button class="btn btn-md btn-warning disabled">연장하기</button>
