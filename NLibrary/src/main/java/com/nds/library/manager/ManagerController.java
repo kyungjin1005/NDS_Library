@@ -57,7 +57,7 @@ public class ManagerController {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		System.out.println(filter);
+		System.out.println("filter : " + filter);
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (filter == null) {
@@ -90,7 +90,7 @@ public class ManagerController {
 		map.put("start", start + "");
 		map.put("end", end + "");
 		
-		map.put("kind", "donation");
+		map.put("kind", "require");
 		System.out.println("satrt : " + start + ", end : " + end);
 		
 		ArrayList<ReqAndDon> list = dao.requireBookList(map);
@@ -101,6 +101,7 @@ public class ManagerController {
 		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 무조건
 																		// 올림(3.1
 																		// -> 4)
+		System.out.println("totalCount: " + totalCount);
 
 		// 페이지 바 생성
 		String pagebar = "";

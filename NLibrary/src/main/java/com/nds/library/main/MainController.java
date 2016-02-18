@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.servlet.ModelAndView;
 
 import com.nds.library.board.Board;
 import com.nds.library.manager.User;
@@ -36,6 +35,8 @@ public class MainController {
 												// nds_number �뼸湲�
 		User user = dao.getSessionId(map); // nds_number �넻�빐�꽌 user_id �뼸湲�
 		session.setAttribute("sessionId", user.getUser_id());
+		session.setAttribute("sessionName", user.getName());
+		
 		System.out.println(session.getAttribute("sessionId"));
 
 		ArrayList<Board> StudyBoardList = dao.StudyBoardList();
@@ -237,7 +238,6 @@ public class MainController {
 		
 		return "WEB-INF/views/main/UseInformation.jsp";
 	}
-
 	@RequestMapping(value = "/borrowBook.nds", method = RequestMethod.GET)
 	public String borrowBook(Model m, String book_id, HttpServletRequest request) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);

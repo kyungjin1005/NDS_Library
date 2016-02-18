@@ -14,21 +14,20 @@
 </head>
 
 <c:set var="totalCount" value="${totalCount}" />
-	<c:set var="indexCount" value="${indexCount}" />	
-	<c:set var="filter" value="${filter}" />
-	<%	
-		int pageNumTemp = 1;
-		int listCount = 10;
-		int pagePerBlock = 10;
-		int totalCount = (Integer)pageContext.getAttribute("totalCount");
-		String pageNum = request.getParameter("pageNum");
-		if (pageNum != null) {
-			pageNumTemp = Integer.parseInt(pageNum);
-		}
-		int index = (Integer)pageContext.getAttribute("indexCount");
-		int filter = (Integer)pageContext.getAttribute("filter");
-		
-	%>  
+<c:set var="indexCount" value="${indexCount}" />
+<c:set var="filter" value="${filter}" />
+<%
+	int pageNumTemp = 1;
+	int listCount = 10;
+	int pagePerBlock = 10;
+	int totalCount = (Integer) pageContext.getAttribute("totalCount");
+	String pageNum = request.getParameter("pageNum");
+	if (pageNum != null) {
+		pageNumTemp = Integer.parseInt(pageNum);
+	}
+	int index = (Integer) pageContext.getAttribute("indexCount");
+	int filter = (Integer) pageContext.getAttribute("filter");
+%>
 
 
 
@@ -54,19 +53,18 @@
 				<br>
 				<div id="filter">
 					&nbsp;
-					
-					
-					<form class="form-inline" role="form" method="get" action="ManagerBoard.nds"
+
+
+					<form class="form-inline" role="form" method="get"
+						action="ManagerBoard.nds"
 						style="display: inline-block; float: right;">
-						
+
 						<select class="form-control filter" id="borrow-filter"
 							name="category">
 							<option value="0">모든카테고리</option>
 							<option value="1">공지</option>
-							<option value="2">스터디</option>	
-						</select> 
-						<select class="form-control filter" id="align-filter"
-							name="date">
+							<option value="2">스터디</option>
+						</select> <select class="form-control filter" id="align-filter" name="date">
 							<option value="0">모든날짜</option>
 							<option value="1">최근일주일</option>
 							<option value="2">최근한달</option>
@@ -74,10 +72,10 @@
 						<button class="btn btn-large btn-default">일괄선택</button>
 					</form>
 				</div>
-				<br/>
+				<br />
 				<table class="table table-hover" id="member-table">
 					<thead>
-						<tr>					
+						<tr>
 							<th>번호</th>
 							<th>제목</th>
 							<th>ID</th>
@@ -100,138 +98,147 @@
 							<td>2016-02-02</td>
 						</tr>
 						 -->
-						 <c:forEach var="board" items="${list}">
-								<tr>
-									<%-- <td>${board.board_id}</td> --%>
-									<td><%=index-- %></td>
-									<td>${board.title}</td>
-									<td>${board.name}</td>
-									<td>${board.category}</td>
-									<td>${board.boarded_date}</td>
-									<td><form class="form-inline" role="form">
-									<input type="checkbox" value="${board.board_id}" class="blind" 
-									${board.blind==1?"checked=\"checked\"":""}>
-								</form>
-								</td>
-								</tr>
+						<c:forEach var="board" items="${list}">
+							<tr>
+								<%-- <td>${board.board_id}</td> --%>
+								<td><%=index--%></td>
+								<td>${board.title}</td>
+								<td>${board.name}</td>
+								<td>${board.category}</td>
+								<td>${board.boarded_date}</td>
+								<td><form class="form-inline" role="form">
+										<input type="checkbox" value="${board.board_id}" class="blind"
+											${board.blind==1?"checked=\"checked\"":""}>
+									</form></td>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-				
-					<!-- 페이징 시작 -->
-	<div>
-	<% 
-	if(totalCount > 0) {
-		int totalNumOfPage = (totalCount % listCount == 0) ? 
-				totalCount / listCount :
-				totalCount / listCount + 1;
-		
-		int totalNumOfBlock = (totalNumOfPage % pagePerBlock == 0) ?
-				totalNumOfPage / pagePerBlock :
-				totalNumOfPage / pagePerBlock + 1;
-		
-		int currentBlock = (pageNumTemp % pagePerBlock == 0) ? 
-				pageNumTemp / pagePerBlock :
-				pageNumTemp / pagePerBlock + 1;
-		
-		int startPage = (currentBlock - 1) * pagePerBlock + 1;
-		int endPage = startPage + pagePerBlock - 1;
-		
-		if(endPage > totalNumOfPage)
-			endPage = totalNumOfPage;
-		boolean isNext = false;
-		boolean isPrev = false;
-		if(currentBlock < totalNumOfBlock)
-			isNext = true;
-		if(currentBlock > 1)
-			isPrev = true;
-		if(totalNumOfBlock == 1){
-			isNext = false;
-			isPrev = false;
-		}
-		StringBuffer sb = new StringBuffer();
-		%>
-		<br/><br/><br/><br/>
-		 <div align="center">
-         <ul class="pagination pagination-style-2">
-		<% 
-		if(pageNumTemp > 1){
-			%>
-				<li><a href="ManagerBoard.nds?pageNum=1&category=${category }&date=${date}">«</a></li>
-			<% 
-		}
-%><% 
-          
-		if (isPrev) {
-			int goPrevPage = startPage - pagePerBlock;
-			
-			%>
-				<li><a href="ManagerBoard.nds?pageNum=<%=goPrevPage%>&category=${category }&date=${date}">«</a></li>
-			<% 
-		} else {
-			
-		}
-		for (int i = startPage; i <= endPage; i++) {
-			if (i == pageNumTemp) {
-				%>
-					<li class="active"><a href="#"><%=i %></a></li>
-				<% 
-			} else {
-				%>
-					<li><a href="ManagerBoard.nds?pageNum=<%=i%>&category=${category }&date=${date}"><%=i %></a></li>
-				<% 
-			}
-		}
-		if (isNext) {
-			int goNextPage = startPage + pagePerBlock;
-			%>
-				 <li><a href="ManagerBoard.nds?pageNum=<%=goNextPage%>&category=${category }&date=${date}">»</a></li>
-			<% 
-		} else {
-			
-		}
-		if(totalNumOfPage > pageNumTemp){
-			%>
-				<li><a href="ManagerBoard.nds?pageNum=<%=totalNumOfPage%>&category=${category }&date=${date}">»</a></li>
-			<%
-		}
-	}
-	%>
-			</div>	
-				<br/><br/><br/>
-			<!-- 	
+
+				<!-- 페이징 시작 -->
+				<div>
+					<%
+						if (totalCount > 0) {
+							int totalNumOfPage = (totalCount % listCount == 0)
+									? totalCount / listCount
+									: totalCount / listCount + 1;
+
+							int totalNumOfBlock = (totalNumOfPage % pagePerBlock == 0)
+									? totalNumOfPage / pagePerBlock
+									: totalNumOfPage / pagePerBlock + 1;
+
+							int currentBlock = (pageNumTemp % pagePerBlock == 0)
+									? pageNumTemp / pagePerBlock
+									: pageNumTemp / pagePerBlock + 1;
+
+							int startPage = (currentBlock - 1) * pagePerBlock + 1;
+							int endPage = startPage + pagePerBlock - 1;
+
+							if (endPage > totalNumOfPage)
+								endPage = totalNumOfPage;
+							boolean isNext = false;
+							boolean isPrev = false;
+							if (currentBlock < totalNumOfBlock)
+								isNext = true;
+							if (currentBlock > 1)
+								isPrev = true;
+							if (totalNumOfBlock == 1) {
+								isNext = false;
+								isPrev = false;
+							}
+							StringBuffer sb = new StringBuffer();
+					%>
+					<br />
+					<br />
+					<br />
+					<br />
+					<div align="center">
+						<ul class="pagination pagination-style-2">
+							<%
+								if (pageNumTemp > 1) {
+							%>
+							<li><a
+								href="ManagerBoard.nds?pageNum=1&category=${category }&date=${date}">«</a></li>
+							<%
+								}
+							%>
+							<%
+								if (isPrev) {
+										int goPrevPage = startPage - pagePerBlock;
+							%>
+							<li><a
+								href="ManagerBoard.nds?pageNum=<%=goPrevPage%>&category=${category }&date=${date}">«</a></li>
+							<%
+								} else {
+
+									}
+									for (int i = startPage; i <= endPage; i++) {
+										if (i == pageNumTemp) {
+							%>
+							<li class="active"><a href="#"><%=i%></a></li>
+							<%
+								} else {
+							%>
+							<li><a
+								href="ManagerBoard.nds?pageNum=<%=i%>&category=${category }&date=${date}"><%=i%></a></li>
+							<%
+								}
+									}
+									if (isNext) {
+										int goNextPage = startPage + pagePerBlock;
+							%>
+							<li><a
+								href="ManagerBoard.nds?pageNum=<%=goNextPage%>&category=${category }&date=${date}">»</a></li>
+							<%
+								} else {
+
+									}
+									if (totalNumOfPage > pageNumTemp) {
+							%>
+							<li><a
+								href="ManagerBoard.nds?pageNum=<%=totalNumOfPage%>&category=${category }&date=${date}">»</a></li>
+							<%
+								}
+								}
+							%>
+						
+					</div>
+					<br />
+					<br />
+					<br />
+					<!-- 	
 				<div style="text-align: right">
 					<form action="AddBoard.nds" method="get">
 						<input type="hidden" name="type" value="notice" />
 						<label><input type="submit" value="글쓰기"  class="btn btn-default"/></label>
 					</form>
 				</div> -->
-			</div>
-
-		</div>
-	<form action="AddBoard.nds" method="get" align="right">
-						<input type="hidden" name="type" value="notice" />
-						<label><input type="submit" value="새글 작성"  class="btn btn-md btn-warning btn-msg"/></label>
-					</form>
-		<footer>
-			<%@include file="/include/footer.jsp"%>
-		</footer>
-
-	</div>
-</body>
-				
-				<div id="member-footer">
-					<hr />
-					
-					<!-- <button class="btn btn-md btn-warning btn-msg">새글 작성</button> -->
 				</div>
-			</div>
-		</div>
-		<footer>
-			<%@include file="/include/footer.jsp"%>
-		</footer>
 
-	</div>
+			</div>
+			<form action="AddBoard.nds" method="get" align="right">
+				<input type="hidden" name="type" value="notice" /> <label><input
+					type="submit" value="새글 작성" class="btn btn-md btn-warning btn-msg" /></label>
+			</form>
+			<footer>
+				<%@include file="/include/footer.jsp"%>
+			</footer>
+
+		</div>
+</body>
+
+<div id="member-footer">
+	<hr />
+
+	<!-- <button class="btn btn-md btn-warning btn-msg">새글 작성</button> -->
+</div>
+</div>
+</div>
+<footer>
+	<%@include file="/include/footer.jsp"%>
+</footer>
+
+</div>
 </body>
 <script>
 	$(document).ready(
@@ -271,9 +278,11 @@
 							}
 
 						});
-					
-				$("#borrow-filter").find("option[value='${filter}']").attr("selected" , true);
-				$("#align-filter").find("option[value='${filter}']").attr("selected" , true);
+
+				$("#borrow-filter").find("option[value='${filter}']").attr(
+						"selected", true);
+				$("#align-filter").find("option[value='${filter}']").attr(
+						"selected", true);
 			});
 </script>
 </html>

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
@@ -187,7 +188,7 @@ public class MypageController {
 	}
 
 	@RequestMapping(value = "/MypageRequireAdd.nds", method = RequestMethod.POST)
-	public String mypageRequireAdd(Model model, ReqAndDon book) {
+	public String mypageRequireAdd(Model model, ReqAndDon book, HttpServletRequest request) {
 
 		System.out.println(book.getAuthor());
 		System.out.println(book.getImage());
@@ -197,6 +198,9 @@ public class MypageController {
 		System.out.println(book.getPublisher());
 		System.out.println(book.getUser_comment());
 		System.out.println(book.getExplanation());
+		
+		
+		book.setUser_id(request.getSession().getAttribute("sessionId").toString());
 
 		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class);
 		dao.requireBookAdd(book);
@@ -399,7 +403,7 @@ public class MypageController {
 	}
 
 	@RequestMapping(value = "/MypageDonationAdd.nds", method = RequestMethod.POST)
-	public String mypageDonationAdd(Model model, ReqAndDon book) {
+	public String mypageDonationAdd(Model model, ReqAndDon book, HttpServletRequest request) {
 
 		// System.out.println(book.getAuthor());
 		// System.out.println(book.getImage());
@@ -410,6 +414,8 @@ public class MypageController {
 		// System.out.println(book.getUser_comment());
 		// System.out.println(book.getExplanation());
 
+		book.setUser_id(request.getSession().getAttribute("sessionId").toString());
+		
 		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class);
 		dao.donationBookAdd(book);
 
