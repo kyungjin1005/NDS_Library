@@ -51,6 +51,18 @@
 	margin-top: 5px;
 	margin-bottom: 40px;
 }
+
+#study_title, #study_content{
+	font-size: 15px;
+	line-height: 2em;
+	padding: 20px;
+	
+}
+
+#study_content{
+	
+}
+
 </style>
 
 
@@ -74,7 +86,7 @@
 				<hr class="title-line" />
 
 				<!-- 타이틀 -->
-				<div class="title">
+				<div class="title" id="study_title">
 					<div style="width: 50%; float: left">
 						<p>${board.title}</p>
 					</div>
@@ -84,7 +96,7 @@
 				</div>
 
 				<!-- 내용	 -->
-				<div class="content" style="height: 400px">
+				<div class="content" style="height: 400px" id="study_content">
 					<p>${board.content}</p>
 
 				</div>
