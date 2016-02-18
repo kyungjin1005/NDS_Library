@@ -131,27 +131,36 @@
 					<thead>
 						<tr>
 							<th>번호</th>
+							<td></td>
 							<th>제목</th>
 							<th>저자</th>
 							<th>출판사</th>
-							<th>BOOK ID</th>
-							<th>입고일</th>
-							<th>대출상태</th>
+<!-- 							<th>BOOK ISBN</th>
+							<th>입고일</th> -->
+							<th>상태</th>
 							<th>대출회원</th>
 							<th>파손 및 분실</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="borrowing" items="${borrowingList}">
+						<c:forEach var="book" items="${bookList}">
 							<tr>
-								<td>${borrowing.borrowing_id }</td>
-								<td><img src="pictures/booksample01.jpg" alt="" /><span>이것이자바다</span></td>
-								<td>홍길동</td>
-								<td>ㅇㅇ출판</td>
-								<td>32434353</td>
-								<td>2016-02-02</td>
-								<td>대출중</td>
-								<td>김아무개</td>
+								<td>${book.book_id }</td>
+								<td><img src="${book.image }" alt="" /></td>
+								<td>${book.title }</td>
+								<td>${book.author }</td>
+								<td>${book.publisher }</td>
+<%-- 								<td>${book.ISBN }</td>
+								<td>${book.registered_date }</td> --%>
+								<td>${book.current_state }</td>
+								<td><c:choose>
+										<c:when test="${book.name != null}">
+											${book.name}
+										</c:when>
+										<c:otherwise>
+											-
+										</c:otherwise>
+									</c:choose></td>
 								<td>
 									<button class="btn btn-md btn-danger btn-register">파손
 										및 분실 등록</button>

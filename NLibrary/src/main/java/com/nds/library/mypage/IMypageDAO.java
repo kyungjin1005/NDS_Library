@@ -3,7 +3,9 @@ package com.nds.library.mypage;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.nds.library.mypage.User;
+import com.nds.library.main.Borrowing;
+import com.nds.library.main.User;
+import com.nds.library.manager.Message;
 
 public interface IMypageDAO {
 	public ArrayList<Borrowing> mypageBorrow(Map<String, Object> map);

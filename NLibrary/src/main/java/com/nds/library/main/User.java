@@ -1,4 +1,4 @@
-package com.nds.library.mypage;
+package com.nds.library.main;
 
 public class User {
 

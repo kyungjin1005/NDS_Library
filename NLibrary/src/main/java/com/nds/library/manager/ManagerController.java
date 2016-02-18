@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.nds.library.main.Borrowing;
 import com.nds.library.mypage.ReqAndDon;
 
 @Controller
@@ -564,5 +565,23 @@ public class ManagerController {
 		dao.updateCurrentState(map);
 			
 		return "redirect:ManagerBorrow.nds";
+	}
+	
+	@RequestMapping(value = "/ManagerBookAll.nds", method = RequestMethod.GET)
+	public String managerBookAll(Model model, String filter) {
+
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//
+//		if (filter == null) {
+//			filter = "0";
+//		}
+//		map.put("filter", filter);
+//		model.addAttribute("filter", filter);
+
+		// borrowing 상태가 있는 애면 찾아서 user name을 가져와
+		model.addAttribute("bookList", dao.bookList());
+		
+		return "WEB-INF/views/managerpage/ManagerBookAll.jsp";
 	}
 }

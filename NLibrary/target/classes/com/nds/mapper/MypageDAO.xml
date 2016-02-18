@@ -4,13 +4,26 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.mypage.IMypageDAO">
 	<select id="mypageBorrow" parameterType="java.util.Map"
-	resultType="com.nds.library.mypage.Borrowing">
+	resultType="com.nds.library.main.Borrowing">
 		select * from (borrowings join books using(book_id)) join informations using(information_id)
 		where user_id = #{user_id}
+		<if test="filter == 0">  <!-- 전체 -->
+			and (current_state in ('대출', '대출대기') or returned_date is not null)
+		</if>
+		<if test="filter == 1">  <!-- 대출승인대기 -->
+			and current_state = '대출대기'
+		</if>
+		<if test="filter == 2">  <!-- 대출중 -->
+			and current_state = '대출'
+		</if>
+		<if test="filter == 3">  <!-- 반납완료 -->
+			and returned_date is not null
+		</if>
+		order by book_id
 	</select>
 	
 	<select id="mypageReserveList" parameterType="java.util.Map"
-	resultType="com.nds.library.mypage.Borrowing">
+	resultType="com.nds.library.main.Borrowing">
 		select *
 		from ((books join informations using(information_id)) join reservations using(book_id)) join users using(user_id)
    		 where current_state = '예약' and user_id = #{user_id}
@@ -172,11 +185,11 @@
 	</insert>
 	
 	<select id="getMessageList" parameterType="java.util.Map"
-	resultType="com.nds.library.mypage.Message">
+	resultType="com.nds.library.manager.Message">
 		SELECT * FROM messages WHERE user_id = #{user_id}
 	</select>
 	
-	<select id="messageDetail" resultType="com.nds.library.mypage.Message">
+	<select id="messageDetail" resultType="com.nds.library.manager.Message">
 		SELECT message_id,
 		user_id, is_checked, title, content, sended_date, checked_date
 		FROM
@@ -184,7 +197,7 @@
 		WHERE message_id = #{msg_id}
 	</select>
 	
-	<select id="findUserByUserId" resultType="com.nds.library.mypage.User">
+	<select id="findUserByUserId" resultType="com.nds.library.main.User">
 		SELECT *
 		FROM users
 		WHERE user_id = #{user_id}

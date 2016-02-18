@@ -15,7 +15,7 @@
 			<div id="collapse1" class="panel-collapse collapse">
 				<ul class="list-group"
 					style="margin: 0px; padding: 0px; text-align: center;">
-					<li class="list-group-item"><a href="">- 모든도서</a></li>
+					<li class="list-group-item"><a href="ManagerBookAll.nds">- 모든도서</a></li>
 					<li class="list-group-item"><a href="ManagerBookRequire.nds">- 신청도서</a></li>
 					<li class="list-group-item"><a href="ManagerBookDonation.nds">- 기증도서</a></li>
 				</ul>

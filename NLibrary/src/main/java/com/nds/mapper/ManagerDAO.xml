@@ -233,21 +233,21 @@
 		req_don_id = #{req_don_id}
 	</update>
 
-	<select id="memberList" resultType="com.nds.library.manager.User">
+	<select id="memberList" resultType="com.nds.library.main.User">
 		SELECT user_id, nds_number,
 		name, position, department, picture, authority,
 		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date from users
 		order by user_id
 	</select>
 
-	<select id="getUser" resultType="com.nds.library.manager.User">
+	<select id="getUser" resultType="com.nds.library.main.User">
 		SELECT user_id, nds_number,
 		name, position, department, picture, authority,
 		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date from users
 		where user_id=#{user_id}
 	</select>
 
-	<select id="userBorrowList" resultType="com.nds.library.manager.User">
+	<select id="userBorrowList" resultType="com.nds.library.main.User">
 		select title, publisher,
 		current_state,
 		pubdate, author, image,
@@ -357,13 +357,13 @@
 		#{explanation})
 	</insert>
 
-	<select id="findUserByUserId" resultType="com.nds.library.manager.User">
+	<select id="findUserByUserId" resultType="com.nds.library.main.User">
 		SELECT name
 		FROM users
 		WHERE user_id = #{user_id}
 	</select>
 
-	<select id="managerBorrow" resultType="com.nds.library.manager.Borrowing">
+	<select id="managerBorrow" resultType="com.nds.library.main.Borrowing">
 		select *
 		from (((books join informations using(information_id)) left outer join
 		borrowings using(book_id))) join users using(user_id)
@@ -394,7 +394,7 @@
 		where book_id = #{book_id}
 	</update>
 	
-	<select id="getBorrowingById" resultType="com.nds.library.manager.Borrowing">
+	<select id="getBorrowingById" resultType="com.nds.library.main.Borrowing">
 		select *
 		from borrowings
 		where borrowing_id = #{borrowing_id}
@@ -405,4 +405,10 @@
 		set returned_date = SYSDATE
 		where borrowing_id = #{borrowing_id}
 	</update>
+	
+	<select id="bookList" parameterType="java.util.Map"
+		resultType="com.nds.library.main.Borrowing">
+		SELECT *
+		FROM ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join users using(user_id)
+	</select>
 </mapper>   

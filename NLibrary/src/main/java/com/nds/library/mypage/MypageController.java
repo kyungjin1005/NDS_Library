@@ -8,19 +8,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.nds.library.main.Borrowing;
 import com.nds.library.mypage.IMypageDAO;
-import com.nds.library.mypage.Message;
+import com.nds.library.manager.Message;
 
 @Controller
 public class MypageController {
@@ -465,7 +464,7 @@ public class MypageController {
 	public String mypageMemberMsg(Model model, int msg_id) {
 		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class);
 		
-		Message msg = dao.messageDetail(msg_id);
+		com.nds.library.manager.Message msg = dao.messageDetail(msg_id);
 		String name = dao.findUserByUserId(msg.getUser_id()).getName();
 		
 		model.addAttribute("msg", msg);

@@ -3,6 +3,7 @@ package com.nds.library.manager;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.nds.library.main.Borrowing;
 import com.nds.library.mypage.ReqAndDon;
 
 public interface IManagerDAO {
@@ -43,4 +44,5 @@ public interface IManagerDAO {
 	public ArrayList<ReqAndDon> bList(Map<String, Object> map);
 	public int totalCount(Map<String, Object> map);
 	public void updateReturnedDate(String borrowing_id);
+	public ArrayList<Borrowing> bookList();
 }

@@ -158,7 +158,16 @@
 </body>
 <script>
 	$(document).ready(function() {
+		$("#borrow-filter option:eq(${filter})").attr("selected",
+		"selected");
 
+	$("#borrow-filter").change(
+			function() {
+				$(location).attr(
+						"href",
+						"ManagerBorrow.nds?filter="
+								+ $("#borrow-filter").val());
+			});
 	});
 </script>
 </html>
