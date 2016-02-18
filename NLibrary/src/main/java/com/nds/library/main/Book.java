@@ -1,5 +1,7 @@
 package com.nds.library.main;
 
+import java.util.Map;
+
 public class Book {
 	private String book_id, information_id;
 	int read_count, rownum;

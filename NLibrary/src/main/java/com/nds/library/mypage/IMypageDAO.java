@@ -15,4 +15,6 @@ public interface IMypageDAO {
 	public int donationBookAdd(ReqAndDon book);
 	
 	public int totalCount(Map<String, Object> map);
+
+	public ArrayList<Borrowing> mypageReserveList(Map<String, Object> map);
 }
