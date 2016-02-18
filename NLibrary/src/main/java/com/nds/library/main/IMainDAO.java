@@ -50,4 +50,6 @@ public interface IMainDAO {
 
 	public void updateCurrentState(Map<String, Object> map);
 
+	public void reserveBook(Map<String, Object> map);
+
 }
