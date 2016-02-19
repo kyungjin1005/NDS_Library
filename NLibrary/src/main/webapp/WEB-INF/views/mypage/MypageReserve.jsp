@@ -104,7 +104,7 @@
 					<thead>
 						<tr>
 							<th>번호</th>
-							<td></td>
+							<th></th>
 							<th>제목</th>
 							<th>예약날짜</th>
 						</tr>

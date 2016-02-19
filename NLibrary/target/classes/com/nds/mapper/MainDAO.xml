@@ -151,10 +151,10 @@
    </select>
 
    <select id="ownInfo" parameterType="java.util.Map" resultType="com.nds.library.main.Book">
-      select distinct book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date
-      from books join informations using(information_id) full outer join borrowings using(book_id)
-      where (current_state='대출가능' or current_state='대출' or current_state='예약' or current_state='대출대기')  
-      and ISBN=#{isbn} and RETURNED_DATE is null 
+      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id
+      from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)
+      where (current_state='대출가능' or current_state='대출')
+      and ISBN=#{isbn}
    </select>
    
    <select id="bookReview" parameterType="java.util.Map" resultType="com.nds.library.main.Review">
@@ -172,13 +172,6 @@
 
    <select id="result" parameterType="java.util.Map"
       resultType="com.nds.library.main.Information">
-      <!--        SELECT ROWNUM, image, title, author, publisher, pubdate, current_state, ISBN
-         FROM(
-         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
-         'yyyy-mm-dd') AS pubdate, current_state, ISBN
-         FROM books join informations using(information_id) -->
-
-	
  		SELECT *
          FROM(
          select rownum rn, aa.*
@@ -187,10 +180,7 @@
          'yyyy-mm-dd') AS pubdate, current_state, ISBN
          FROM books join informations using(information_id))aa)
          where rn between #{startNumber} and #{startNumber}+9
-
-
-
-
+         
       <if test="filter==1">
          <if test="key==1">
             and title like '%' || #{searchWord} || '%' and current_state='대출가능'
@@ -218,9 +208,7 @@
    </select>
    
 
-   <select id="data" resultType="com.nds.library.main.Information"  parameterType="java.util.Map">
-      <!-- SELECT ROWNUM, image, title, ISBN, author, publisher, TO_CHAR(pubdate, 'yyyy-mm-dd') AS pubdate, current_state, book_id
-      FROM books join informations using(information_id) -->
+   <select id="data" resultType="com.nds.library.main.Borrowing"  parameterType="java.util.Map">
       SELECT ROWNUM, image, title, ISBN, author, publisher, TO_CHAR(pubdate, 'yyyy-mm-dd') AS pubdate, current_state, book_id
        FROM(
          select rownum rn, aa.*
@@ -259,8 +247,15 @@
 		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null and returned_date is null
 	</select>
 	
-	<select id="isBorrowing" resultType="java.lang.Integer">
+ 	<select id="isReserving" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select count(*)
-		from borrowings
+		from reservations
+		where book_id = #{book_id}
+	</select>
+	
+	<select id = "getIsbn" resultType="java.lang.String" parameterType="java.util.Map">
+		SELECT isbn
+		FROM books join informations using(information_id)
+		WHERE book_id = #{book_id}
 	</select>
 </mapper>   

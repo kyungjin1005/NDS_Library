@@ -469,9 +469,13 @@
 		where borrowing_id = #{borrowing_id}
 	</update>
 
-	<!-- <select id="bookList" parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing"> 
-		SELECT * FROM ((books join informations using(information_id)) left outer 
-		join borrowings using(book_id)) left outer join users using(user_id) </select> -->
+<!-- 	<select id="bookList" parameterType="java.util.Map"
+		resultType="com.nds.library.main.Borrowing">
+		SELECT *
+		FROM ((books join informations
+		using(information_id)) left outer join borrowings using(book_id)) left
+		outer join users using(user_id)
+	</select> -->
 	<select id="bookList" parameterType="java.util.Map"
 		resultType="com.nds.library.main.Borrowing">
 		SELECT *
@@ -490,8 +494,6 @@
 		SELECT count(*) FROM ((books join informations using(information_id)) left outer 
 		join borrowings using(book_id)) left outer join users using(user_id)
 	</select>
-
-
 
 	<select id="getDamAndLosBook" resultType="com.nds.library.main.Borrowing">
 		SELECT book_id, title,

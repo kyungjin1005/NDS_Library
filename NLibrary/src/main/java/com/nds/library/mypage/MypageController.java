@@ -487,4 +487,13 @@ public class MypageController {
 		return "WEB-INF/views/mypage/MypageMessage.jsp";
 	}
 	
+	@RequestMapping(value = "/delayBorrowing.nds", method = RequestMethod.GET)
+	public String delayBorrowing(Model model, String borrowing_id, HttpServletRequest request) {
+		IMypageDAO dao = sqlSession.getMapper(IMypageDAO.class);
+		Map<Object, String> map = new HashMap<Object, String>();		
+		map.put("borrowing_id", borrowing_id);
+		dao.delayBorrowing(map);
+		
+		return "redirect:mypageBorrow.nds";
+	}
 }

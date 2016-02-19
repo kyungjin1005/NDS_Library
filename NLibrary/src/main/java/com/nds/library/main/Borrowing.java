@@ -13,6 +13,8 @@ public class Borrowing {
 	private String NDS_nubmer, password, name, position, department, picture, authority;
 	// reservation
 	private String reservation_id, reservated_date;
+
+	private int rownum;
 	
 	public String getBorrowing_id() {
 		return borrowing_id;
@@ -181,6 +183,12 @@ public class Borrowing {
 	}
 	public void setReservated_date(String reservated_date) {
 		this.reservated_date = reservated_date;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 	
 }

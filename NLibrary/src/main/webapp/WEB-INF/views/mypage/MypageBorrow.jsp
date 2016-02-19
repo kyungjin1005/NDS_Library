@@ -102,6 +102,7 @@
 					<thead>
 						<tr>
 							<th>번호</th>
+							<th></th>
 							<th>제목</th>
 							<th>대출일</th>
 							<th>반납예정일</th>
@@ -123,7 +124,8 @@
 								<td>${!empty borrowing.returned_date?"반납완료":borrowing.current_state}</td>
 								<td>${borrowing.delay_count}</td>
 								<td>
-									<button class="btn btn-md btn-warning disabled">연장하기</button>
+									<button class="btn btn-md btn-warning btn-delay"  value="${borrowing.borrowing_id }"
+										${borrowing.delay_count==1 || borrowing.borrowing_date == null?"disabled=\"disabled\"":""}>연장하기</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -141,13 +143,17 @@
 		$("#borrow-filter option:eq(${filter})").attr("selected",
 		"selected");
 
-	$("#borrow-filter").change(
-			function() {
-				$(location).attr(
-						"href",
-						"mypageBorrow.nds?filter="
-								+ $("#borrow-filter").val());
-			});
+		$("#borrow-filter").change(
+				function() {
+					$(location).attr(
+							"href",
+							"mypageBorrow.nds?filter="
+									+ $("#borrow-filter").val());
+				});
+		
+		$(".btn-delay").click(function() {
+			$(location).attr("href", "delayBorrowing.nds?borrowing_id=" + $(this).val());
+		});
 	});
 </script>
 </html>

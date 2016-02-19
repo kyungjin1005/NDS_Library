@@ -80,20 +80,9 @@ public class MainController {
 		return "WEB-INF/views/main/Main.jsp";
 	}
 
+	// 3踰� 寃��깋寃곌낵 (SearchResult)
 	@RequestMapping(value = "/SearchResult.nds", method = RequestMethod.GET)
-	public String searchResult(Model model, String key, String searchWord, String filter, String pageNum) {
-
-		int pageNumTemp = 1;
-		// 한 페이지에 10개의 글이 보임
-		int listCount = 10;
-		// 뷰에서 글번호를 받아옴
-		String pagenum = pageNum;
-		System.out.println("pegeNum : " + pagenum);
-		if (pageNum != null) {
-			pageNumTemp = Integer.parseInt(pagenum);
-		}
-		// 시작하는 글번호를 계산함
-		int startNumber = listCount * (pageNumTemp - 1) + 1;
+	public String searchResult(Model model, String key, String searchWord, String filter) {
 
 		if (filter == null)
 			filter = "0";
@@ -104,20 +93,18 @@ public class MainController {
 		map.put("key", key);
 		map.put("searchWord", searchWord);
 		map.put("filter", filter);
-		map.put("startNumber", startNumber);
 
 		ArrayList<Information> Result = dao.result(map);
 		model.addAttribute("totalCount", dao.totalCount2(map));
 		model.addAttribute("result", Result);
 		model.addAttribute("select", key);
 		model.addAttribute("query", searchWord);
-		model.addAttribute("filter", filter); 
-		model.addAttribute("indexCount", dao.totalCount2(map)-(pageNumTemp-1)*10);
-		
+		model.addAttribute("filter", filter); // ��異쒖쨷 �븘�꽣
 
 		return "WEB-INF/views/main/SearchResult.jsp";
 	}
 
+	// 4踰� �룄�꽌 �긽�꽭�젙蹂�(BookInfo) - (5)由щ럭 �옉�꽦 �룷�븿
 	@RequestMapping(value = "/BookInfo.nds", method = RequestMethod.GET)
 	public String bookInfo(Model model, String isbn, HttpServletRequest request, String book_id) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
@@ -147,15 +134,15 @@ public class MainController {
 			Review info = bookReview.get(i);
 			String star = info.getStar();
 			if (star.equals("1")) {
-				info.setStar("☆☆☆☆★");
+				info.setStar("�쁿�쁿�쁿�쁿�쁾");
 			} else if (star.equals("2")) {
-				info.setStar("☆☆☆★★");
+				info.setStar("�쁿�쁿�쁿�쁾�쁾");
 			} else if (star.equals("3")) {
-				info.setStar("☆☆★★★");
+				info.setStar("�쁿�쁿�쁾�쁾�쁾");
 			} else if (star.equals("4")) {
-				info.setStar("☆★★★★");
+				info.setStar("�쁿�쁾�쁾�쁾�쁾");
 			} else if (star.equals("5")) {
-				info.setStar("★★★★★");
+				info.setStar("�쁾�쁾�쁾�쁾�쁾");
 			}
 		}
 		model.addAttribute("bookReview", bookReview);
@@ -164,8 +151,6 @@ public class MainController {
 
 		String user_id = request.getSession().getAttribute("sessionId").toString();
 		model.addAttribute("borrowing_count", dao.getBorrowingCount(user_id));
-
-		model.addAttribute("is_borrowing", dao.isBorrowing(book_id));
 
 		return "WEB-INF/views/main/BookInfo.jsp";
 	}
@@ -193,29 +178,9 @@ public class MainController {
 		return url;
 	}
 
-	// 자료검색 (SearchPage)
+	// 6踰� �옄猷뚭��깋 (SearchPage)
 	@RequestMapping(value = "/SearchPage.nds", method = RequestMethod.GET)
-	public String SearchPage(Model model, String category_id, String filter, String pageNum) {
-		
-		int pageNumTemp = 1;
-		// 한 페이지에 10개의 글이 보임
-		int listCount = 10;
-		// 뷰에서 글번호를 받아옴
-		String pagenum = pageNum;
-		System.out.println("pegeNum : " + pagenum);
-		if (pageNum != null) {
-			pageNumTemp = Integer.parseInt(pagenum);
-		}
-		// 시작하는 글번호를 계산함
-		int startNumber = listCount * (pageNumTemp - 1) + 1;
-
-		System.out.println("startNumber : " + startNumber);
-		
-		
-		if (filter == null)
-			filter = "0";
-		
-		
+	public String SearchPage(Model model, String category_id, String filter) {
 		if (filter == null)
 			filter = "0";
 		if (category_id == null)
@@ -226,32 +191,30 @@ public class MainController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("category_id", category_id);
 		map.put("filter", filter);
-		map.put("startNumber", startNumber);
-	
-		ArrayList<Information> data = dao.data(map);
+
+		ArrayList<Borrowing> data = dao.data(map);
 
 		String category = "";
 		if (category_id.equals("1")) {
 			category = "JAVA";
 		} else if (category_id.equals("2")) {
-			category = "웹프로그래밍";
+			category = "�쎒�봽濡쒓렇�옒諛�";
 		} else if (category_id.equals("3")) {
-			category = "데이터베이스";
+			category = "�뜲�씠�꽣踰좎씠�뒪";
 		} else if (category_id.equals("4")) {
-			category = "프레임워크";
+			category = "�봽�젅�엫�썙�겕";
 		} else if (category_id.equals("5")) {
-			category = "클라우드";
+			category = "�겢�씪�슦�뱶";
 		} else if (category_id.equals("6")) {
-			category = "기타";
+			category = "湲고�";
 		}
 
 		model.addAttribute("category", category);
+
 		model.addAttribute("totalCount", dao.totalCount(map));
+		model.addAttribute("filter", filter); // ��異� 以� �븘�꽣
 		model.addAttribute("category_id", category_id);
 		model.addAttribute("data", data);
-		model.addAttribute("indexCount", dao.totalCount(map)-(pageNumTemp-1)*10);
-		model.addAttribute("pageNum", pagenum);
-		
 
 		return "WEB-INF/views/main/SearchPage.jsp";
 	}
@@ -319,25 +282,23 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/reserveBook.nds", method = RequestMethod.GET)
-	public String reserveBook(Model m, String book_id, HttpServletRequest request) {
-		// 이미 예약한 사람이 있으면 예약하기 버튼이 보이지 않도록 & alert띄우기?
-		// 예약한 사람이 없다면 book상태를 예약으로 바꿈
-		// reservation table에 저장
-
+	public String reserveBook(Model model, String book_id, HttpServletRequest request) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
-
 		String user_id = request.getSession().getAttribute("sessionId").toString();
-
-		// 예약한 사람이 없다면 book상태를 예약으로 바꿈
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("book_id", book_id);
-		map.put("current_state", "예약");
-		dao.updateCurrentState(map);
-
-		// reservation table에 insert
+		
+		// 예약 table에 없는 책이라면 reservation table에 insert
+		
 		map.put("user_id", user_id);
 		dao.reserveBook(map);
 
+		System.out.println("책이 예약되었습니다.");
+
 		return "redirect:mypageReserve.nds";
+
+		// 관리자가 예약되서 온 책을 대출상태로 바꾸어줄 때 예약 table에서 delete해야함
+		// 예약 도서 관리 페이지 따로 만들어야함
+
 	}
 }

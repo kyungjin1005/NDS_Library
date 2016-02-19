@@ -137,9 +137,11 @@
 								<td>${empty borrowing.name?"-":borrowing.name}</td>
 								<td>
 									<button class="btn btn-md btn-warning btn-borrow"
-										value="${borrowing.borrowing_id }">대출</button>
+										value="${borrowing.borrowing_id }"
+										 ${borrowing.borrowing_date != null?"disabled=\"disabled\"":""}>대출</button>
 									<button class="btn btn-md btn-danger btn-return"
-										value="${borrowing.borrowing_id }">반납</button>
+										value="${borrowing.borrowing_id }"
+										${borrowing.borrowing_date == null?"disabled=\"disabled\"":""}>반납</button>
 								</td>
 							</tr>
 						</c:forEach>
