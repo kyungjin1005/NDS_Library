@@ -130,8 +130,8 @@
 				<hr class="title-line" />
 				<form class="form-inline" role="form" method="post"
 					action="ManagerMemberMsg.nds">
-					<div id="member-header">
-						Count <span class="badge">${size}</span>
+					<div id="member-header" align="right">
+						Count <span class="badge">${totalCount}</span>
 						<button type="button" class="btn btn-sm btn-default" id="btn-all" style="margin:0px">일괄선택</button>
 						<button type="button" class="btn btn-sm btn-default" id="btn-clear" style="margin:0px">선택해제</button>
 
