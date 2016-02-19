@@ -196,6 +196,7 @@
 						<th>도서상태</th>
 						<th>반납예정일</th>
 						<th>예약/대여</th>
+						<th>isReserivng</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -207,11 +208,11 @@
 							<td>${own.current_state}</td>
 							<td>${own.scheduled_date}</td>
 							<td>
-								<button class="btn btn-md btn-default btn-reserve"
-									onclick="reserve()" value="${own.book_id }">예약</button>
+								<button class="btn btn-md btn-default btn-reserve"  value="${own.book_id }" data-reservation_id="${own.reservation_id }">예약</button>
 								<button class="btn btn-md btn-warning btn-borrow"
 									onclick="borrow()" value = "${own.book_id }">대여</button>
 							</td>
+							<td>${empty own.reservation_id?"-":own.reservation_id }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -286,6 +287,20 @@
 
 <script>
    $(document).ready(function() {
+	   $(".btn-reserve").on("click", function() {
+		   //alert($(this).val());
+		   //alert($(this).data("reservation_id"));
+		   var book_id = $(this).val();
+		   var reservation_id = $(this).data("reservation_id");
+		   
+		   if(reservation_id == 1) {
+			   alert("이미 예약되어있는 책입니다.");
+		   }else {
+			   //alert("예약 가능한 책");
+			   $(location).attr("href", "reserveBook.nds?book_id=" + book_id);
+			   alert("책이 예약되었습니다.");
+		   }
+	   });
    });
 
    function borrow() {
@@ -296,11 +311,6 @@
 		   alert("대출이 신청되었습니다. 관리자의 승락을 기다리세요.");
 		   $(location).attr("href", "borrowBook.nds?book_id=" + $(".btn-borrow").val());
 	   }
-   }
-
-   function reserve() {
-	   alert("책이 예약되었습니다.");
-	  $(location).attr("href", "reserveBook.nds?book_id=" + $(".btn-reserve").val());
    }
 </script>
 </html>

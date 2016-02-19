@@ -151,10 +151,10 @@
    </select>
 
    <select id="ownInfo" parameterType="java.util.Map" resultType="com.nds.library.main.Book">
-      select distinct book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date
-      from books join informations using(information_id) full outer join borrowings using(book_id)
-      where (current_state='대출가능' or current_state='대출' or current_state='예약' or current_state='대출대기')  
-      and ISBN=#{isbn} and RETURNED_DATE is null 
+      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id
+      from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)
+      where (current_state='대출가능' or current_state='대출')
+      and ISBN=#{isbn}
    </select>
    
    <select id="bookReview" parameterType="java.util.Map" resultType="com.nds.library.main.Review">
@@ -238,8 +238,20 @@
 		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null and returned_date is null
 	</select>
 	
-	<select id="isBorrowing" resultType="java.lang.Integer">
+<!-- 	<select id="isBorrowing" resultType="java.lang.Integer">
 		select count(*)
 		from borrowings
+	</select> -->
+	
+ 	<select id="isReserving" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(*)
+		from reservations
+		where book_id = #{book_id}
+	</select>
+	
+	<select id = "getIsbn" resultType="java.lang.String" parameterType="java.util.Map">
+		SELECT isbn
+		FROM books join informations using(information_id)
+		WHERE book_id = #{book_id}
 	</select>
 </mapper>   

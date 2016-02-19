@@ -1,6 +1,5 @@
 package com.nds.library.main;
 
-import java.util.Map;
 
 public class Book {
 	private String book_id, information_id;
@@ -8,6 +7,8 @@ public class Book {
 	private String current_state, registered_date, location;
 
 	private String sbn, title, publisher, author, image, scheduled_date;
+	
+	private String reservation_id;
 
 	public int getRownum() {
 		return rownum;
@@ -111,6 +112,14 @@ public class Book {
 
 	public void setInformation_id(String information_id) {
 		this.information_id = information_id;
+	}
+
+	public String getReservation_id() {
+		return reservation_id;
+	}
+
+	public void setReservation_id(String reservation_id) {
+		this.reservation_id = reservation_id;
 	}
 
 }
