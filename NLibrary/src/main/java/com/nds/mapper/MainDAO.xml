@@ -172,17 +172,6 @@
 
    <select id="result" parameterType="java.util.Map"
       resultType="com.nds.library.main.Information">
-<<<<<<< HEAD
-         SELECT ROWNUM, image, title, author, publisher, pubdate, current_state, ISBN
-=======
-      <!--        SELECT ROWNUM, image, title, author, publisher, pubdate, current_state, ISBN
->>>>>>> 032c2ac6a446f453d25bf5ddb261ed51491d1faa
-         FROM(
-         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
-         'yyyy-mm-dd') AS pubdate, current_state, ISBN
-         FROM books join informations using(information_id) -->
-
-	
  		SELECT *
          FROM(
          select rownum rn, aa.*
@@ -191,10 +180,7 @@
          'yyyy-mm-dd') AS pubdate, current_state, ISBN
          FROM books join informations using(information_id))aa)
          where rn between #{startNumber} and #{startNumber}+9
-
-
-
-
+         
       <if test="filter==1">
          <if test="key==1">
             and title like '%' || #{searchWord} || '%' and current_state='대출가능'
@@ -222,13 +208,7 @@
    </select>
    
 
-<<<<<<< HEAD
    <select id="data" resultType="com.nds.library.main.Borrowing"  parameterType="java.util.Map">
-=======
-   <select id="data" resultType="com.nds.library.main.Information"  parameterType="java.util.Map">
-      <!-- SELECT ROWNUM, image, title, ISBN, author, publisher, TO_CHAR(pubdate, 'yyyy-mm-dd') AS pubdate, current_state, book_id
-      FROM books join informations using(information_id) -->
->>>>>>> 032c2ac6a446f453d25bf5ddb261ed51491d1faa
       SELECT ROWNUM, image, title, ISBN, author, publisher, TO_CHAR(pubdate, 'yyyy-mm-dd') AS pubdate, current_state, book_id
        FROM(
          select rownum rn, aa.*
@@ -266,11 +246,6 @@
    <select id="getBorrowingCount" resultType="java.lang.Integer">
 		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null and returned_date is null
 	</select>
-	
-<!-- 	<select id="isBorrowing" resultType="java.lang.Integer">
-		select count(*)
-		from borrowings
-	</select> -->
 	
  	<select id="isReserving" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select count(*)
