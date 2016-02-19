@@ -127,18 +127,19 @@
 					<form class="form-inline" role="form" method="post"
 						style="display: inline-block; float: right;">
 						<select class="form-control filter" id="borrow-filter"
-							name="borrow-filter">
-							<option value="0">전체</option>
-							<option value="1">대출대기</option>
-							<option value="2">대출가능</option>
-							<option value="3">대출중</option>
-							<option value="4">파손도서</option>
-							<option value="5">분실도서</option>
-						</select> <select class="form-control filter" id="align-filter"
-							name="align-filter">
-							<option value="0">정렬기준</option>
-							<option value="1">입고일순</option>
-							<option value="2">가나다순</option>
+							name="filter" onchange="location.href=this.value;">
+							<option value="ManagerBookAll.nds?filter=0">전체</option>
+							<option value="ManagerBookAll.nds?filter=1">대출대기</option>
+							<option value="ManagerBookAll.nds?filter=2">대출가능</option>
+							<option value="ManagerBookAll.nds?filter=3">대출중</option>
+							<option value="ManagerBookAll.nds?filter=4">파손도서</option>
+							<option value="ManagerBookAll.nds?filter=5">분실도서</option>
+						</select> 
+						<select class="form-control filter" id="align-filter"
+							name="filter" onchange="location.href=this.value;">
+							<option value="ManagerBookAll.nds?filter=6">정렬기준</option>
+							<option value="ManagerBookAll.nds?filter=7">출판일</option>
+							<option value="ManagerBookAll.nds?filter=8">가나다순</option>
 						</select>
 					</form>
 				</div>
@@ -262,7 +263,7 @@
 						<%
 							if (pageNumTemp > 1) {
 						%>
-						<li><a href="ManagerBookAll.nds?pageNum=1">«</a></li>
+						<li><a href="ManagerBookAll.nds?pageNum=1&filter=${filter }">«</a></li>
 						<%
 							}
 						%>
@@ -270,7 +271,7 @@
 							if (isPrev) {
 									int goPrevPage = startPage - pagePerBlock;
 						%>
-						<li><a href="ManagerBookAll.nds?pageNum=<%=goPrevPage%>">«</a></li>
+						<li><a href="ManagerBookAll.nds?pageNum=<%=goPrevPage%>&filter=${filter }">«</a></li>
 						<%
 							} else {
 
@@ -282,14 +283,14 @@
 						<%
 							} else {
 						%>
-						<li><a href="ManagerBookAll.nds?pageNum=<%=i%>"><%=i%></a></li>
+						<li><a href="ManagerBookAll.nds?pageNum=<%=i%>&filter=${filter }"><%=i%></a></li>
 						<%
 							}
 								}
 								if (isNext) {
 									int goNextPage = startPage + pagePerBlock;
 						%>
-						<li><a href="ManagerBookAll.nds?pageNum=<%=goNextPage%>">»</a></li>
+						<li><a href="ManagerBookAll.nds?pageNum=<%=goNextPage%>&filter=${filter }">»</a></li>
 						<%
 							} else {
 
@@ -297,7 +298,7 @@
 								if (totalNumOfPage > pageNumTemp) {
 						%>
 						<li><a
-							href="ManagerBookAll.nds?pageNum=<%=totalNumOfPage%>">»</a></li>
+							href="ManagerBookAll.nds?pageNum=<%=totalNumOfPage%>&filter=${filter }">»</a></li>
 						<%
 							}
 							}
@@ -374,6 +375,8 @@
 					});
 	
 	
+	$("#borrow-filter").find("option[value='ManagerBookAll.nds?filter=${filter}']").attr("selected" , true);
+	$("#align-filter").find("option[value='ManagerBookAll.nds?filter=${filter}']").attr("selected" , true);
 	
 	
 </script>

@@ -4,53 +4,40 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.manager.IManagerDAO">
 
-	<!-- <select id="MessageList" resultType="com.nds.library.manager.Message">
+
+	<select id="MessageList" resultType="com.nds.library.manager.Message"
+		parameterType="java.util.HashMap">
 		SELECT message_id, user_id, is_checked, title, content, sended_date,
 		checked_date, name
-		FROM messages JOIN users USING(user_id)
-		<if test="filter == 0">  전체
-			where sended_date is not null
-		</if>
-		<if test="filter == 1">  읽은 메시지
-			where is_checked = 1
-		</if>
-		<if test="filter == 2">  안읽은 메시지
-			where is_checked = 0
-		</if>
-		order by sended_date desc
-	</select> -->
-	<select id="MessageList" resultType="com.nds.library.manager.Message" parameterType="java.util.HashMap">
-		SELECT message_id, user_id, is_checked, title, content, sended_date,
-		checked_date, name
-       FROM(
-         select rownum rn, aa.*
-        from(
-        select *
-        from messages JOIN users USING(user_id)      
-         )aa)
-         where rn between #{startNumber} and #{startNumber}+9 
-		<if test="filter == 0">  
+		FROM(
+		select rownum rn, aa.*
+		from(
+		select *
+		from messages JOIN users USING(user_id)
+		)aa)
+		where rn between #{startNumber} and #{startNumber}+9
+		<if test="filter == 0">
 			and sended_date is not null
 		</if>
-		<if test="filter == 1">  
+		<if test="filter == 1">
 			and is_checked = 1
 		</if>
-		<if test="filter == 2">  
+		<if test="filter == 2">
 			and is_checked = 0
 		</if>
 		order by sended_date desc
 	</select>
-	
+
 	<select id="messageCount" resultType="Integer">
 		SELECT count(*)
 		FROM messages JOIN users USING(user_id)
-		<if test="filter == 0">  
+		<if test="filter == 0">
 			where sended_date is not null
 		</if>
-		<if test="filter == 1">  
+		<if test="filter == 1">
 			where is_checked = 1
 		</if>
-		<if test="filter == 2"> 
+		<if test="filter == 2">
 			where is_checked = 0
 		</if>
 	</select>
@@ -274,13 +261,16 @@
 	<select id="memberList" parameterType="java.util.HashMap"
 		resultType="com.nds.library.main.User">
 		SELECT user_id, nds_number,
-		name, position, department, picture, authority,
-		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date
+		name, position, department,
+		picture, authority,
+		TO_CHAR(registered_date,'yyyy-mm-dd') as
+		registered_date
 		from(
 		select rownum rn, aa.*
 		from
 		users aa)
-		where rn between #{startNumber} and #{startNumber}+9
+		where rn
+		between #{startNumber} and #{startNumber}+9
 		order by user_id desc
 	</select>
 
@@ -466,16 +456,13 @@
 		update borrowings
 		set
 		returned_date = SYSDATE
-		where borrowing_id = #{borrowing_id}
+		where
+		borrowing_id = #{borrowing_id}
 	</update>
 
-<!-- 	<select id="bookList" parameterType="java.util.Map"
-		resultType="com.nds.library.main.Borrowing">
-		SELECT *
-		FROM ((books join informations
-		using(information_id)) left outer join borrowings using(book_id)) left
-		outer join users using(user_id)
-	</select> -->
+	<!-- <select id="bookList" parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing"> 
+		SELECT * FROM ((books join informations using(information_id)) left outer 
+		join borrowings using(book_id)) left outer join users using(user_id) </select> -->
 	<select id="bookList" parameterType="java.util.Map"
 		resultType="com.nds.library.main.Borrowing">
 		SELECT *
@@ -484,25 +471,86 @@
 		from(
 		select *
 		from
-		((books join informations using(information_id)) left outer join borrowings
-		using(book_id)) left outer join users using(user_id)) aa)
-		where rn between #{startNumber} and #{startNumber}+9
-		order by book_id desc
+		((books join
+		informations using(information_id)) left outer join borrowings
+		using(book_id)) left outer join users using(user_id)
+		<if test="filter==0">
+			order by book_id desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9		
+		</if>
+		<if test="filter==1">
+			WHERE current_state='대출대기'
+			order by book_id desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9	
+		</if>
+		<if test="filter==2">
+			WHERE current_state='대출가능'
+			order by book_id desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9	
+		</if>
+		<if test="filter==3">
+			WHERE current_state='대출중'
+			order by book_id desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9		
+		</if>
+		<if test="filter==4">
+			WHERE current_state='파손'
+			order by book_id desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9	
+		</if>
+		<if test="filter==5">
+			WHERE current_state='분실'
+			order by book_id desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9	
+		</if>
+		<if test="filter==6">
+			order by book_id desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9	
+		</if>
+		<if test="filter==7">
+			order by pubdate desc )aa)
+			where rn between #{startNumber} and #{startNumber}+9
+		</if>
+		<if test="filter==8">
+			order by title )aa)
+			where rn between #{startNumber} and #{startNumber}+9
+			
+		</if>
+
 	</select>
-	
-	<select id="bookCount" parameterType="java.util.Map" resultType="Integer">
-		SELECT count(*) FROM ((books join informations using(information_id)) left outer 
+
+
+	<select id="bookCount" parameterType="java.util.HashMap" resultType="Integer">
+		SELECT count(*) FROM ((books join informations using(information_id))
+		left outer
 		join borrowings using(book_id)) left outer join users using(user_id)
+		<if test="filter==1">
+			WHERE current_state='대출대기'		
+		</if>
+		<if test="filter==2">
+			WHERE current_state='대출가능'		
+		</if>
+		<if test="filter==3">
+			WHERE current_state='대출중'			
+		</if>
+		<if test="filter==4">
+			WHERE current_state='파손'	
+		</if>
+		<if test="filter==5">
+			WHERE current_state='분실'
+		</if>
 	</select>
 
 	<select id="getDamAndLosBook" resultType="com.nds.library.main.Borrowing">
 		SELECT book_id, title,
 		author, publisher, image,
-		to_char(pubdate, 'YYYY-MM-DD') as pubdate, publisher, to_char(registered_date,
+		to_char(pubdate, 'YYYY-MM-DD') as pubdate,
+		publisher, to_char(registered_date,
 		'YYYY-MM-DD') as registered_date
 		FROM books join informations
 		using(information_id)
-		WHERE book_id = #{book_id}
+		WHERE book_id =
+		#{book_id}
 	</select>
 
 	<update id="changeToDamOrLos">

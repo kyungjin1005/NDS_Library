@@ -166,7 +166,7 @@ table tbody tr:HOVER {
 
 
 				<c:forEach var="result" items="${result}">
-					<tr href="BookInfo.nds?isbn=${result.isbn}"
+					<tr href="BookInfo.nds?isbn=${result.ISBN}"
 						style="cursor: pointer;">
 						<td><%=index--%></td>
 						<td><img src="${result.image}" alt="" /><span>${result.title}</span></td>
@@ -222,7 +222,7 @@ table tbody tr:HOVER {
 						<%
 							if (pageNumTemp > 1) {
 						%>
-						<li><a href="SearchResult.nds?pageNum=1&filter=${filter }">«</a></li>
+						<li><a href="SearchResult.nds?pageNum=1&filter=${filter }&searchWord=${query}&key=${select}">«</a></li>
 						<%
 							}
 						%>
@@ -230,7 +230,7 @@ table tbody tr:HOVER {
 							if (isPrev) {
 									int goPrevPage = startPage - pagePerBlock;
 						%>
-						<li><a href="SearchResult.nds?pageNum=<%=goPrevPage%>&fiter=${filter }">«</a></li>
+						<li><a href="SearchResult.nds?pageNum=<%=goPrevPage%>&fiter=${filter }&searchWord=${query}&key=${select}">«</a></li>
 						<%
 							} else {
 
@@ -242,14 +242,14 @@ table tbody tr:HOVER {
 						<%
 							} else {
 						%>
-						<li><a href="SearchResult.nds?pageNum=<%=i%>&fiter=${filter }"><%=i%></a></li>
+						<li><a href="SearchResult.nds?pageNum=<%=i%>&fiter=${filter }&searchWord=${query}&key=${select}"><%=i%></a></li>
 						<%
 							}
 								}
 								if (isNext) {
 									int goNextPage = startPage + pagePerBlock;
 						%>
-						<li><a href="SearchResult.nds?pageNum=<%=goNextPage%>&fiter=${filter }">»</a></li>
+						<li><a href="SearchResult.nds?pageNum=<%=goNextPage%>&fiter=${filter }&searchWord=${query}&key=${select}">»</a></li>
 						<%
 							} else {
 
@@ -257,7 +257,7 @@ table tbody tr:HOVER {
 								if (totalNumOfPage > pageNumTemp) {
 						%>
 						<li><a
-							href="SearchResult.nds?pageNum=<%=totalNumOfPage%>&fiter=${filter }">»</a></li>
+							href="SearchResult.nds?pageNum=<%=totalNumOfPage%>&fiter=${filter }&searchWord=${query}&key=${select}">»</a></li>
 						<%
 							}
 							}

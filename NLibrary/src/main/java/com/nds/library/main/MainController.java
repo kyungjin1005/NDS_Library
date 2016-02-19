@@ -85,23 +85,26 @@ public class MainController {
 		int listCount = 10;
 		// 뷰에서 글번호를 받아옴
 		String pagenum = pageNum;
+		String searchword = "";
+		
 		if (pageNum != null) {
 			pageNumTemp = Integer.parseInt(pagenum);
 		}
+		
 		// 시작하는 글번호를 계산함
 		int startNumber = listCount * (pageNumTemp - 1) + 1;
 
 		if (filter == null)
 			filter = "0";
-
+		
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
-
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("key", key);
 		map.put("searchWord", searchWord);
 		map.put("filter", filter);
 		map.put("startNumber", startNumber);
-
+		
 		ArrayList<Borrowing> Result = dao.result(map);
 		model.addAttribute("totalCount", dao.totalCount2(map));
 		model.addAttribute("result", Result);
@@ -132,6 +135,9 @@ public class MainController {
 		}
 
 		BorrowN = dao.ownInfo(map).size();
+		
+	
+		
 		model.addAttribute("ownInfo", ownInfo);
 
 		ArrayList<Review> bookReview = dao.bookReview(map);

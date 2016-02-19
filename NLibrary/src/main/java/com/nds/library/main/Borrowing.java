@@ -8,7 +8,7 @@ public class Borrowing {
 	// books table
 	private String information_id, current_state, registered_date, location;
 	// informations
-	private String category_id, ISBN, title, author, publisher, image, pubdate, explanation;
+	private String category_id, ISBN, title, author, publisher, image, pubdate, explanation, isbn;
 	// users
 	private String NDS_nubmer, password, name, position, department, picture, authority;
 	// reservation
@@ -189,6 +189,12 @@ public class Borrowing {
 	}
 	public void setRownum(int rownum) {
 		this.rownum = rownum;
+	}
+	public String getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
 	}
 	
 }

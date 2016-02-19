@@ -617,6 +617,9 @@ public class ManagerController {
 	@RequestMapping(value = "/ManagerBookAll.nds", method = RequestMethod.GET)
 	public String managerBookAll(Model model, String filter, String pageNum) {
 
+		if(filter==null)
+			filter="0";
+		
 		int pageNumTemp = 1;
  		// 한 페이지에 10개의 글이 보임
  		int listCount = 10;
@@ -630,6 +633,7 @@ public class ManagerController {
         Map<String, Object> map = new HashMap<String, Object>();
     
         map.put("startNumber", startNumber);
+        map.put("filter", filter);
         
         IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
         
@@ -637,7 +641,11 @@ public class ManagerController {
         model.addAttribute("totalCount", dao.bookCount(map));
         model.addAttribute("indexCount", dao.bookCount(map)-(pageNumTemp-1)*10);
         model.addAttribute("pageNum", pageNum);
+        model.addAttribute("filter", filter);
 		
+        System.out.println("filter : " + filter);
+        System.out.println("totalCount : " + dao.bookCount(map));
+        
 		return "WEB-INF/views/managerpage/ManagerBookAll.jsp";
 	}
 	
@@ -696,7 +704,7 @@ public class ManagerController {
 			book.setCategory_id(category_id);
 			
 			System.out.println("들어가?");
-			if (info == null) { // �뾾�뒗梨낆씠硫�
+			if (info == null) { 
 				System.out.println("정보가 없으므로 인포메이션 테이블 추가한 후, 북 테이블에 추가");
 
 				System.out.println(book.getCategory_id());
