@@ -23,7 +23,7 @@ public interface IManagerDAO {
 	public int donationRegisterBook(ReqAndDon book);
 	public int donationRejectBook(ReqAndDon book);
 	
-	public ArrayList<User> memberList();
+	public ArrayList<User> memberList(Map<String, Object> map);
 	public User getUser(User user);
 	public ArrayList<User> userBorrowList(User user);
 	public ArrayList<ReqAndDon> userRequireList(User user);
@@ -45,7 +45,12 @@ public interface IManagerDAO {
 	public ArrayList<ReqAndDon> bList(Map<String, Object> map);
 	public int totalCount(Map<String, Object> map);
 	public void updateReturnedDate(String borrowing_id);
-	public ArrayList<Borrowing> bookList();
+	public ArrayList<Borrowing> bookList(Map<String, Object> map);
 	public Borrowing getDamAndLosBook(Borrowing borrow);
 	public void changeToDamOrLos(Map<String, Object> map);
+	// 유저수 출력
+	public int countUser();
+	// 
+	public int bookCount(Map<String, Object> map);
+	public int messageCount(Map<String, Object> map);
 }

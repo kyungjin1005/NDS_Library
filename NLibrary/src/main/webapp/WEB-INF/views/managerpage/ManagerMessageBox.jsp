@@ -74,7 +74,22 @@
 	font-family: "맑은고딕";
 }
 </style>
+
+<c:set var="indexCount" value="${indexCount}" />
+	<c:set var="totalCount" value="${totalCount}" />
+	<%
+		int pageNumTemp = 1;
+		int listCount = 10;
+		int pagePerBlock = 10;
+		int totalCount = (Integer) pageContext.getAttribute("totalCount");
+		String pageNum = request.getParameter("pageNum");
+		if (pageNum != null) {
+			pageNumTemp = Integer.parseInt(pageNum);
+		}
+		int index = (Integer) pageContext.getAttribute("indexCount");
+	%>
 </head>
+
 <body>
 	<div class="container">
 		<header>
@@ -116,7 +131,7 @@
 									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}"  style="background-color:#f5f5f5;">
 								</c:otherwise>
 							</c:choose>
-								<td>${msg.message_id}</td>
+								<td><%-- ${msg.message_id} --%> <%= index--%></td>
 								<td>${msg.title}</td>
 								<td>${msg.content}</td>
 								<td>${msg.name }</td>
@@ -129,6 +144,93 @@
 
 			</div>
 		</div>
+		
+		<!-- 페이징 시작 -->
+			<div>
+				<%
+					if (totalCount > 0) {
+						int totalNumOfPage = (totalCount % listCount == 0)
+								? totalCount / listCount
+								: totalCount / listCount + 1;
+
+						int totalNumOfBlock = (totalNumOfPage % pagePerBlock == 0)
+								? totalNumOfPage / pagePerBlock
+								: totalNumOfPage / pagePerBlock + 1;
+
+						int currentBlock = (pageNumTemp % pagePerBlock == 0)
+								? pageNumTemp / pagePerBlock
+								: pageNumTemp / pagePerBlock + 1;
+
+						int startPage = (currentBlock - 1) * pagePerBlock + 1;
+						int endPage = startPage + pagePerBlock - 1;
+
+						if (endPage > totalNumOfPage)
+							endPage = totalNumOfPage;
+						boolean isNext = false;
+						boolean isPrev = false;
+						if (currentBlock < totalNumOfBlock)
+							isNext = true;
+						if (currentBlock > 1)
+							isPrev = true;
+						if (totalNumOfBlock == 1) {
+							isNext = false;
+							isPrev = false;
+						}
+						StringBuffer sb = new StringBuffer();
+				%>
+				<br />
+				<br />
+				<br />
+				<br />
+				<div align="center">
+					<ul class="pagination pagination-style-2">
+						<%
+							if (pageNumTemp > 1) {
+						%>
+						<li><a href="MessageList.nds?pageNum=1&filter=${filter}">«</a></li>
+						<%
+							}
+						%>
+						<%
+							if (isPrev) {
+									int goPrevPage = startPage - pagePerBlock;
+						%>
+						<li><a href="MessageList.nds?pageNum=<%=goPrevPage%>&filter=${filter}">«</a></li>
+						<%
+							} else {
+
+								}
+								for (int i = startPage; i <= endPage; i++) {
+									if (i == pageNumTemp) {
+						%>
+						<li class="active"><a href="#"><%=i%></a></li>
+						<%
+							} else {
+						%>
+						<li><a href="MessageList.nds?pageNum=<%=i%>&filter=${filter}"><%=i%></a></li>
+						<%
+							}
+								}
+								if (isNext) {
+									int goNextPage = startPage + pagePerBlock;
+						%>
+						<li><a href="MessageList.nds?pageNum=<%=goNextPage%>&filter=${filter}">»</a></li>
+						<%
+							} else {
+
+								}
+								if (totalNumOfPage > pageNumTemp) {
+						%>
+						<li><a
+							href="MessageList.nds?pageNum=<%=totalNumOfPage%>&filter=${filter}">»</a></li>
+						<%
+							}
+							}
+						%>
+					
+				</div>
+		
+		
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>

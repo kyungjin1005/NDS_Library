@@ -4,20 +4,55 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.manager.IManagerDAO">
 
-	<select id="MessageList" resultType="com.nds.library.manager.Message">
+	<!-- <select id="MessageList" resultType="com.nds.library.manager.Message">
 		SELECT message_id, user_id, is_checked, title, content, sended_date,
 		checked_date, name
 		FROM messages JOIN users USING(user_id)
-		<if test="filter == 0">  <!-- 전체 -->
+		<if test="filter == 0">  전체
 			where sended_date is not null
 		</if>
-		<if test="filter == 1">  <!-- 읽은 메시지 -->
+		<if test="filter == 1">  읽은 메시지
 			where is_checked = 1
 		</if>
-		<if test="filter == 2">  <!-- 안읽은 메시지 -->
+		<if test="filter == 2">  안읽은 메시지
 			where is_checked = 0
 		</if>
 		order by sended_date desc
+	</select> -->
+	<select id="MessageList" resultType="com.nds.library.manager.Message" parameterType="java.util.HashMap">
+		SELECT message_id, user_id, is_checked, title, content, sended_date,
+		checked_date, name
+       FROM(
+         select rownum rn, aa.*
+        from(
+        select *
+        from messages JOIN users USING(user_id)      
+         )aa)
+         where rn between #{startNumber} and #{startNumber}+9 
+		<if test="filter == 0">  
+			and sended_date is not null
+		</if>
+		<if test="filter == 1">  
+			and is_checked = 1
+		</if>
+		<if test="filter == 2">  
+			and is_checked = 0
+		</if>
+		order by sended_date desc
+	</select>
+	
+	<select id="messageCount" resultType="Integer">
+		SELECT count(*)
+		FROM messages JOIN users USING(user_id)
+		<if test="filter == 0">  
+			where sended_date is not null
+		</if>
+		<if test="filter == 1">  
+			where is_checked = 1
+		</if>
+		<if test="filter == 2"> 
+			where is_checked = 0
+		</if>
 	</select>
 
 	<select id="messageDetail" resultType="com.nds.library.manager.Message">
@@ -233,12 +268,28 @@
 		req_don_id = #{req_don_id}
 	</update>
 
-	<select id="memberList" resultType="com.nds.library.main.User">
+	<!-- <select id="memberList" resultType="com.nds.library.main.User"> SELECT 
+		user_id, nds_number, name, position, department, picture, authority, TO_CHAR(registered_date,'yyyy-mm-dd') 
+		as registered_date from users order by user_id </select> -->
+	<select id="memberList" parameterType="java.util.HashMap"
+		resultType="com.nds.library.main.User">
 		SELECT user_id, nds_number,
 		name, position, department, picture, authority,
-		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date from users
-		order by user_id
+		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date
+		from(
+		select rownum rn, aa.*
+		from
+		users aa)
+		where rn between #{startNumber} and #{startNumber}+9
+		order by user_id desc
 	</select>
+
+	<select id="countUser" resultType="Integer">
+		SELECT count(*)
+		from
+		users
+	</select>
+
 
 	<select id="getUser" resultType="com.nds.library.main.User">
 		SELECT user_id, nds_number,
@@ -418,6 +469,7 @@
 		where borrowing_id = #{borrowing_id}
 	</update>
 
+<<<<<<< HEAD
 	<select id="bookList" parameterType="java.util.Map"
 		resultType="com.nds.library.main.Borrowing">
 		SELECT *
@@ -425,6 +477,31 @@
 		using(information_id)) left outer join borrowings using(book_id)) left
 		outer join users using(user_id)
 	</select>
+=======
+	<!-- <select id="bookList" parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing"> 
+		SELECT * FROM ((books join informations using(information_id)) left outer 
+		join borrowings using(book_id)) left outer join users using(user_id) </select> -->
+	<select id="bookList" parameterType="java.util.Map"
+		resultType="com.nds.library.main.Borrowing">
+		SELECT *
+		FROM(
+		select rownum rn, aa.*
+		from(
+		select *
+		from
+		((books join informations using(information_id)) left outer join borrowings
+		using(book_id)) left outer join users using(user_id)) aa)
+		where rn between #{startNumber} and #{startNumber}+9
+		order by book_id desc
+	</select>
+	
+	<select id="bookCount" parameterType="java.util.Map" resultType="Integer">
+		SELECT count(*) FROM ((books join informations using(information_id)) left outer 
+		join borrowings using(book_id)) left outer join users using(user_id)
+	</select>
+
+
+>>>>>>> 032c2ac6a446f453d25bf5ddb261ed51491d1faa
 
 	<select id="getDamAndLosBook" resultType="com.nds.library.main.Borrowing">
 		SELECT book_id, title,

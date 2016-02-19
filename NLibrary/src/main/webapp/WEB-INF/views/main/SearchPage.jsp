@@ -116,11 +116,20 @@
 </script>
 </head>
 <body>
-<c:set var="totalCount" value="${totalCount}" />
-<%
+
+	<c:set var="indexCount" value="${indexCount}" />
+	<c:set var="totalCount" value="${totalCount}" />
+	<%
+		int pageNumTemp = 1;
+		int listCount = 10;
+		int pagePerBlock = 10;
 		int totalCount = (Integer) pageContext.getAttribute("totalCount");
-		int index = totalCount;
-%>
+		String pageNum = request.getParameter("pageNum");
+		if (pageNum != null) {
+			pageNumTemp = Integer.parseInt(pageNum);
+		}
+		int index = (Integer) pageContext.getAttribute("indexCount");
+	%>
 
 	<%-- 
    
@@ -181,14 +190,19 @@
 							<th>출판사</th>
 							<th>발행일</th>
 							<th>대출상태</th>
-							<td></td>
+							
 						</tr>
 					</thead>
 
 					<tbody>
 						<c:forEach var="data" items="${data}">
+<<<<<<< HEAD
 							<tr href="BookInfo.nds?isbn=${data.ISBN}&book_id=${data.book_id}" style="cursor: pointer;">
 								<td>${data.rownum}</td>
+=======
+							<tr href="BookInfo.nds?isbn=${data.isbn}&book_id=${data.book_id}" style="cursor: pointer;">
+								<td><%= index--%></td>
+>>>>>>> 032c2ac6a446f453d25bf5ddb261ed51491d1faa
 								<td><img src="${data.image}" alt="" /><span>${data.title}</span></td>
 								<td>${data.author}</td>
 								<td>${data.publisher}</td>
@@ -200,6 +214,92 @@
 				</table>
 			</div>
 		</div>
+		
+		<!-- 페이징 시작 -->
+			<div>
+				<%
+					if (totalCount > 0) {
+						int totalNumOfPage = (totalCount % listCount == 0)
+								? totalCount / listCount
+								: totalCount / listCount + 1;
+
+						int totalNumOfBlock = (totalNumOfPage % pagePerBlock == 0)
+								? totalNumOfPage / pagePerBlock
+								: totalNumOfPage / pagePerBlock + 1;
+
+						int currentBlock = (pageNumTemp % pagePerBlock == 0)
+								? pageNumTemp / pagePerBlock
+								: pageNumTemp / pagePerBlock + 1;
+
+						int startPage = (currentBlock - 1) * pagePerBlock + 1;
+						int endPage = startPage + pagePerBlock - 1;
+
+						if (endPage > totalNumOfPage)
+							endPage = totalNumOfPage;
+						boolean isNext = false;
+						boolean isPrev = false;
+						if (currentBlock < totalNumOfBlock)
+							isNext = true;
+						if (currentBlock > 1)
+							isPrev = true;
+						if (totalNumOfBlock == 1) {
+							isNext = false;
+							isPrev = false;
+						}
+						StringBuffer sb = new StringBuffer();
+				%>
+				<br />
+				<br />
+				<br />
+				<br />
+				<div align="center">
+					<ul class="pagination pagination-style-2">
+						<%
+							if (pageNumTemp > 1) {
+						%>
+						<li><a href="SearchPage.nds?pageNum=1&category_id=${category_id }">«</a></li>
+						<%
+							}
+						%>
+						<%
+							if (isPrev) {
+									int goPrevPage = startPage - pagePerBlock;
+						%>
+						<li><a href="SearchPage.nds?pageNum=<%=goPrevPage%>&category_id=${category_id }">«</a></li>
+						<%
+							} else {
+
+								}
+								for (int i = startPage; i <= endPage; i++) {
+									if (i == pageNumTemp) {
+						%>
+						<li class="active"><a href="#"><%=i%></a></li>
+						<%
+							} else {
+						%>
+						<li><a href="SearchPage.nds?pageNum=<%=i%>&category_id=${category_id }"><%=i%></a></li>
+						<%
+							}
+								}
+								if (isNext) {
+									int goNextPage = startPage + pagePerBlock;
+						%>
+						<li><a href="SearchPage.nds?pageNum=<%=goNextPage%>&category_id=${category_id }">»</a></li>
+						<%
+							} else {
+
+								}
+								if (totalNumOfPage > pageNumTemp) {
+						%>
+						<li><a
+							href="SearchPage.nds?pageNum=<%=totalNumOfPage%>&category_id=${category_id }">»</a></li>
+						<%
+							}
+							}
+						%>
+					
+				</div>
+		
 		<footer>
 			<%@include file="/include/footer.jsp"%>
 		</footer>
