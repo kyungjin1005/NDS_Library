@@ -207,7 +207,6 @@
        order by pubdate desc
    </select>
    
-
    <select id="data" resultType="com.nds.library.main.Borrowing"  parameterType="java.util.Map">
       SELECT ROWNUM, image, title, ISBN, author, publisher, TO_CHAR(pubdate, 'yyyy-mm-dd') AS pubdate, current_state, book_id
        FROM(
