@@ -520,15 +520,6 @@
 	</select>
 
 
-	<select id="bookCount" parameterType="java.util.HashMap" resultType="Integer">
-		((books join informations using(information_id)) left outer join
-		borrowings
-		using(book_id)) left outer join users using(user_id)) aa)
-		where rn between #{startNumber} and #{startNumber}+9
-		order by book_id
-		desc
-	</select>
-
 	<select id="bookCount" parameterType="java.util.Map" resultType="Integer">
 		SELECT count(*) FROM ((books join informations using(information_id))
 		left outer

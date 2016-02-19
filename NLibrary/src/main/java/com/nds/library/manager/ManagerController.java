@@ -28,17 +28,6 @@ public class ManagerController {
 	@RequestMapping(value = "/MessageList.nds", method = RequestMethod.GET)
 	public String messageList(Model model, String filter, String pageNum) {
 
-	/*	IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		if (filter == null) {
-			filter = "0";
-		}
-		map.put("filter", filter);
-		ArrayList<Message> list = dao.MessageList(map);
-
-		model.addAttribute("messageList", list);
-		model.addAttribute("filter", filter);*/
 		int pageNumTemp = 1;
  		// 한 페이지에 10개의 글이 보임
  		int listCount = 10;
