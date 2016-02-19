@@ -138,34 +138,34 @@
 					<tbody>
 						<tr>
 							<th>제목</th>
-							<td>${bookInfo.title}</td>
+							<td>${bookDetail.title}</td>
 						</tr>
 						<tr>
 							<th>저자</th>
-							<td>${bookInfo.author}</td>
+							<td>${bookDetail.author}</td>
 						</tr>
 						<tr>
 							<th>출판사</th>
-							<td>${bookInfo.publisher}</td>
+							<td>${bookDetail.publisher}</td>
 						</tr>
 						<tr>
 							<th>ISBN</th>
-							<td>${bookInfo.ISBN}</td>
+							<td>${bookDetail.ISBN}</td>
 						</tr>
 
 						<tr>
 							<th>발간일</th>
-							<td>${bookInfo.pubdate}</td>
+							<td>${bookDetail.pubdate}</td>
 						</tr>
 						<tr>
 							<th>책소개</th>
-							<td>${bookInfo.explanation}</td>
+							<td>${bookDetail.explanation}</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="col-md-4">
-				<img src="${bookInfo.image}" id="book-img" />
+				<img src="${bookDetail.image}" id="book-img" />
 			</div>
 		</section>
 
@@ -196,28 +196,28 @@
 						<th>도서상태</th>
 						<th>반납예정일</th>
 						<th>예약/대출</th>
-						<th>isReserivng</th>
+						<!-- <th>isReserivng</th> -->
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="own" items="${ownInfo}">
+					<c:forEach var="borrowing" items="${borrowingList}">
 						<tr>
 							<td><%=index-- %></td>
-							<td>${own.book_id}</td>
-							<td>${own.location}</td>
-							<td>${own.current_state}</td>
-							<td>${own.scheduled_date}</td>
+							<td>${borrowing.book_id}</td>
+							<td>${borrowing.location}</td>
+							<td>${borrowing.current_state}</td>
+							<td>${empty borrowing.scheduled_date?"-":borrowing.scheduled_date}</td>
 							<td>
 								<button class="btn btn-md btn-default btn-reserve"  
-									value="${own.book_id }" 
-									data-reservation_id="${own.reservation_id }"
-									${own.reservation_id==1?"disabled=\"disable\"":""}>예약</button>
+									value="${borrowing.book_id }" 
+									data-reservation_id="${borrowing.reservation_id }"
+									${borrowing.reservation_id==1?"disabled=\"disable\"":""}>예약</button>
 								<button class="btn btn-md btn-warning btn-borrow" 
-									value = "${own.book_id }" 
-									data-current_state="${own.current_state }"
-									${own.current_state=='대출'?"disabled=\"disabled\"":""}>대출</button>
+									value = "${borrowing.book_id }" 
+									data-current_state="${borrowing.current_state }"
+									${borrowing.current_state=='대출'?"disabled=\"disabled\"":""}>대출</button>
 							</td>
-							<td>${empty own.reservation_id?"-":own.reservation_id }</td>
+							<%-- <td>${empty borrowing.reservation_id?"-":borrowing.reservation_id }</td> --%>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -271,8 +271,8 @@
 					</div>
 					<div class="col-md-9">
 						<input type="hidden" id="information_id" name="information_id"
-							value="${bookInfo.information_id}"> <input type="hidden"
-							id="isbn" name="isbn" value="${bookInfo.ISBN}"> <input
+							value="${bookDetail.information_id}"> <input type="hidden"
+							id="isbn" name="isbn" value="${bookDetail.ISBN}"> <input
 							type="text" placeholder="댓글을 입력해주세요(50)" required="required"
 							maxlength="100" class="form-control" id="content" name="content">
 					</div>

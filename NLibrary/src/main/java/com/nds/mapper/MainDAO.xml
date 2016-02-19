@@ -161,7 +161,7 @@
       select rownum, star, content, name, reviewed_date
       from (SELECT star, content, name, TO_CHAR(reviewed_date,'yyyy-mm-dd') AS reviewed_date
       from reviews join users using(user_id) join informations using(information_id) 
-      where isbn=#{isbn}
+      where ISBN=#{ISBN}
       order by reviews.reviewed_date)
    </select>
    
@@ -266,5 +266,27 @@
 		SELECT count(*)
 		FROM reservations
 		WHERE user_id = #{user_id} and ISBN = #{ISBN} and processing_state = 0
+	</select>
+	
+	<select id ="getBookInfo" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
+		SELECT information_id, category_id, ISBN, title, author, publisher, image, TO_CHAR(pubdate, 'YYYY-MM-DD') as pubdate, explanation
+		FROM informations
+		WHERE category_id = #{category_id}
+		GROUP BY information_id, category_id, ISBN, title, author, publisher, image, pubdate, explanation
+	</select>
+	
+	<select id="getBookDetail" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
+		SELECT * FROM informations WHERE information_id = #{information_id}
+	</select>
+	
+	<select id="findBollowingListByInformationId"  resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
+		select * from (books join informations using(information_id)) where information_id = #{information_id} 
+		and (current_state = '대출가능' or current_state = '대출')
+	</select>
+	
+	<select id="countPossibleBorrowing" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(*)
+		from (books join informations using(information_id)) 
+		where information_id = #{information_id} and (current_state = '대출가능')
 	</select>
 </mapper>   

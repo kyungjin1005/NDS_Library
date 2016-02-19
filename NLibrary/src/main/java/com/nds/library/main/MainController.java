@@ -216,7 +216,7 @@ public class MainController {
 		map.put("filter", filter);
 		map.put("startNumber", startNumber);
 		
-		ArrayList<Borrowing> data = dao.data(map);
+//		ArrayList<Borrowing> data = dao.data(map);
 
 		String category = "";
 		if (category_id.equals("1")) {
@@ -238,9 +238,14 @@ public class MainController {
 		model.addAttribute("totalCount", dao.totalCount(map));
 		model.addAttribute("filter", filter);
 		model.addAttribute("category_id", category_id);
-		model.addAttribute("data", data);
+//		model.addAttribute("data", data);
 		model.addAttribute("indexCount", dao.totalCount(map)-(pageNumTemp-1)*10);
 		model.addAttribute("pageNum", pagenum);
+
+		ArrayList<Borrowing> bookInfoList = dao.getBookInfo(map);
+		model.addAttribute("bookInfoList", bookInfoList);
+		
+//		int countPossibleBorrowing = dao.countPossibleBorrowing(map);
 
 		return "WEB-INF/views/main/SearchPage.jsp";
 	}
@@ -326,10 +331,60 @@ public class MainController {
 		System.out.println("user_id : " + user_id);
 		
 		if(dao.isReservedByUser(map) == 1) {
-			System.out.println("니가 예약해놨던 책의 ISBN이랑 같은 ISBN을 가지는 책이다.");
+//			System.out.println("니가 예약해놨던 책의 ISBN이랑 같은 ISBN을 가지는 책이다.");
 		}else {
 			dao.reserveBook(map);
 		}
 		return "redirect:mypageReserve.nds";
+	}
+	
+	@RequestMapping(value = "/getBorrowingList.nds", method = RequestMethod.GET)
+	public String getBorrowingList(Model model, String ISBN, HttpServletRequest request, String information_id, String category_id) {
+		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
+		int BorrowN, ReviewN;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("information_id", information_id);
+		map.put("category_id", category_id);
+		map.put("ISBN", ISBN);
+		
+		System.out.println("information_id : " + information_id);
+		System.out.println("category_id : " + category_id);
+		System.out.println("ISBN : " + ISBN);
+		
+		Borrowing bookDetail = dao.getBookDetail(map);
+		model.addAttribute("bookDetail", bookDetail);
+
+		ArrayList<Borrowing> borrowingList = dao.findBollowingListByInformationId(map);
+		model.addAttribute("borrowingList", borrowingList);
+
+		BorrowN = borrowingList.size();
+		model.addAttribute("BorrowN", BorrowN);
+		
+		ArrayList<Review> bookReview = dao.bookReview(map);
+		ReviewN = bookReview.size();
+		model.addAttribute("ReviewN", ReviewN);
+
+		for (int i = 0; i < bookReview.size(); i++) {
+			Review info = bookReview.get(i);
+			String star = info.getStar();
+			if (star.equals("1")) {
+				info.setStar("☆☆☆☆★");
+			} else if (star.equals("2")) {
+				info.setStar("☆☆☆★★");
+			} else if (star.equals("3")) {
+				info.setStar("☆☆★★★");
+			} else if (star.equals("4")) {
+				info.setStar("☆★★★★");
+			} else if (star.equals("5")) {
+				info.setStar("★★★★★");
+			}
+		}
+		model.addAttribute("bookReview", bookReview);
+
+		String user_id = request.getSession().getAttribute("sessionId").toString();
+		model.addAttribute("borrowing_count", dao.getBorrowingCount(user_id));
+
+		return "WEB-INF/views/main/BookInfo.jsp";
 	}
 }

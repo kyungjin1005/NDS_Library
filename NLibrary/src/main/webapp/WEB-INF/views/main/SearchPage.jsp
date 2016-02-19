@@ -185,6 +185,7 @@
 					<thead>
 						<tr>
 							<th>번호</th>
+							<th></th>
 							<th>제목</th>
 							<th>저자</th>
 							<th>출판사</th>
@@ -195,14 +196,16 @@
 					</thead>
 
 					<tbody>
-						<c:forEach var="data" items="${data}">
-							<tr href="BookInfo.nds?isbn=${data.ISBN}&book_id=${data.book_id}" style="cursor: pointer;">
+						<c:forEach var="bookInfo" items="${bookInfoList}">
+							<tr href="getBorrowingList.nds?information_id=${bookInfo.information_id}
+							&category_id=${bookInfo.category_id}&ISBN=${bookInfo.ISBN}" style="cursor: pointer;">
 								<td><%= index--%></td>
-								<td><img src="${data.image}" alt="" /><span>${data.title}</span></td>
-								<td>${data.author}</td>
-								<td>${data.publisher}</td>
-								<td>${data.pubdate}</td>
-								<td>${data.current_state}</td>
+								<td><img src="${bookInfo.image}" alt="" /></td>
+								<td>${bookInfo.title}</td>
+								<td>${bookInfo.author}</td>
+								<td>${bookInfo.publisher}</td>
+								<td>${bookInfo.pubdate}</td>
+								<td><%-- ${current_state} --%></td>
 							</tr>
 						</c:forEach>
 					</tbody>

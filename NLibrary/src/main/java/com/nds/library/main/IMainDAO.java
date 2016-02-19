@@ -66,4 +66,12 @@ public interface IMainDAO {
 
 	public Borrowing findBookAndInfoByBookId(Map<String, Object> map);
 
+	public ArrayList<Borrowing> getBookInfo(HashMap<String, Object> map);
+
+	public Borrowing getBookDetail(HashMap<String, Object> map);
+
+	public ArrayList<Borrowing> findBollowingListByInformationId(HashMap<String, Object> map);
+
+	public int countPossibleBorrowing(HashMap<String, Object> map);
+
 }
