@@ -13,6 +13,7 @@ public class Borrowing {
 	private String NDS_nubmer, password, name, position, department, picture, authority;
 	// reservation
 	private String reservation_id, reservated_date;
+	private int processing_state;
 
 	private int rownum;
 	
@@ -190,11 +191,18 @@ public class Borrowing {
 	public void setRownum(int rownum) {
 		this.rownum = rownum;
 	}
+
 	public String getIsbn() {
 		return isbn;
 	}
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
+	}
+	public int getProcessing_state() {
+		return processing_state;
+	}
+	public void setProcessing_state(int processing_state) {
+		this.processing_state = processing_state;
 	}
 	
 }

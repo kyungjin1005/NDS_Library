@@ -15,8 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.nds.library.board.Board;
-import com.nds.library.board.IBoardDAO;
 import com.nds.library.main.Borrowing;
 import com.nds.library.main.User;
 import com.nds.library.mypage.NaverParse;
@@ -88,7 +86,6 @@ public class ManagerController {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		System.out.println("filter : " + filter);
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (filter == null) {
@@ -122,7 +119,6 @@ public class ManagerController {
 		map.put("end", end + "");
 		
 		map.put("kind", "require");
-		System.out.println("satrt : " + start + ", end : " + end);
 		
 		ArrayList<ReqAndDon> list = dao.requireBookList(map);
 
@@ -132,7 +128,6 @@ public class ManagerController {
 		totalPage = (int) Math.ceil((double) totalCount / pageSize); // 무조건
 																		// 올림(3.1
 																		// -> 4)
-		System.out.println("totalCount: " + totalCount);
 
 		// 페이지 바 생성
 		String pagebar = "";
@@ -242,16 +237,15 @@ public class ManagerController {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		System.out.println("req_don_id : " + book.getReq_don_id());
-		System.out.println("category_id : " + book.getCategory_id());
-		System.out.println("isbn : " + book.getIsbn());
+//		System.out.println("req_don_id : " + book.getReq_don_id());
+//		System.out.println("category_id : " + book.getCategory_id());
+//		System.out.println("isbn : " + book.getIsbn());
 
 		dao.requireRegisterBook(book); // �떊泥��쁽�솴 �뾽�뜲�씠�듃
 
 		ReqAndDon info = dao.getInformation(book);
 
-		if (info == null) { // �뾾�뒗梨낆씠硫�
-			System.out.println("�뾾�뒗 梨낆씠�떎. informations �뀒�씠釉붿뿉 異붽��빐�빞�븳�떎.");
+		if (info == null) {
 
 			ReqAndDon rBook = dao.getReqAndDonBook(book);
 
@@ -270,11 +264,10 @@ public class ManagerController {
 
 			ReqAndDon result = dao.getInformation(rBook);
 
-			System.out.println(result.getInformation_id());
+//			System.out.println(result.getInformation_id());
 
 			dao.insertBook(result);
 		} else {
-			System.out.println("�엳�뒗梨낆씠�떎. 諛붾줈 insert");
 			dao.insertBook(info);
 		}
 		return "redirect:ManagerBookRequire.nds";
@@ -297,7 +290,7 @@ public class ManagerController {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		System.out.println(filter);
+//		System.out.println(filter);
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (filter == null) {
@@ -331,7 +324,7 @@ public class ManagerController {
 		map.put("end", end + "");
 		
 		map.put("kind", "donation");
-		System.out.println("satrt : " + start + ", end : " + end);
+//		System.out.println("satrt : " + start + ", end : " + end);
 		
 		ArrayList<ReqAndDon> list = dao.donationBookList(map);
 
@@ -413,7 +406,7 @@ public class ManagerController {
 
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 
-		System.out.println("req_don_id : " + dBook.getReq_don_id());
+//		System.out.println("req_don_id : " + dBook.getReq_don_id());
 		ReqAndDon book = dao.getReqAndDonBook(dBook);
 
 		model.addAttribute("book", book);
@@ -427,14 +420,13 @@ public class ManagerController {
 
 		dao.donationRegisterBook(book);
 
-		System.out.println("req_don_id : " + book.getReq_don_id());
-		System.out.println("category_id : " + book.getCategory_id());
-		System.out.println("isbn : " + book.getIsbn());
+//		System.out.println("req_don_id : " + book.getReq_don_id());
+//		System.out.println("category_id : " + book.getCategory_id());
+//		System.out.println("isbn : " + book.getIsbn());
 
 		ReqAndDon info = dao.getInformation(book);
 
-		if (info == null) { // �뾾�뒗梨낆씠硫�
-			System.out.println("�뾾�뒗 梨낆씠�떎. informations �뀒�씠釉붿뿉 異붽��빐�빞�븳�떎.");
+		if (info == null) { 
 
 			ReqAndDon dBook = dao.getReqAndDonBook(book);
 
@@ -453,11 +445,10 @@ public class ManagerController {
 
 			ReqAndDon result = dao.getInformation(dBook);
 
-			System.out.println(result.getInformation_id());
+//			System.out.println(result.getInformation_id());
 
 			dao.insertBook(result);
 		} else {
-			System.out.println("�엳�뒗梨낆씠�떎. 諛붾줈 insert");
 			dao.insertBook(info);
 		}
 
@@ -575,25 +566,39 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value = "/changeToBorrow.nds", method = RequestMethod.GET)
-	public String changeToBorrow(Model model, String borrowing_id) {
-		// 예약 또는 대출 신청이 되어있는 상태에서 대출 상태로 변경
+	public String changeToBorrow(Model model, String borrowing_id, String reservation_id, HttpServletRequest request) {
 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 		Map<String, Object> map = new HashMap<String, Object>();
+		String user_id = request.getSession().getAttribute("sessionId").toString();
+		map.put("user_id", user_id);
+		String book_id;
 		
-		String book_id = dao.getBorrowingById(borrowing_id).getBook_id();
-
-		// 이미 대출일이 있는  애들은 update되면 안됨
-		String borrowing_date = dao.getBorrowingById(borrowing_id).getBorrowing_date();
+		System.out.println("borrowing_id : " + borrowing_id);
+		System.out.println("reservation_id : " + reservation_id);
 		
 		map.put("current_state", "대출");
-		map.put("book_id", book_id);
 		
-		if(borrowing_date == null) {			
-			dao.updateBorrowingDate(borrowing_id);
+		if(borrowing_id != null) {
+			System.out.println("대출대기 --> 대출 승인");
+			book_id = dao.getBorrowingById(borrowing_id).getBook_id();
+			map.put("book_id", book_id);
+			System.out.println("book_id : " + book_id);
+			String borrowing_date = dao.getBorrowingById(borrowing_id).getBorrowing_date(); // 이미 대출일이 있는 애들은 update되면 안됨
+			if(borrowing_date == null) {			
+				dao.updateBorrowingDate(borrowing_id);
+				dao.updateCurrentState(map);
+			}
+		}else if(reservation_id != null) { 
+			System.out.println("예약 --> 대출 승인 : borrowing table에 insert (대출상태로)");
+			map.put("reservation_id", reservation_id);
+			book_id = dao.getBookByReservationId(map).getBook_id();
+			System.out.println("book_id : " + book_id);
+			map.put("book_id", book_id);
+			dao.insertBorrowing(map);
+			dao.stopReserving(map);
 			dao.updateCurrentState(map);
-		}else {
-//			대출 버튼에 마우스 오버 막거나 alret 창 띄워주기
 		}
+		
 		return "redirect:ManagerBorrow.nds";
 	}
 	
@@ -684,7 +689,7 @@ public class ManagerController {
 			uri = "http://openapi.naver.com/search?key=" + apiKey + "&display=10&target=book" + "&d_titl="
 					+ URLEncoder.encode(searchQuery, "UTF-8") + "&query=" + URLEncoder.encode(searchQuery, "UTF-8");
 
-			System.out.println("URI : " + uri);
+//			System.out.println("URI : " + uri);
 
 		} catch (UnsupportedEncodingException e) {
 			System.out.println(e);
@@ -693,7 +698,7 @@ public class ManagerController {
 		NaverParse naverAPI = new NaverParse();
 		ArrayList<ReqAndDon> list = naverAPI.parse(uri);
 
-		System.out.println("list Size : " + list.size());
+//		System.out.println("list Size : " + list.size());
 
 		for (int i = 0; i < list.size(); i++) {
 			ReqAndDon book = list.get(i);
@@ -731,4 +736,18 @@ public class ManagerController {
 		return "WEB-INF/views/mypage/BookInsert.jsp";
 	}
 	
+	@RequestMapping(value = "/ManagerReserve.nds", method = RequestMethod.GET)
+	public String managerReserve(Model model, HttpServletRequest request) {
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		String user_id = request.getSession().getAttribute("sessionId").toString();
+		
+		map.put("user_id", user_id);
+		
+		ArrayList<Borrowing> list = dao.getReservationList(map);
+		model.addAttribute("reservingList", list);
+		
+		
+		return "WEB-INF/views/managerpage/ManagerReserve.jsp";
+	}
 }

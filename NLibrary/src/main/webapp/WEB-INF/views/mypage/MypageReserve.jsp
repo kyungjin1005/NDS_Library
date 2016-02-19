@@ -107,15 +107,24 @@
 							<th></th>
 							<th>제목</th>
 							<th>예약날짜</th>
+							<th>처리상태</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="reservation" items="${reserveList}">
-							<tr>
+							<c:choose>
+									<c:when test="${reservation.processing_state == 0}">
+										<tr>
+									</c:when>
+									<c:otherwise>									
+										<tr style="background-color:#f5f5f5;">
+									</c:otherwise>
+								</c:choose>
 								<td>${reservation.reservation_id }</td>
 								<td><img src="${reservation.image }" alt="" /></td>
 								<td>${reservation.title}</td>
 								<td>${empty reservation.reservated_date?"-":reservation.reservated_date}</td>
+								<td>${reservation.processing_state == 0?"처리전":"처리완료"}</td>
 							</tr>
 						</c:forEach>
 					</tbody>

@@ -62,4 +62,8 @@ public interface IMainDAO {
 
 	public String getIsbn(Map<String, Object> map);
 
+	public int isReservedByUser(Map<String, Object> map);
+
+	public Borrowing findBookAndInfoByBookId(Map<String, Object> map);
+
 }

@@ -30,9 +30,10 @@
 	<select id="mypageReserveList" parameterType="java.util.Map"
 	resultType="com.nds.library.main.Borrowing">
 		select reservation_id, title, image,
-		to_char(reservated_date, 'yyyy-mm-dd') as  reservated_date
+		to_char(reservated_date, 'yyyy-mm-dd') as  reservated_date, processing_state
 		from ((books join informations using(information_id)) join reservations using(book_id)) join users using(user_id)
    		 where user_id = #{user_id}
+   		 order by processing_state asc, reservation_id desc
 	</select>
 
 	<select id="totalCount" resultType="java.lang.Integer"

@@ -7,6 +7,7 @@
 		<ul class="list-group">
 			<li class="list-group-item"><a href="ManagerMember.nds">회원관리</a></li>
 			<li class="list-group-item"><a href="ManagerBorrow.nds">대출관리</a></li>
+			<li class="list-group-item"><a href="ManagerReserve.nds">예약관리</a></li>
 			<li class="list-group-item"><a data-toggle="collapse"
 				href="#collapse1">도서관리<span
 					class="glyphicon glyphicon-menu-right"
