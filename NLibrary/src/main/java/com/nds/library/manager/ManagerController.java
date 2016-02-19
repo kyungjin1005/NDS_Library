@@ -29,17 +29,6 @@ public class ManagerController {
 	@RequestMapping(value = "/MessageList.nds", method = RequestMethod.GET)
 	public String messageList(Model model, String filter, String pageNum) {
 
-	/*	IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		if (filter == null) {
-			filter = "0";
-		}
-		map.put("filter", filter);
-		ArrayList<Message> list = dao.MessageList(map);
-
-		model.addAttribute("messageList", list);
-		model.addAttribute("filter", filter);*/
 		int pageNumTemp = 1;
  		// 한 페이지에 10개의 글이 보임
  		int listCount = 10;
@@ -623,6 +612,9 @@ public class ManagerController {
 	@RequestMapping(value = "/ManagerBookAll.nds", method = RequestMethod.GET)
 	public String managerBookAll(Model model, String filter, String pageNum) {
 
+		if(filter==null)
+			filter="0";
+		
 		int pageNumTemp = 1;
  		// 한 페이지에 10개의 글이 보임
  		int listCount = 10;
@@ -636,6 +628,7 @@ public class ManagerController {
         Map<String, Object> map = new HashMap<String, Object>();
     
         map.put("startNumber", startNumber);
+        map.put("filter", filter);
         
         IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
         
@@ -643,7 +636,11 @@ public class ManagerController {
         model.addAttribute("totalCount", dao.bookCount(map));
         model.addAttribute("indexCount", dao.bookCount(map)-(pageNumTemp-1)*10);
         model.addAttribute("pageNum", pageNum);
+        model.addAttribute("filter", filter);
 		
+        System.out.println("filter : " + filter);
+        System.out.println("totalCount : " + dao.bookCount(map));
+        
 		return "WEB-INF/views/managerpage/ManagerBookAll.jsp";
 	}
 	

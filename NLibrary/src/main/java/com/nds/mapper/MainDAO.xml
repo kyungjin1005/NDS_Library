@@ -152,9 +152,9 @@
 
    <select id="ownInfo" parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing">
       select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id, reservations.user_id
-      from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)
-      where (current_state='대출가능' or current_state='대출')
-      and informations.ISBN = #{isbn}
+      from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)  
+      where (current_state='대출가능' or current_state='대출' or current_state='대출대기')
+      and informations.ISBN=#{isbn}
    </select>
    
    <select id="bookReview" parameterType="java.util.Map" resultType="com.nds.library.main.Review">
@@ -178,32 +178,34 @@
         from(
          SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
          'yyyy-mm-dd') AS pubdate, current_state, ISBN
-         FROM books join informations using(information_id))aa)
-         where rn between #{startNumber} and #{startNumber}+9
+         FROM books join informations using(information_id)
+         where
          
       <if test="filter==1">
          <if test="key==1">
-            and title like '%' || #{searchWord} || '%' and current_state='대출가능'
+             title like '%' || #{searchWord} || '%' and current_state='대출가능'
          </if>
          <if test="key==2">
-            and author like '%' || #{searchWord} || '%' and current_state='대출가능'
+             author like '%' || #{searchWord} || '%' and current_state='대출가능'
          </if>
          <if test="key==3">
-            and publisher like '%' || #{searchWord} || '%' and current_state='대출가능'
+             publisher like '%' || #{searchWord} || '%' and current_state='대출가능'
          </if>
       </if>
       
       <if test="filter==0">
          <if test="key==1">
-            and title like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
+             title like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
          </if>
          <if test="key==2">
-            and author like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
+             author like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
          </if>
          <if test="key==3">
-            and publisher like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
+             publisher like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
          </if>
       </if>
+      )aa)
+      where rn between #{startNumber} and #{startNumber}+9
        order by pubdate desc
    </select>
    
