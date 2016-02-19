@@ -122,7 +122,14 @@
 					</thead>
 					<tbody>
 						<c:forEach var="reservation" items="${reservingList}">
-							<tr>
+								<c:choose>
+									<c:when test="${reservation.processing_state == 0}">
+										<tr>
+									</c:when>
+									<c:otherwise>									
+										<tr style="background-color:#f5f5f5;">
+									</c:otherwise>
+								</c:choose>
 								<td>${reservation.reservation_id}</td>
 								<td><img src="${reservation.image }" alt="" /></td>
 								<td>${reservation.title}</td>

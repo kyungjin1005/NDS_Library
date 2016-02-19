@@ -125,10 +125,10 @@
 						<c:forEach var="msg" items="${messageList}">
 							<c:choose>
 								<c:when test="${empty msg.checked_date}">
-									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}" style="font-weight: bold;" >
+									<tr data-url="ManagerMemberMsg.nds?msg_id=${msg.message_id}" style="font-weight: bold;" >
 								</c:when>
 								<c:otherwise>									
-									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}"  style="background-color:#f5f5f5;">
+									<tr data-url="ManagerMemberMsg.nds?msg_id=${msg.message_id}"  style="background-color:#f5f5f5;">
 								</c:otherwise>
 							</c:choose>
 								<td><%= index--%></td>

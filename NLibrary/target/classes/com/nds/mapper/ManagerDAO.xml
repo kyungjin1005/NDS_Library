@@ -529,6 +529,7 @@
 	<select id="getReservationList" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
 		select reservation_id, image, title, current_state, name, TO_CHAR(reservated_date,'yyyy-mm-dd') AS reservated_date, processing_state
 		from ((books join informations using(information_id)) left outer join reservations using(book_id)) join users using(user_id)
+		order by processing_state asc, reservation_id desc
 	</select>
 	
 	<select id="getBookByReservationId" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">

@@ -101,7 +101,7 @@
 				</table>
 
 				<div style="text-align: center;">
-					<button class="btn btn-md btn-warning" id="btn-back" data-url="ManagerMember.nds">목록으로</button>
+					<button class="btn btn-md btn-warning" id="btn-back" data-url="MessageList.nds">목록으로</button>
 				</div>
 			</div>
 		</div>
