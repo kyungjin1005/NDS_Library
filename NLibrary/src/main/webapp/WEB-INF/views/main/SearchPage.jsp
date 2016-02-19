@@ -196,13 +196,8 @@
 
 					<tbody>
 						<c:forEach var="data" items="${data}">
-<<<<<<< HEAD
 							<tr href="BookInfo.nds?isbn=${data.ISBN}&book_id=${data.book_id}" style="cursor: pointer;">
-								<td>${data.rownum}</td>
-=======
-							<tr href="BookInfo.nds?isbn=${data.isbn}&book_id=${data.book_id}" style="cursor: pointer;">
 								<td><%= index--%></td>
->>>>>>> 032c2ac6a446f453d25bf5ddb261ed51491d1faa
 								<td><img src="${data.image}" alt="" /><span>${data.title}</span></td>
 								<td>${data.author}</td>
 								<td>${data.publisher}</td>

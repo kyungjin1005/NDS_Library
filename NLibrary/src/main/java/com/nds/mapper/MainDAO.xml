@@ -49,7 +49,7 @@
 		where rownum=1
 	</select>
 
-	<select id="MonthlyBookList" resultType="com.nds.library.main.Book">
+	<select id="MonthlyBookList" resultType="com.nds.library.main.Borrowing">
 		select *
 		from (select rownum as r, isbn, read_count, title, publisher,
 		author,
@@ -76,7 +76,7 @@
 	</select>
 
 
-	<select id="NewRegisteredBookList" resultType="com.nds.library.main.Book">
+	<select id="NewRegisteredBookList" resultType="com.nds.library.main.Borrowing">
 		select *
 		from(
 		select distinct title, image, registered_date, author, publisher
@@ -136,11 +136,11 @@
       )
    </select>
 
-   <select id="bookList" resultType="com.nds.library.main.Book">
+   <select id="bookList" resultType="com.nds.library.main.Borrowing">
       SELECT * FROM books
    </select>
 
-   <select id="bookInfo"   parameterType="java.util.Map" resultType="com.nds.library.main.Information">
+   <select id="bookInfo"   parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing">
           SELECT ROWNUM, image, title, ISBN, author, publisher, pubdate, information_id,
       current_state, explanation
       FROM(SELECT image, title, ISBN, author,
@@ -150,8 +150,8 @@
       WHERE ISBN=#{isbn})
    </select>
 
-   <select id="ownInfo" parameterType="java.util.Map" resultType="com.nds.library.main.Book">
-      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id
+   <select id="ownInfo" parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing">
+      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id, reservations.user_id
       from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)
       where (current_state='대출가능' or current_state='대출')
       and ISBN=#{isbn}
@@ -171,7 +171,7 @@
    </insert>
 
    <select id="result" parameterType="java.util.Map"
-      resultType="com.nds.library.main.Information">
+      resultType="com.nds.library.main.Borrowing">
  		SELECT *
          FROM(
          select rownum rn, aa.*
@@ -225,7 +225,7 @@
       ORDER BY registered_date desc
    </select>
    
-   <select id="findBookById" resultType="com.nds.library.main.Book">
+   <select id="findBookById" resultType="com.nds.library.main.Borrowing">
    	SELECT * FROM books WHERE book_id = #{book_id}
    </select>
    
