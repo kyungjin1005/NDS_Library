@@ -25,10 +25,10 @@ public class InterparkParse {
        }
    }
    
-   public ArrayList<Book> parse(String uri)
+   public ArrayList<Borrowing> parse(String uri)
    {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      ArrayList<Book> bookList = new ArrayList<Book>();
+      ArrayList<Borrowing> bookList = new ArrayList<Borrowing>();
       try
       {
          DocumentBuilder builder = dbf.newDocumentBuilder();
@@ -40,7 +40,7 @@ public class InterparkParse {
           for(int i=0; i< 3;i++){
             Element element = (Element)list.item(i);
             
-            Book book = new Book();
+            Borrowing book = new Borrowing();
             book.setTitle(getContent(element, "title"));
             book.setImage(getContent(element, "coverSmallUrl"));
             book.setRegistered_date(getContent(element, "pubDate"));

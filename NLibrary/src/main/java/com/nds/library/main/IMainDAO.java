@@ -9,7 +9,7 @@ import com.nds.library.main.User;
 
 public interface IMainDAO {
 
-	public ArrayList<Book> NewRegisteredBookList();
+	public ArrayList<Borrowing> NewRegisteredBookList();
 
 	public ArrayList<Board> StudyBoardList();
 
@@ -17,10 +17,10 @@ public interface IMainDAO {
 
 	public ArrayList<Board> MonthlyChampion();
 
-	public ArrayList<Book> MonthlyBookList();
+	public ArrayList<Borrowing> MonthlyBookList();
 
 	// public ArrayList<Book> NewBookList();
-	public ArrayList<Book> bookList();
+	public ArrayList<Borrowing> bookList();
 
 	public User getSessionId(Map<String, Object> map);
 
@@ -30,19 +30,19 @@ public interface IMainDAO {
 
 	public int add(Review r);
 
-	public ArrayList<Book> ownInfo(Map<String, Object> map);
+	public ArrayList<Borrowing> ownInfo(Map<String, Object> map);
 
-	public ArrayList<Information> bookInfo(Map<String, Object> map);
+	public ArrayList<Borrowing> bookInfo(Map<String, Object> map);
 
 	public ArrayList<Review> bookReview(Map<String, Object> map);
 
-	public ArrayList<Information> result(HashMap<String, Object> map);
+	public ArrayList<Borrowing> result(HashMap<String, Object> map);
 
 	public ArrayList<Borrowing> data(HashMap<String, Object> map);
 
-	public Book findBookById(String book_id);
+	public Borrowing findBookById(String book_id);
 
-	public Information findInfoById(String information_id);
+	public Borrowing findInfoById(String information_id);
 
 	public void borrowBook(String book_id, String user_id);
 

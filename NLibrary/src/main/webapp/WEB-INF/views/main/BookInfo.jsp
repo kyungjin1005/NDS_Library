@@ -150,7 +150,7 @@
 						</tr>
 						<tr>
 							<th>ISBN</th>
-							<td>${bookInfo.isbn}</td>
+							<td>${bookInfo.ISBN}</td>
 						</tr>
 
 						<tr>
@@ -272,7 +272,7 @@
 					<div class="col-md-9">
 						<input type="hidden" id="information_id" name="information_id"
 							value="${bookInfo.information_id}"> <input type="hidden"
-							id="isbn" name="isbn" value="${bookInfo.isbn}"> <input
+							id="isbn" name="isbn" value="${bookInfo.ISBN}"> <input
 							type="text" placeholder="댓글을 입력해주세요(50)" required="required"
 							maxlength="100" class="form-control" id="content" name="content">
 					</div>
