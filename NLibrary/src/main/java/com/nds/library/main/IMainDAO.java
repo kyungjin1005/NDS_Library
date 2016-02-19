@@ -38,7 +38,7 @@ public interface IMainDAO {
 
 	public ArrayList<Information> result(HashMap<String, Object> map);
 
-	public ArrayList<Information> data(HashMap<String, Object> map);
+	public ArrayList<Borrowing> data(HashMap<String, Object> map);
 
 	public Book findBookById(String book_id);
 

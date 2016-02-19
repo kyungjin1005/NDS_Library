@@ -29,4 +29,6 @@ public interface IMypageDAO {
 	public void updateMsgToCheck(int msg_id);
 
 	public int getBorrowingCount(String user_id);
+
+	public void delayBorrowing(Map<Object, String> map);
 }

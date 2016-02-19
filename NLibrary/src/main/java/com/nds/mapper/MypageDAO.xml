@@ -7,9 +7,9 @@
 	<select id="mypageBorrow" parameterType="java.util.Map"
 	resultType="com.nds.library.main.Borrowing">
 		select borrowing_id, image, title, current_state, delay_count,
-		to_char(borrowing_date, 'yyyy-dd-mm') as  borrowing_date,
-		to_char(scheduled_date, 'yyyy-dd-mm') as  scheduled_date,
-		to_char(returned_date, 'yyyy-dd-mm') as  returned_date
+		to_char(borrowing_date, 'yyyy-mm-dd') as  borrowing_date,
+		to_char(scheduled_date, 'yyyy-mm-dd') as  scheduled_date,
+		to_char(returned_date, 'yyyy-mm-dd') as  returned_date
 		from (borrowings join books using(book_id)) join informations using(information_id)
 		where user_id = #{user_id}
 		<if test="filter == 0">  <!-- 전체 -->
@@ -30,7 +30,7 @@
 	<select id="mypageReserveList" parameterType="java.util.Map"
 	resultType="com.nds.library.main.Borrowing">
 		select reservation_id, title, image,
-		to_char(reservated_date, 'yyyy-dd-mm') as  reservated_date
+		to_char(reservated_date, 'yyyy-mm-dd') as  reservated_date
 		from ((books join informations using(information_id)) join reservations using(book_id)) join users using(user_id)
    		 where user_id = #{user_id}
 	</select>
@@ -228,4 +228,10 @@
 	<select id="getBorrowingCount" resultType="java.lang.Integer">
 		select count(*) as borrowing_count from borrowings where user_id = #{user_id} and borrowing_date is not null and returned_date is null
 	</select>
+	
+	<update id="delayBorrowing" parameterType="java.util.Map">
+		UPDATE borrowings
+		SET delay_count = 1, scheduled_date = scheduled_date + 7
+		WHERE borrowing_id = #{borrowing_id}
+	</update>
 </mapper>   

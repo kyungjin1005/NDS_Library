@@ -195,7 +195,7 @@
 						<th>청구기호</th>
 						<th>도서상태</th>
 						<th>반납예정일</th>
-						<th>예약/대여</th>
+						<th>예약/대출</th>
 						<th>isReserivng</th>
 					</tr>
 				</thead>
@@ -208,9 +208,14 @@
 							<td>${own.current_state}</td>
 							<td>${own.scheduled_date}</td>
 							<td>
-								<button class="btn btn-md btn-default btn-reserve"  value="${own.book_id }" data-reservation_id="${own.reservation_id }">예약</button>
-								<button class="btn btn-md btn-warning btn-borrow"
-									onclick="borrow()" value = "${own.book_id }">대여</button>
+								<button class="btn btn-md btn-default btn-reserve"  
+									value="${own.book_id }" 
+									data-reservation_id="${own.reservation_id }"
+									${own.reservation_id==1?"disabled=\"disable\"":""}>예약</button>
+								<button class="btn btn-md btn-warning btn-borrow" 
+									value = "${own.book_id }" 
+									data-current_state="${own.current_state }"
+									${own.current_state=='대출'?"disabled=\"disabled\"":""}>대출</button>
 							</td>
 							<td>${empty own.reservation_id?"-":own.reservation_id }</td>
 						</tr>
@@ -286,7 +291,7 @@
 </body>
 
 <script>
-   $(document).ready(function() {
+   $(document).ready(function() {		   
 	   $(".btn-reserve").on("click", function() {
 		   //alert($(this).val());
 		   //alert($(this).data("reservation_id"));
@@ -294,23 +299,32 @@
 		   var reservation_id = $(this).data("reservation_id");
 		   
 		   if(reservation_id == 1) {
-			   alert("이미 예약되어있는 책입니다.");
+			   //alert("이미 예약되어있는 책입니다.");
 		   }else {
 			   //alert("예약 가능한 책");
 			   $(location).attr("href", "reserveBook.nds?book_id=" + book_id);
 			   alert("책이 예약되었습니다.");
 		   }
 	   });
-   });
 
-   function borrow() {
-	   var count = "${borrowing_count}";
-	   if(count >= 3) {
-		   alert("대출 가능한 권수 3권을 초과! 대출중인 책들을 반납해주세요.")
-	   }else {
-		   alert("대출이 신청되었습니다. 관리자의 승락을 기다리세요.");
-		   $(location).attr("href", "borrowBook.nds?book_id=" + $(".btn-borrow").val());
-	   }
-   }
-</script>
+	   $(".btn-borrow").on("click", function() {
+		   var book_id = $(this).val();
+		   var count = "${borrowing_count}";
+		   var current_state = $(this).data("current_state");
+		   //alert(book_id);
+		   //alert(current_state);
+		   
+		   if(count >= 3) {
+			   alert("대출 가능한 권수 3권을 초과! 대출중인 책들을 반납해주세요.")
+		   }else {
+			   if(current_state == '대출') {
+				   alert("이미 대출중인 도서입니다.");
+			   }else {
+				   alert("대출이 신청되었습니다. 관리자의 승락을 기다리세요.");
+				   $(location).attr("href", "borrowBook.nds?book_id=" + book_id);
+			   }
+		   }
+	   })
+   });
+ </script>
 </html>

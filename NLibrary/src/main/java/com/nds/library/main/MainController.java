@@ -152,8 +152,6 @@ public class MainController {
 		String user_id = request.getSession().getAttribute("sessionId").toString();
 		model.addAttribute("borrowing_count", dao.getBorrowingCount(user_id));
 
-		// model.addAttribute("is_borrowing", dao.isBorrowing(book_id));
-
 		return "WEB-INF/views/main/BookInfo.jsp";
 	}
 
@@ -194,7 +192,7 @@ public class MainController {
 		map.put("category_id", category_id);
 		map.put("filter", filter);
 
-		ArrayList<Information> data = dao.data(map);
+		ArrayList<Borrowing> data = dao.data(map);
 
 		String category = "";
 		if (category_id.equals("1")) {
