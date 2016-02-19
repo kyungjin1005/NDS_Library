@@ -48,9 +48,13 @@ public interface IManagerDAO {
 	public ArrayList<Borrowing> bookList(Map<String, Object> map);
 	public Borrowing getDamAndLosBook(Borrowing borrow);
 	public void changeToDamOrLos(Map<String, Object> map);
-	// 유저수 출력
+	
 	public int countUser();
-	// 
+	
 	public int bookCount(Map<String, Object> map);
 	public int messageCount(Map<String, Object> map);
+	public void insertBorrowing(Map<String, Object> map);
+	public void stopReserving(Map<String, Object> map);
+	public ArrayList<Borrowing> getReservationList(Map<String, Object> map);
+	public Borrowing getBookByReservationId(Map<String, Object> map);
 }

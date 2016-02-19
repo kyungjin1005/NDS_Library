@@ -131,7 +131,7 @@
 									<tr data-url="MypageMemberMsg.nds?msg_id=${msg.message_id}"  style="background-color:#f5f5f5;">
 								</c:otherwise>
 							</c:choose>
-								<td><%-- ${msg.message_id} --%> <%= index--%></td>
+								<td><%= index--%></td>
 								<td>${msg.title}</td>
 								<td>${msg.content}</td>
 								<td>${msg.name }</td>

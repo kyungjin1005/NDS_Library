@@ -4,53 +4,46 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nds.library.manager.IManagerDAO">
 
-	<!-- <select id="MessageList" resultType="com.nds.library.manager.Message">
+	<!-- <select id="MessageList" resultType="com.nds.library.manager.Message"> 
+		SELECT message_id, user_id, is_checked, title, content, sended_date, checked_date, 
+		name FROM messages JOIN users USING(user_id) <if test="filter == 0"> 전체 where 
+		sended_date is not null </if> <if test="filter == 1"> 읽은 메시지 where is_checked 
+		= 1 </if> <if test="filter == 2"> 안읽은 메시지 where is_checked = 0 </if> order 
+		by sended_date desc </select> -->
+	<select id="MessageList" resultType="com.nds.library.manager.Message"
+		parameterType="java.util.HashMap">
 		SELECT message_id, user_id, is_checked, title, content, sended_date,
 		checked_date, name
-		FROM messages JOIN users USING(user_id)
-		<if test="filter == 0">  전체
-			where sended_date is not null
-		</if>
-		<if test="filter == 1">  읽은 메시지
-			where is_checked = 1
-		</if>
-		<if test="filter == 2">  안읽은 메시지
-			where is_checked = 0
-		</if>
-		order by sended_date desc
-	</select> -->
-	<select id="MessageList" resultType="com.nds.library.manager.Message" parameterType="java.util.HashMap">
-		SELECT message_id, user_id, is_checked, title, content, sended_date,
-		checked_date, name
-       FROM(
-         select rownum rn, aa.*
-        from(
-        select *
-        from messages JOIN users USING(user_id)      
-         )aa)
-         where rn between #{startNumber} and #{startNumber}+9 
-		<if test="filter == 0">  
+		FROM(
+		select rownum rn, aa.*
+		from(
+		select *
+		from messages JOIN users USING(user_id)
+		order by message_id desc
+		)aa)
+		where rn between #{startNumber} and #{startNumber}+9
+		<if test="filter == 0">
 			and sended_date is not null
 		</if>
-		<if test="filter == 1">  
+		<if test="filter == 1">
 			and is_checked = 1
 		</if>
-		<if test="filter == 2">  
+		<if test="filter == 2">
 			and is_checked = 0
 		</if>
 		order by sended_date desc
 	</select>
-	
+
 	<select id="messageCount" resultType="Integer">
 		SELECT count(*)
 		FROM messages JOIN users USING(user_id)
-		<if test="filter == 0">  
+		<if test="filter == 0">
 			where sended_date is not null
 		</if>
-		<if test="filter == 1">  
+		<if test="filter == 1">
 			where is_checked = 1
 		</if>
-		<if test="filter == 2"> 
+		<if test="filter == 2">
 			where is_checked = 0
 		</if>
 	</select>
@@ -274,13 +267,16 @@
 	<select id="memberList" parameterType="java.util.HashMap"
 		resultType="com.nds.library.main.User">
 		SELECT user_id, nds_number,
-		name, position, department, picture, authority,
-		TO_CHAR(registered_date,'yyyy-mm-dd') as registered_date
+		name, position, department,
+		picture, authority,
+		TO_CHAR(registered_date,'yyyy-mm-dd') as
+		registered_date
 		from(
 		select rownum rn, aa.*
 		from
 		users aa)
-		where rn between #{startNumber} and #{startNumber}+9
+		where rn
+		between #{startNumber} and #{startNumber}+9
 		order by user_id desc
 	</select>
 
@@ -363,7 +359,7 @@
 		Insert into BOOKS
 		(BOOK_ID,INFORMATION_ID,CURRENT_STATE,REGISTERED_DATE,LOCATION) values
 		((SELECT NVL(MAX(BOOK_ID),0)+1 FROM
-		BOOKS),#{information_id},'대여가능',sysdate,
+		BOOKS),#{information_id},'대출가능',sysdate,
 
 		<if test="category_id == 1">
 			(select 'A_' || (max(TO_NUMBER(SUBSTR(location, 3, 4)))+1)
@@ -466,16 +462,13 @@
 		update borrowings
 		set
 		returned_date = SYSDATE
-		where borrowing_id = #{borrowing_id}
+		where
+		borrowing_id = #{borrowing_id}
 	</update>
 
-<!-- 	<select id="bookList" parameterType="java.util.Map"
-		resultType="com.nds.library.main.Borrowing">
-		SELECT *
-		FROM ((books join informations
-		using(information_id)) left outer join borrowings using(book_id)) left
-		outer join users using(user_id)
-	</select> -->
+	<!-- <select id="bookList" parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing"> 
+		SELECT * FROM ((books join informations using(information_id)) left outer 
+		join borrowings using(book_id)) left outer join users using(user_id) </select> -->
 	<select id="bookList" parameterType="java.util.Map"
 		resultType="com.nds.library.main.Borrowing">
 		SELECT *
@@ -484,29 +477,63 @@
 		from(
 		select *
 		from
-		((books join informations using(information_id)) left outer join borrowings
+		((books join informations using(information_id)) left outer join
+		borrowings
 		using(book_id)) left outer join users using(user_id)) aa)
 		where rn between #{startNumber} and #{startNumber}+9
-		order by book_id desc
+		order by book_id
+		desc
 	</select>
-	
+
 	<select id="bookCount" parameterType="java.util.Map" resultType="Integer">
-		SELECT count(*) FROM ((books join informations using(information_id)) left outer 
+		SELECT count(*) FROM ((books join informations using(information_id))
+		left outer
 		join borrowings using(book_id)) left outer join users using(user_id)
 	</select>
 
 	<select id="getDamAndLosBook" resultType="com.nds.library.main.Borrowing">
 		SELECT book_id, title,
 		author, publisher, image,
-		to_char(pubdate, 'YYYY-MM-DD') as pubdate, publisher, to_char(registered_date,
+		to_char(pubdate, 'YYYY-MM-DD') as pubdate,
+		publisher, to_char(registered_date,
 		'YYYY-MM-DD') as registered_date
 		FROM books join informations
 		using(information_id)
-		WHERE book_id = #{book_id}
+		WHERE book_id =
+		#{book_id}
 	</select>
 
 	<update id="changeToDamOrLos">
 		UPDATE books SET current_state = #{state} WHERE
 		book_id = #{book_id}
 	</update>
+
+	<insert id="insertBorrowing">
+		INSERT INTO borrowings(borrowing_id, book_id,
+		user_id, borrowing_date, scheduled_date)
+		VALUES (
+		(SELECT NVL(MAX(borrowing_id),0)+1 FROM borrowings),
+		#{book_id},
+		#{user_id},
+		SYSDATE,
+		SYSDATE + 14
+		)
+	</insert>
+
+	<update id="stopReserving">
+		UPDATE reservations
+		SET processing_state = 1
+		WHERE reservation_id =#{reservation_id}
+	</update>
+
+	<select id="getReservationList" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
+		select reservation_id, image, title, current_state, name, TO_CHAR(reservated_date,'yyyy-mm-dd') AS reservated_date, processing_state
+		from ((books join informations using(information_id)) left outer join reservations using(book_id)) join users using(user_id)
+	</select>
+	
+	<select id="getBookByReservationId" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
+		SELECT *
+		FROM reservations
+		WHERE reservation_id = #{reservation_id}
+	</select>
 </mapper>   

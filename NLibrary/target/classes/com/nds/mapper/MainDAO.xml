@@ -154,7 +154,7 @@
       select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id, reservations.user_id
       from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)
       where (current_state='대출가능' or current_state='대출')
-      and ISBN=#{isbn}
+      and informations.ISBN = #{isbn}
    </select>
    
    <select id="bookReview" parameterType="java.util.Map" resultType="com.nds.library.main.Review">
@@ -225,8 +225,10 @@
       ORDER BY registered_date desc
    </select>
    
-   <select id="findBookById" resultType="com.nds.library.main.Borrowing">
-   	SELECT * FROM books WHERE book_id = #{book_id}
+   <select id="findBookAndInfoByBookId" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
+   	SELECT * 
+   	FROM books join informations using(information_id)
+   	WHERE book_id = #{book_id}
    </select>
    
    <insert id="borrowBook" parameterType="com.nds.library.main.Borrowing">
@@ -238,8 +240,8 @@
    </update>
    
    <insert id="reserveBook" parameterType="com.nds.library.main.Borrowing">
-   	INSERT INTO reservations(reservation_id, book_id, user_id) 
-   	VALUES((SELECT NVL(MAX(reservation_id),0)+1 FROM reservations), #{book_id}, #{user_id})
+   	INSERT INTO reservations(reservation_id, book_id, user_id, ISBN, processing_state) 
+   	VALUES((SELECT NVL(MAX(reservation_id),0)+1 FROM reservations), #{book_id}, #{user_id}, #{ISBN}, 0)
    </insert>
    
    <select id="getBorrowingCount" resultType="java.lang.Integer">
@@ -249,12 +251,18 @@
  	<select id="isReserving" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select count(*)
 		from reservations
-		where book_id = #{book_id}
+		where book_id = #{book_id} and processing_state = 0
 	</select>
 	
 	<select id = "getIsbn" resultType="java.lang.String" parameterType="java.util.Map">
 		SELECT isbn
 		FROM books join informations using(information_id)
 		WHERE book_id = #{book_id}
+	</select>
+	
+	<select id = "isReservedByUser" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT count(*)
+		FROM reservations
+		WHERE user_id = #{user_id} and ISBN = #{ISBN} and processing_state = 0
 	</select>
 </mapper>   

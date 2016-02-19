@@ -306,18 +306,26 @@ public class MainController {
 	@RequestMapping(value = "/reserveBook.nds", method = RequestMethod.GET)
 	public String reserveBook(Model model, String book_id, HttpServletRequest request) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
-		String user_id = request.getSession().getAttribute("sessionId").toString();
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String user_id = request.getSession().getAttribute("sessionId").toString();
 		map.put("book_id", book_id);
-
-		// 예약 table에 없는 책이라면 reservation table에 insert
-
+		
+		// 같은 책, 같은 user이면 예약 1번밖에 못하도록 구현
+		Borrowing book_information = dao.findBookAndInfoByBookId(map);
+		String ISBN = book_information.getISBN();
+		map.put("ISBN", ISBN);
 		map.put("user_id", user_id);
-		dao.reserveBook(map);
-
+		
+		System.out.println("ISBN : " + ISBN);
+		System.out.println("book_id : " + book_id);
+		System.out.println("user_id : " + user_id);
+		
+		if(dao.isReservedByUser(map) == 1) {
+			System.out.println("니가 예약해놨던 책의 ISBN이랑 같은 ISBN을 가지는 책이다.");
+		}else {
+			dao.reserveBook(map);
+		}
 		return "redirect:mypageReserve.nds";
-
-		// 관리자가 예약되서 온 책을 대출상태로 바꾸어줄 때 예약 table에서 delete해야함
-		// 예약 도서 관리 페이지 따로 만들어야함
 	}
 }
