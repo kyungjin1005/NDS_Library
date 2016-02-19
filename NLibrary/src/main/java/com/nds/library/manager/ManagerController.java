@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.nds.library.board.Board;
+import com.nds.library.board.IBoardDAO;
 import com.nds.library.main.Borrowing;
 import com.nds.library.main.User;
 import com.nds.library.mypage.NaverParse;
@@ -26,9 +28,9 @@ public class ManagerController {
 	private SqlSession sqlSession;
 
 	@RequestMapping(value = "/MessageList.nds", method = RequestMethod.GET)
-	public String messageList(Model model, String filter) {
+	public String messageList(Model model, String filter, String pageNum) {
 
-		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+	/*	IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		if (filter == null) {
@@ -38,6 +40,30 @@ public class ManagerController {
 		ArrayList<Message> list = dao.MessageList(map);
 
 		model.addAttribute("messageList", list);
+		model.addAttribute("filter", filter);*/
+		int pageNumTemp = 1;
+ 		// 한 페이지에 10개의 글이 보임
+ 		int listCount = 10;
+ 		// 뷰에서 글번호를 받아옴
+ 		if (pageNum != null) {
+ 			pageNumTemp = Integer.parseInt(pageNum);
+ 		}
+ 		// 시작하는 글번호를 계산함
+ 		int startNumber = listCount * (pageNumTemp-1)+1;
+		
+		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		if (filter == null) {
+			filter = "0";
+		}
+		map.put("filter", filter);
+		map.put("startNumber", startNumber);
+		ArrayList<Message> list = dao.MessageList(map);
+		
+		model.addAttribute("messageList", list);
+		model.addAttribute("totalCount", dao.messageCount(map));
+        model.addAttribute("indexCount", dao.messageCount(map)-(pageNumTemp-1)*10);
 		model.addAttribute("filter", filter);
 
 		return "WEB-INF/views/managerpage/ManagerMessageBox.jsp";
@@ -451,13 +477,30 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/ManagerMember.nds", method = RequestMethod.GET)
-	public String managerMember(Model model) {
+	public String managerMember(Model model, String pageNum) {
 
-		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-		ArrayList<User> user = dao.memberList();
+		
+		int pageNumTemp = 1;
+ 		// 한 페이지에 10개의 글이 보임
+ 		int listCount = 10;
+ 		// 뷰에서 글번호를 받아옴
+ 		if (pageNum != null) {
+ 			pageNumTemp = Integer.parseInt(pageNum);
+ 		}
+ 		// 시작하는 글번호를 계산함
+ 		int startNumber = listCount * (pageNumTemp-1)+1;
+		
+ 		Map<String, Object> map = new HashMap<String, Object>();
+ 		map.put("startNumber", startNumber);
+		
+ 		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+		ArrayList<User> user = dao.memberList(map);
 
 		model.addAttribute("userList", user);
-		model.addAttribute("size", user.size());
+	/*	model.addAttribute("size", user.size());*/
+		model.addAttribute("totalCount", dao.countUser());
+		model.addAttribute("indexCount", dao.countUser()-(pageNumTemp-1)*10);
+		model.addAttribute("pageNum", pageNum);
 
 		return "WEB-INF/views/managerpage/ManagerMember.jsp";
 	}
@@ -572,19 +615,28 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value = "/ManagerBookAll.nds", method = RequestMethod.GET)
-	public String managerBookAll(Model model, String filter) {
+	public String managerBookAll(Model model, String filter, String pageNum) {
 
-		IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
-//		Map<String, Object> map = new HashMap<String, Object>();
-//
-//		if (filter == null) {
-//			filter = "0";
-//		}
-//		map.put("filter", filter);
-//		model.addAttribute("filter", filter);
-
-		// borrowing 상태가 있는 애면 찾아서 user name을 가져와
-		model.addAttribute("bookList", dao.bookList());
+		int pageNumTemp = 1;
+ 		// 한 페이지에 10개의 글이 보임
+ 		int listCount = 10;
+ 		// 뷰에서 글번호를 받아옴
+ 		if (pageNum != null) {
+ 			pageNumTemp = Integer.parseInt(pageNum);
+ 		}
+ 		// 시작하는 글번호를 계산함
+ 		int startNumber = listCount * (pageNumTemp-1)+1;
+   	
+        Map<String, Object> map = new HashMap<String, Object>();
+    
+        map.put("startNumber", startNumber);
+        
+        IManagerDAO dao = sqlSession.getMapper(IManagerDAO.class);
+        
+        model.addAttribute("bookList", dao.bookList(map));
+        model.addAttribute("totalCount", dao.bookCount(map));
+        model.addAttribute("indexCount", dao.bookCount(map)-(pageNumTemp-1)*10);
+        model.addAttribute("pageNum", pageNum);
 		
 		return "WEB-INF/views/managerpage/ManagerBookAll.jsp";
 	}

@@ -80,7 +80,6 @@ public class MainController {
 		return "WEB-INF/views/main/Main.jsp";
 	}
 
-	// 3踰� 寃��깋寃곌낵 (SearchResult)
 	@RequestMapping(value = "/SearchResult.nds", method = RequestMethod.GET)
 	public String searchResult(Model model, String key, String searchWord, String filter, String pageNum) {
 
@@ -119,7 +118,6 @@ public class MainController {
 		return "WEB-INF/views/main/SearchResult.jsp";
 	}
 
-	// 4踰� �룄�꽌 �긽�꽭�젙蹂�(BookInfo) - (5)由щ럭 �옉�꽦 �룷�븿
 	@RequestMapping(value = "/BookInfo.nds", method = RequestMethod.GET)
 	public String bookInfo(Model model, String isbn, HttpServletRequest request, String book_id) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
@@ -149,15 +147,15 @@ public class MainController {
 			Review info = bookReview.get(i);
 			String star = info.getStar();
 			if (star.equals("1")) {
-				info.setStar("�쁿�쁿�쁿�쁿�쁾");
+				info.setStar("☆☆☆☆★");
 			} else if (star.equals("2")) {
-				info.setStar("�쁿�쁿�쁿�쁾�쁾");
+				info.setStar("☆☆☆★★");
 			} else if (star.equals("3")) {
-				info.setStar("�쁿�쁿�쁾�쁾�쁾");
+				info.setStar("☆☆★★★");
 			} else if (star.equals("4")) {
-				info.setStar("�쁿�쁾�쁾�쁾�쁾");
+				info.setStar("☆★★★★");
 			} else if (star.equals("5")) {
-				info.setStar("�쁾�쁾�쁾�쁾�쁾");
+				info.setStar("★★★★★");
 			}
 		}
 		model.addAttribute("bookReview", bookReview);
@@ -195,7 +193,7 @@ public class MainController {
 		return url;
 	}
 
-	// 6踰� �옄猷뚭��깋 (SearchPage)
+	// 자료검색 (SearchPage)
 	@RequestMapping(value = "/SearchPage.nds", method = RequestMethod.GET)
 	public String SearchPage(Model model, String category_id, String filter, String pageNum) {
 		
