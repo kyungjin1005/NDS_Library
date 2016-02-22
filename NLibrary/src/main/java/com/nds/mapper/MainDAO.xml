@@ -318,7 +318,7 @@
 <!-- 		select * from (books join informations using(information_id)) where information_id = #{information_id} 
 		and (current_state = '대출가능' or current_state = '대출') -->
 		
-	      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id, reservations.user_id
+	      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id, reservations.user_id, returned_date
 	      from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)  
 	      where information_id = #{information_id} and (current_state = '대출가능' or current_state = '대출')
 	</select>

@@ -206,7 +206,7 @@
 							<td>${borrowing.book_id}</td>
 							<td>${borrowing.location}</td>
 							<td>${borrowing.current_state}</td>
-							<td>${empty borrowing.scheduled_date?"-":borrowing.scheduled_date}</td>
+							<td>${empty borrowing.returned_date?borrowing.scheduled_date:"-"}</td>
 							<td>
 								<button class="btn btn-md btn-default btn-reserve"  
 									value="${borrowing.book_id }" 
