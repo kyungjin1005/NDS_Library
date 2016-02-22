@@ -280,13 +280,24 @@
 	</select>
 	
 	<select id="findBollowingListByInformationId"  resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
-		select * from (books join informations using(information_id)) where information_id = #{information_id} 
-		and (current_state = '대출가능' or current_state = '대출')
+<!-- 		select * from (books join informations using(information_id)) where information_id = #{information_id} 
+		and (current_state = '대출가능' or current_state = '대출') -->
+		
+	      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id, reservations.user_id
+	      from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)  
+	      where information_id = #{information_id} and (current_state = '대출가능' or current_state = '대출')
 	</select>
 	
 	<select id="countPossibleBorrowing" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select count(*)
 		from (books join informations using(information_id)) 
 		where information_id = #{information_id} and (current_state = '대출가능')
+	</select>
+	
+	<!-- 대출 가능한 권수 출력 -->
+	<select id="getInfoBorrowingCount"  resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(*)
+	    from (books join informations using(information_id)) left outer join borrowings using(book_id)
+	    where information_id = #{information_id} and current_state = '대출가능'
 	</select>
 </mapper>   

@@ -14,6 +14,7 @@ public class Borrowing {
 	// reservation
 	private String reservation_id, reservated_date;
 	private int processing_state;
+	private String borrowing_state;
 
 	private int rownum;
 	
@@ -203,6 +204,12 @@ public class Borrowing {
 	}
 	public void setProcessing_state(int processing_state) {
 		this.processing_state = processing_state;
+	}
+	public String getBorrowing_state() {
+		return borrowing_state;
+	}
+	public void setBorrowing_state(String borrowing_state) {
+		this.borrowing_state = borrowing_state;
 	}
 	
 }

@@ -74,4 +74,6 @@ public interface IMainDAO {
 
 	public int countPossibleBorrowing(HashMap<String, Object> map);
 
+	public int getInfoBorrowingCount(String information_id);
+
 }

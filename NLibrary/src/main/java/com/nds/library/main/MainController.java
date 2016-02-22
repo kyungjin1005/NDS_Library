@@ -116,7 +116,7 @@ public class MainController {
 		return "WEB-INF/views/main/SearchResult.jsp";
 	}
 
-	@RequestMapping(value = "/BookInfo.nds", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/BookInfo.nds", method = RequestMethod.GET)
 	public String bookInfo(Model model, String isbn, HttpServletRequest request, String book_id) {
 		IMainDAO dao = sqlSession.getMapper(IMainDAO.class);
 		int BorrowN, ReviewN;
@@ -164,7 +164,7 @@ public class MainController {
 		model.addAttribute("borrowing_count", dao.getBorrowingCount(user_id));
 
 		return "WEB-INF/views/main/BookInfo.jsp";
-	}
+	}*/
 
 	@RequestMapping(value = "/ReviewInsert.nds", method = RequestMethod.POST)
 	public String reviewInsert(Review r, HttpServletRequest request) {
@@ -243,6 +243,15 @@ public class MainController {
 		model.addAttribute("pageNum", pagenum);
 
 		ArrayList<Borrowing> bookInfoList = dao.getBookInfo(map);
+		
+		for (Borrowing book : bookInfoList) {
+			if(dao.getInfoBorrowingCount(book.getInformation_id()) != 0) {
+				book.setBorrowing_state("대출가능");
+			}else {
+				book.setBorrowing_state("대출중");
+			}
+		}
+		
 		model.addAttribute("bookInfoList", bookInfoList);
 		
 //		int countPossibleBorrowing = dao.countPossibleBorrowing(map);

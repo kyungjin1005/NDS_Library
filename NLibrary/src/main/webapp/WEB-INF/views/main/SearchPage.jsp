@@ -205,7 +205,7 @@
 								<td>${bookInfo.author}</td>
 								<td>${bookInfo.publisher}</td>
 								<td>${bookInfo.pubdate}</td>
-								<td><%-- ${current_state} --%></td>
+								<td>${bookInfo.borrowing_state }</td>
 							</tr>
 						</c:forEach>
 					</tbody>

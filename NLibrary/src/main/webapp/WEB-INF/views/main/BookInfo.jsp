@@ -298,12 +298,13 @@
 		   var book_id = $(this).val();
 		   var reservation_id = $(this).data("reservation_id");
 		   
-		   if(reservation_id == 1) {
-			   //alert("이미 예약되어있는 책입니다.");
-		   }else {
+		   if(reservation_id == "") {
 			   //alert("예약 가능한 책");
 			   $(location).attr("href", "reserveBook.nds?book_id=" + book_id);
 			   alert("책이 예약되었습니다.");
+		   }else {
+			   alert(reservation_id);
+			   alert("이미 예약되어있는 책입니다.");
 		   }
 	   });
 
