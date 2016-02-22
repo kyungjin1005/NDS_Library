@@ -568,6 +568,8 @@ public class ManagerController {
 		
 		map.put("current_state", "대출");
 		
+		String url = null;
+		
 		if(borrowing_id != null) {
 			System.out.println("대출대기 --> 대출 승인");
 			book_id = dao.getBorrowingById(borrowing_id).getBook_id();
@@ -578,18 +580,28 @@ public class ManagerController {
 				dao.updateBorrowingDate(borrowing_id);
 				dao.updateCurrentState(map);
 			}
+			
+			url = "redirect:ManagerBorrow.nds";
+			
 		}else if(reservation_id != null) { 
 			System.out.println("예약 --> 대출 승인 : borrowing table에 insert (대출상태로)");
 			map.put("reservation_id", reservation_id);
 			book_id = dao.getBookByReservationId(map).getBook_id();
+			user_id = dao.getBookByReservationId(map).getUser_id();
 			System.out.println("book_id : " + book_id);
+			System.out.println("user_id : " + user_id);
 			map.put("book_id", book_id);
+			map.put("user_id", user_id);
+			
+			// 현재 선택한 유저의 대출 권수가 3권 이상인지 체크해주어야함
 			dao.insertBorrowing(map);
 			dao.stopReserving(map);
 			dao.updateCurrentState(map);
+			
+			url = "redirect:ManagerReserve.nds";
 		}
 		
-		return "redirect:ManagerBorrow.nds";
+		return url;
 	}
 	
 	@RequestMapping(value = "/changeToReturn.nds", method = RequestMethod.GET)
@@ -735,8 +747,8 @@ public class ManagerController {
 		map.put("user_id", user_id);
 		
 		ArrayList<Borrowing> list = dao.getReservationList(map);
-		model.addAttribute("reservingList", list);
 		
+		model.addAttribute("reservingList", list);
 		
 		return "WEB-INF/views/managerpage/ManagerReserve.jsp";
 	}

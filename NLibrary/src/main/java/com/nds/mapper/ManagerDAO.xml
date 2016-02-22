@@ -411,7 +411,8 @@
 		SELECT borrowing_id, title, image, book_id, current_state,
 		to_char(borrowing_date, 'yyyy-dd-mm') as borrowing_date,
 		to_char(scheduled_date, 'yyyy-dd-mm') as scheduled_date,
-		to_char(returned_date, 'yyyy-dd-mm') as returned_date
+		to_char(returned_date, 'yyyy-dd-mm') as returned_date,
+		name
 		from (((books
 		join informations using(information_id)) left outer join
 		borrowings

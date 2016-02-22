@@ -113,9 +113,9 @@
 							<th>번호</th>
 							<th></th>
 							<th>제목</th>
-							<th>책 상태</th>
+							<!-- <th>책 상태</th> -->
 							<th>예약날짜</th>
-							<th>User</th>
+							<th>예약자</th>
 							<th>대출</th>
 							<th>처리 상태</th>
 						</tr>
@@ -133,7 +133,7 @@
 								<td>${reservation.reservation_id}</td>
 								<td><img src="${reservation.image }" alt="" /></td>
 								<td>${reservation.title}</td>
-								<td>${reservation.current_state }</td>
+								<%-- <td>${reservation.current_state }</td> --%>
 								<td>${reservation.reservated_date }</td>
 								<td>${empty reservation.name?"-":reservation.name}</td>
 								<td>
@@ -141,7 +141,7 @@
 										value="${reservation.reservation_id }"
 										 ${reservation.current_state != '대출가능'?"disabled=\"disabled\"":""}>대출승인</button>
 								</td>								
-								<td>${reservation.processing_state == 0?"처리전":"처리완료"}</td>
+								<td>${reservation.processing_state == 0?"예약중":"처리완료"}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -155,16 +155,13 @@
 </body>
 <script>
 	$(document).ready(
-			function() {
-				$(".btn-borrow").on(
-						"click",
-						function() {
-							$(location).attr(
-									"href",
-									"changeToBorrow.nds?reservation_id="
-											+ $(this).val());
-							alert("책이 대출되었습니다.");
-						});
+			function() {				
+				$(".btn-borrow").on("click", function() {
+					   $(location).attr(
+								"href",
+								"changeToBorrow.nds?reservation_id="
+										+ $(this).val());
+						alert("책이 대출되었습니다.");
+				   });
 			});
 </script>
-</html>

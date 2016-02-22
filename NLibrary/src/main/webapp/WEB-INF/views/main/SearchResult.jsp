@@ -166,14 +166,14 @@ table tbody tr:HOVER {
 
 
 				<c:forEach var="result" items="${result}">
-					<tr href="BookInfo.nds?isbn=${result.ISBN}"
-						style="cursor: pointer;">
+					<tr href="getBorrowingList.nds?information_id=${result.information_id}
+							&category_id=${result.category_id}&ISBN=${result.ISBN} style="cursor: pointer;">
 						<td><%=index--%></td>
 						<td><img src="${result.image}" alt="" /><span>${result.title}</span></td>
 						<td>${result.author}</td>
 						<td>${result.publisher}</td>
 						<td>${result.pubdate}</td>
-						<td>${result.current_state}</td>
+						<td>${result.borrowing_state}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

@@ -13,22 +13,24 @@
 	</select>
 
 	<select id="StudyBoardList" resultType="com.nds.library.board.Board">
-		select rownum as board_num, title, boarded_date, board_id
+		select rownum as board_num, title, TO_CHAR(boarded_date, 'YYYY-MM') as
+		boarded_date, board_id
 		from boards
 		where <![CDATA[ ROWNUM <= 10 ]]>
 		and
 		category='스터디'
-		order by BOARDED_DATE desc
+		order by boards.BOARDED_DATE desc
 		<!-- SELECT * FROM Boards -->
 	</select>
 
 	<select id="NoticeBoardList" resultType="com.nds.library.board.Board">
-		select ROWNUM as board_num, title, boarded_date, board_id
+		select ROWNUM as board_num, title, TO_CHAR(boarded_date, 'YYYY-MM') as
+		boarded_date, board_id
 		from boards
 		where <![CDATA[ ROWNUM <= 10 ]]>
 		and
 		category='공지'
-		order by BOARDED_DATE desc
+		order by boards.BOARDED_DATE desc
 		<!-- SELECT * FROM Boards -->
 	</select>
 
@@ -79,131 +81,151 @@
 	<select id="NewRegisteredBookList" resultType="com.nds.library.main.Borrowing">
 		select *
 		from(
-		select distinct title, image, registered_date, author, publisher
+		select distinct title, image, registered_date, author,
+		publisher
 		from books x, informations y
-		where x.information_id = y.information_id
+		where x.information_id =
+		y.information_id
 		order by registered_date desc
 		)
 		where <![CDATA[ rownum <= 3 ]]>
 	</select>
 
 
-   <select id="totalCount" parameterType="java.util.Map"
-      resultType="java.lang.Integer">
-       SELECT count(*) as 
-         FROM(
-         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
-         'yyyy-mm-dd') AS pubdate, current_state, ISBN
-         FROM books join informations using(information_id)
-      <if test="filter==0">
-         WHERE category_id=#{category_id} and (current_state='대출가능' or current_state='대출')
-      </if>
-      <if test="filter==1">
-          WHERE category_id=#{category_id} and current_state='대출가능'
-      </if>
-      )
-   </select>
+	<select id="totalCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		SELECT count(*) as
+		FROM(
+		SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
+		'yyyy-mm-dd') AS pubdate, current_state, ISBN
+		FROM books join informations using(information_id)
+		<if test="filter==0">
+			WHERE category_id=#{category_id} and (current_state='대출가능' or
+			current_state='대출')
+		</if>
+		<if test="filter==1">
+			WHERE category_id=#{category_id} and current_state='대출가능'
+		</if>
+		)
+	</select>
 
-   <select id="totalCount2" parameterType="java.util.Map"
-      resultType="java.lang.Integer">
-      SELECT count(*) as 
-         FROM(
-         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
-         'yyyy-mm-dd') AS pubdate, current_state, ISBN
-         FROM books join informations using(information_id)
-      <if test="filter==0">
-      <if test="key==1">
-         WHERE title like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
-      </if>
-      <if test="key==2">
-         WHERE author like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
-      </if>
-      <if test="key==3">
-         WHERE publisher like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
-      </if>
-      </if>
-      <if test="filter==1">
-      <if test="key==1">
-         WHERE title like '%' || #{searchWord} || '%' and current_state='대출가능'
-      </if>
-      <if test="key==2">
-         WHERE author like '%' || #{searchWord} || '%' and current_state='대출가능'
-      </if>
-      <if test="key==3">
-         WHERE publisher like '%' || #{searchWord} || '%' and current_state='대출가능'
-      </if>
-      </if>
-      )
-   </select>
+	<select id="totalCount2" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		SELECT count(*) as
+		FROM(
+		SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
+		'yyyy-mm-dd') AS pubdate, current_state, ISBN
+		FROM books join informations using(information_id)
+		<if test="filter==0">
+			<if test="key==1">
+				WHERE title like '%' || #{searchWord} || '%' and (current_state='대출가능' or
+				current_state='대출')
+			</if>
+			<if test="key==2">
+				WHERE author like '%' || #{searchWord} || '%' and (current_state='대출가능'
+				or current_state='대출')
+			</if>
+			<if test="key==3">
+				WHERE publisher like '%' || #{searchWord} || '%' and
+				(current_state='대출가능' or current_state='대출')
+			</if>
+		</if>
+		<if test="filter==1">
+			<if test="key==1">
+				WHERE title like '%' || #{searchWord} || '%' and current_state='대출가능'
+			</if>
+			<if test="key==2">
+				WHERE author like '%' || #{searchWord} || '%' and current_state='대출가능'
+			</if>
+			<if test="key==3">
+				WHERE publisher like '%' || #{searchWord} || '%' and current_state='대출가능'
+			</if>
+		</if>
+		)
+	</select>
 
-   <select id="bookList" resultType="com.nds.library.main.Borrowing">
-      SELECT * FROM books
-   </select>
+	<select id="bookList" resultType="com.nds.library.main.Borrowing">
+		SELECT * FROM books
+	</select>
 
-   <select id="bookInfo"   parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing">
-          SELECT ROWNUM, image, title, ISBN, author, publisher, pubdate, information_id,
-      current_state, explanation
-      FROM(SELECT image, title, ISBN, author,
-      publisher, TO_CHAR(pubdate,'yyyy-mm-dd') AS pubdate, information_id, current_state,
-      explanation
-      FROM books join informations using(information_id)
-      WHERE ISBN=#{isbn})
-   </select>
+	<select id="bookInfo" parameterType="java.util.Map"
+		resultType="com.nds.library.main.Borrowing">
+		SELECT ROWNUM, image, title, ISBN, author, publisher, pubdate,
+		information_id,
+		current_state, explanation
+		FROM(SELECT image, title, ISBN, author,
+		publisher, TO_CHAR(pubdate,'yyyy-mm-dd') AS pubdate, information_id,
+		current_state,
+		explanation
+		FROM books join informations using(information_id)
+		WHERE ISBN=#{isbn})
+	</select>
 
-   <select id="ownInfo" parameterType="java.util.Map" resultType="com.nds.library.main.Borrowing">
-      select book_id, location, current_state, TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date, reservation_id, reservations.user_id
-      from ((books join informations using(information_id)) left outer join borrowings using(book_id)) left outer join reservations using(book_id)  
-      where (current_state='대출가능' or current_state='대출' or current_state='대출대기')
-      and informations.ISBN=#{isbn}
-   </select>
-   
-   <select id="bookReview" parameterType="java.util.Map" resultType="com.nds.library.main.Review">
-      select rownum, star, content, name, reviewed_date
-      from (SELECT star, content, name, TO_CHAR(reviewed_date,'yyyy-mm-dd') AS reviewed_date
-      from reviews join users using(user_id) join informations using(information_id) 
-      where ISBN=#{ISBN}
-      order by reviews.reviewed_date)
-   </select>
-   
-   <insert id="add" parameterType="com.nds.library.main.Review">
-       INSERT INTO reviews (review_id, user_id, information_id, star, content, reviewed_date, modified_date, read_count, blind)
-      VALUES ((SELECT NVL(MAX(review_id),0)+1 FROM reviews), #{user_id},  #{information_id}, #{star},  #{content}, sysdate, null, 0, 0)
-   </insert>
+	<select id="ownInfo" parameterType="java.util.Map"
+		resultType="com.nds.library.main.Borrowing">
+		select book_id, location, current_state,
+		TO_CHAR(scheduled_date,'yyyy-mm-dd') AS scheduled_date,
+		reservation_id, reservations.user_id
+		from ((books join informations using(information_id)) left outer join
+		borrowings using(book_id)) left outer join reservations using(book_id)
+		where (current_state='대출가능' or current_state='대출' or
+		current_state='대출대기')
+		and informations.ISBN=#{isbn}
+	</select>
 
-   <select id="result" parameterType="java.util.Map"
-      resultType="com.nds.library.main.Borrowing">
- 		SELECT *
-         FROM(
-         select rownum rn, aa.*
-        from(
-         SELECT distinct image, title, author, publisher, TO_CHAR(pubdate,
-         'yyyy-mm-dd') AS pubdate, current_state, ISBN
-         FROM books join informations using(information_id)
-         where
-         
-      <if test="filter==1">
+	<select id="bookReview" parameterType="java.util.Map"
+		resultType="com.nds.library.main.Review">
+		select rownum, star, content, name, reviewed_date
+		from (SELECT star, content, name, TO_CHAR(reviewed_date,'yyyy-mm-dd') AS
+		reviewed_date
+		from reviews join users using(user_id) join informations
+		using(information_id)
+		where ISBN=#{ISBN}
+		order by reviews.reviewed_date)
+	</select>
+
+	<insert id="add" parameterType="com.nds.library.main.Review">
+		INSERT INTO reviews (review_id, user_id, information_id, star, content,
+		reviewed_date, modified_date, read_count, blind)
+		VALUES ((SELECT NVL(MAX(review_id),0)+1 FROM reviews), #{user_id},
+		#{information_id}, #{star}, #{content}, sysdate, null, 0, 0)
+	</insert>
+
+	<select id="result" parameterType="java.util.Map"
+		resultType="com.nds.library.main.Borrowing">
+		SELECT *
+		FROM(
+		select rownum rn, aa.*
+		from(
+		SELECT information_id, category_id, ISBN, title, author, publisher, image,
+		TO_CHAR(pubdate, 'YYYY-MM-DD') as pubdate, explanation
+		FROM informations
+		where
+		<if test="filter==1">
          <if test="key==1">
-             title like '%' || #{searchWord} || '%' and current_state='대출가능'
+             title like '%' || #{searchWord} || '%'
          </if>
          <if test="key==2">
-             author like '%' || #{searchWord} || '%' and current_state='대출가능'
+             author like '%' || #{searchWord} || '%
          </if>
          <if test="key==3">
-             publisher like '%' || #{searchWord} || '%' and current_state='대출가능'
+             publisher like '%' || #{searchWord} || '%'
          </if>
       </if>
       
       <if test="filter==0">
          <if test="key==1">
-             title like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
+             title like '%' || #{searchWord} || '%'
          </if>
          <if test="key==2">
-             author like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
+             author like '%' || #{searchWord} || '%'
          </if>
          <if test="key==3">
-             publisher like '%' || #{searchWord} || '%' and (current_state='대출가능' or current_state='대출')
+             publisher like '%' || #{searchWord} || '%'
          </if>
       </if>
+      
+	    GROUP BY information_id, category_id, ISBN, title, author, publisher, image, pubdate, explanation
       )aa)
       where rn between #{startNumber} and #{startNumber}+9
        order by pubdate desc
@@ -269,10 +291,23 @@
 	</select>
 	
 	<select id ="getBookInfo" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
-		SELECT information_id, category_id, ISBN, title, author, publisher, image, TO_CHAR(pubdate, 'YYYY-MM-DD') as pubdate, explanation
+		<!-- SELECT information_id, category_id, ISBN, title, author, publisher, image, TO_CHAR(pubdate, 'YYYY-MM-DD') as pubdate, explanation
 		FROM informations
 		WHERE category_id = #{category_id}
-		GROUP BY information_id, category_id, ISBN, title, author, publisher, image, pubdate, explanation
+		GROUP BY information_id, category_id, ISBN, title, author, publisher, image, pubdate, explanation -->
+		
+		SELECT *
+		FROM(
+			select rownum rn, aa.*
+			from(
+		        SELECT information_id, category_id, ISBN, title, author, publisher, image, TO_CHAR(pubdate, 'YYYY-MM-DD') as pubdate, explanation
+		        FROM informations
+		        WHERE category_id = #{category_id}
+		        GROUP BY information_id, category_id, ISBN, title, author, publisher, image, pubdate, explanation
+	     	)aa
+	    )
+     	where rn between #{startNumber} and #{startNumber}+9
+       	order by pubdate desc
 	</select>
 	
 	<select id="getBookDetail" resultType="com.nds.library.main.Borrowing" parameterType="java.util.Map">
